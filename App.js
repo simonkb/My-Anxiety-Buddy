@@ -1,20 +1,17 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-
-export default function App() {
+import React from "react";
+import { SafeAreaView, StyleSheet, View } from "react-native";
+import Register from "./src/screens/Register";
+const App = () => {
   return (
     <View style={styles.container}>
-      <Text>Welcome to My anxiety app</Text>
-      <StatusBar style="auto" />
+      <Register></Register>
     </View>
   );
-}
-
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
     justifyContent: "center",
   },
 });
+export default App;
