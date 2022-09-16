@@ -2,7 +2,6 @@ import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import HomeStack from "./src/routes/homeStack";
 import { NavigationContainer } from "@react-navigation/native";
-
 const App = () => {
   return (
     <NavigationContainer>

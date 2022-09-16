@@ -8,7 +8,6 @@ import {
   View,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
 const Register = () => {
   const [username, onChangeText] = React.useState(null);
   const [password, onChangePassword] = React.useState(null);

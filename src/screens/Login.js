@@ -13,7 +13,6 @@ const Login = () => {
   const [username, onChangeText] = React.useState(null);
   const [password, onChangePassword] = React.useState(null);
   const background1 = {
-    //source: require("/Users/simondarota/My/assets/background1.jpeg"),
     //uri: "https://img.freepik.com/free-vector/hand-painted-watercolor-pastel-sky-background_23-2148902771.jpg?w=2000",
     //uri: "https://coolbackgrounds.io/images/backgrounds/index/ranger-4df6c1b6.png",
     uri: "https://nyc3.digitaloceanspaces.com/sizze-storage/media/images/w608HSFdrL1GbEz2kUQTnfsl.jpeg",
@@ -21,6 +20,10 @@ const Login = () => {
   const onSignUpPressed = () => {
     //validate user
     navigator.navigate("Register");
+  };
+  const onLoginPressed = () => {
+    //validate user
+    navigator.navigate("Home");
   };
   return (
     <View style={styles.container}>
@@ -46,7 +49,7 @@ const Login = () => {
             secureTextEntry={true}
           />
         </View>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity onPress={onLoginPressed} style={styles.button}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={onSignUpPressed} style={styles.button}>
