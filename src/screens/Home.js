@@ -19,6 +19,7 @@ function BottomButtons() {
       screenOptions={{
         tabBarActiveTintColor: "#e91e63",
       }}
+      options={{ gestureEnabled: false }}
     >
       <Tab.Screen
         name="Chatbot"
@@ -26,17 +27,6 @@ function BottomButtons() {
         options={{
           tabBarLabel: "Chatbot",
           tabBarIcon: ({ color, size }) => (
-            /* <Image
-              source={{
-                uri: "https://iconarchive.com/download/i86037/graphicloads/100-flat-2/chat-2.ico",
-              }}
-            />
-            <Image source = {{ uri
-:
-              "https://nyc3.digitaloceanspaces.com/sizze-storage/media/images/Q4JhbWp965ZufzssZ8HUvrlU.png"
-              }}
-              
-            />*/
             <MaterialCommunityIcons name="chat" color={color} size={size} />
           ),
         }}

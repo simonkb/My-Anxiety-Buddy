@@ -6,7 +6,10 @@ import { NavigationContainer } from "@react-navigation/native";
 //LogBox.ignoreLogs(['Sending']);
 const App = () => {
   return (
-    <NavigationContainer independent={true}>
+    <NavigationContainer
+      independent={true}
+      screenOptions={{ gestureEnabled: false }}
+    >
       <HomeStack />
     </NavigationContainer>
   );

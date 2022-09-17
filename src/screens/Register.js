@@ -6,7 +6,9 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ScrollView,
 } from "react-native";
+import { KeyboardAwareView } from "react-native-keyboard-aware-view";
 import { useNavigation } from "@react-navigation/native";
 const Register = () => {
   const [username, onChangeText] = React.useState(null);
@@ -33,47 +35,51 @@ const Register = () => {
         resizeMode="cover"
         style={styles.bgImage}
       >
-        <Text style={styles.title}>Anti-anxiety</Text>
-        <View style={styles.signUpRectangle}>
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangeText}
-            value={username}
-            placeholder="Username"
-          />
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangePassword}
-            value={password}
-            placeholder="Password"
-            secureTextEntry={true}
-          />
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangePasswordConfirm}
-            value={passwordConfirm}
-            placeholder="Confirm password"
-            secureTextEntry={true}
-          />
+        <KeyboardAwareView animated={false}>
+          <ScrollView>
+            <Text style={styles.title}>Anti-anxiety</Text>
+            <View style={styles.signUpRectangle}>
+              <TextInput
+                style={styles.input}
+                onChangeText={onChangeText}
+                value={username}
+                placeholder="Username"
+              />
+              <TextInput
+                style={styles.input}
+                onChangeText={onChangePassword}
+                value={password}
+                placeholder="Password"
+                secureTextEntry={true}
+              />
+              <TextInput
+                style={styles.input}
+                onChangeText={onChangePasswordConfirm}
+                value={passwordConfirm}
+                placeholder="Confirm password"
+                secureTextEntry={true}
+              />
 
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangeNumber}
-            value={phoneNumber}
-            placeholder="Phone number"
-            keyboardType="numeric"
-          ></TextInput>
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangeEmail}
-            value={email}
-            placeholder="Email address"
-            textContentType="email"
-          />
-        </View>
-        <TouchableOpacity onPress={onSignUpPressed} style={styles.button}>
-          <Text style={styles.buttonText}>Sign Up</Text>
-        </TouchableOpacity>
+              <TextInput
+                style={styles.input}
+                onChangeText={onChangeNumber}
+                value={phoneNumber}
+                placeholder="Phone number"
+                keyboardType="phone-pad"
+              ></TextInput>
+              <TextInput
+                style={styles.input}
+                onChangeText={onChangeEmail}
+                value={email}
+                placeholder="Email address"
+                keyboardType="email-address"
+              />
+            </View>
+            <TouchableOpacity onPress={onSignUpPressed} style={styles.button}>
+              <Text style={styles.buttonText}>Sign Up</Text>
+            </TouchableOpacity>
+          </ScrollView>
+        </KeyboardAwareView>
       </ImageBackground>
     </View>
   );
@@ -90,8 +96,8 @@ const styles = StyleSheet.create({
   signUpRectangle: {
     justifyContent: "center",
     alignSelf: "center",
-    width: 342,
-    height: 342,
+    width: "80%",
+    height: "55%",
     borderRadius: 10,
     backgroundColor: "rgba(255, 255, 255, 255)",
     opacity: 0.9,
@@ -119,14 +125,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   input: {
-    height: 40,
-    margin: 12,
+    height: "12%",
+    margin: "3%",
     borderWidth: 1,
-    padding: 10,
+    paddingLeft: 10,
     borderRadius: 10,
     borderColor: "darkgrey",
     backgroundColor: "white",
-    fontSize: 16,
+    fontSize: "20%",
+    borderWidth: 0.5,
   },
 });
 export default Register;

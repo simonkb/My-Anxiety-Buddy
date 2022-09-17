@@ -71,12 +71,13 @@ const styles = StyleSheet.create({
   signInRectangle: {
     justifyContent: "center",
     alignSelf: "center",
-    width: 342,
-    height: 160,
+    width: "80%",
+    height: "20%",
     borderRadius: 10,
     backgroundColor: "rgba(255, 255, 255, 255)",
     opacity: 0.9,
     marginTop: 40,
+    shadowOpacity: 0.05,
   },
   title: {
     textAlign: "center",
@@ -100,14 +101,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   input: {
-    height: 40,
+    height: "30%",
     margin: 12,
-    borderWidth: 1,
-    padding: 10,
+    borderWidth: 0.5,
+    paddingLeft: 10,
     borderRadius: 10,
     borderColor: "darkgrey",
     backgroundColor: "white",
-    fontSize: 16,
+    fontSize: "20%",
   },
 });
 

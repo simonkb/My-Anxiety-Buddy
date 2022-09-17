@@ -9,14 +9,18 @@ const HomeStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        options={{ headerShown: false }}
+        options={{ headerShown: false, gestureEnabled: true }}
         name="Login"
         component={Login}
       />
-      <Stack.Screen name="Register" component={Register} />
+      <Stack.Screen
+        name="Register"
+        component={Register}
+        options={{ gestureEnabled: true }}
+      />
 
       <Stack.Screen
-        options={{ headerShown: false }}
+        options={{ headerShown: false, gestureEnabled: false }}
         name="Home"
         component={Home}
       />
