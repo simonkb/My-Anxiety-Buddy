@@ -14,6 +14,7 @@ const HomeStack = () => {
         component={Login}
       />
       <Stack.Screen name="Register" component={Register} />
+
       <Stack.Screen
         options={{ headerShown: false }}
         name="Home"

@@ -1,33 +1,89 @@
 import * as React from "react";
-import { ImageBackground, StyleSheet, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import ChatBot from "./chatbot";
+import community from "./Community";
+import treatment from "./Treatment";
+import profile from "./Profile";
+import { Image } from "react-native-web";
 
-const Home = () => {
-  const background1 = {
-    //uri: "https://img.freepik.com/free-vector/hand-painted-watercolor-pastel-sky-background_23-2148902771.jpg?w=2000",
-    //uri: "https://coolbackgrounds.io/images/backgrounds/index/ranger-4df6c1b6.png",
-    uri: "https://nyc3.digitaloceanspaces.com/sizze-storage/media/images/w608HSFdrL1GbEz2kUQTnfsl.jpeg",
-  };
-
-  return (
-    <View style={styles.container}>
-      <ImageBackground
-        source={background1}
-        resizeMode="cover"
-        style={styles.bgImage}
-      ></ImageBackground>
-    </View>
-  );
+const Tab = createBottomTabNavigator();
+const chatbotIcon = {
+  uri: "https://nyc3.digitaloceanspaces.com/sizze-storage/media/images/Q4JhbWp965ZufzssZ8HUvrlU.png",
 };
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  bgImage: {
-    flex: 1,
-    justifyContent: "center",
-  },
-});
+function BottomButtons() {
+  return (
+    <Tab.Navigator
+      initialRouteName="Chatbot"
+      screenOptions={{
+        tabBarActiveTintColor: "#e91e63",
+      }}
+    >
+      <Tab.Screen
+        name="Chatbot"
+        component={ChatBot}
+        options={{
+          tabBarLabel: "Chatbot",
+          tabBarIcon: ({ color, size }) => (
+            /* <Image
+              source={{
+                uri: "https://iconarchive.com/download/i86037/graphicloads/100-flat-2/chat-2.ico",
+              }}
+            />
+            <Image source = {{ uri
+:
+              "https://nyc3.digitaloceanspaces.com/sizze-storage/media/images/Q4JhbWp965ZufzssZ8HUvrlU.png"
+              }}
+              
+            />*/
+            <MaterialCommunityIcons name="chat" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Treatment"
+        component={treatment}
+        options={{
+          tabBarLabel: "Treatment",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="lungs" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Community"
+        component={community}
+        options={{
+          tabBarLabel: "Community",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons
+              //name="home-group"
+              name="account-group"
+              color={color}
+              size={size}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={profile}
+        options={{
+          tabBarLabel: "Profile",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account" color={color} size={size} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
 
-export default Home;
+export default function Home() {
+  return (
+    <NavigationContainer independent={true}>
+      <BottomButtons />
+    </NavigationContainer>
+  );
+}

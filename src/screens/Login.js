@@ -13,7 +13,7 @@ const Login = () => {
   const [username, onChangeText] = React.useState(null);
   const [password, onChangePassword] = React.useState(null);
   const background1 = {
-    //uri: "https://img.freepik.com/free-vector/hand-painted-watercolor-pastel-sky-background_23-2148902771.jpg?w=2000",
+    ///uri: "https://img.freepik.com/free-vector/hand-painted-watercolor-pastel-sky-background_23-2148902771.jpg?w=2000",
     //uri: "https://coolbackgrounds.io/images/backgrounds/index/ranger-4df6c1b6.png",
     uri: "https://nyc3.digitaloceanspaces.com/sizze-storage/media/images/w608HSFdrL1GbEz2kUQTnfsl.jpeg",
   };

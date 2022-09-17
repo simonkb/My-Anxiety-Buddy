@@ -2,9 +2,11 @@ import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import HomeStack from "./src/routes/homeStack";
 import { NavigationContainer } from "@react-navigation/native";
+//import { LogBox } from 'react-native';
+//LogBox.ignoreLogs(['Sending']);
 const App = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer independent={true}>
       <HomeStack />
     </NavigationContainer>
   );
