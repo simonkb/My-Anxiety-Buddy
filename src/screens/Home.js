@@ -19,7 +19,7 @@ function BottomButtons() {
       screenOptions={{
         tabBarActiveTintColor: "#e91e63",
       }}
-      options={{ gestureEnabled: false }}
+      options={{ gestureEnabled: false, headerShown: false }}
     >
       <Tab.Screen
         name="Chatbot"

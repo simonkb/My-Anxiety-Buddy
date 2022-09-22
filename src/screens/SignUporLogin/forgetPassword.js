@@ -6,24 +6,20 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Button,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-const Login = () => {
+
+const ForgetPassword = () => {
+  const [phoneNumber, onChangeNumber] = React.useState(null);
   const navigator = useNavigation();
-  const [username, onChangeText] = React.useState(null);
-  const [password, onChangePassword] = React.useState(null);
   const background1 = {
     ///uri: "https://img.freepik.com/free-vector/hand-painted-watercolor-pastel-sky-background_23-2148902771.jpg?w=2000",
     //uri: "https://coolbackgrounds.io/images/backgrounds/index/ranger-4df6c1b6.png",
     uri: "https://nyc3.digitaloceanspaces.com/sizze-storage/media/images/w608HSFdrL1GbEz2kUQTnfsl.jpeg",
   };
-  const onSignUpPressed = () => {
-    //validate user
-    navigator.navigate("Register");
-  };
-  const onLoginPressed = () => {
-    //validate user
-    navigator.navigate("Home");
+  const onSendPressed = () => {
+    navigator.navigate("ConfirmOTP");
   };
   return (
     <View style={styles.container}>
@@ -32,28 +28,24 @@ const Login = () => {
         resizeMode="cover"
         style={styles.bgImage}
       >
-        <Text style={styles.title}>Welcome to </Text>
-        <Text style={styles.title}>Anti-anxiety</Text>
+        <Text style={styles.title}>
+          Enter your phone number/email, we will send you OTP to verfiy.
+        </Text>
         <View style={styles.signInRectangle}>
           <TextInput
             style={styles.input}
-            onChangeText={onChangeText}
-            value={username}
-            placeholder="Username"
+            onChangeText={onChangeNumber}
+            value={phoneNumber}
+            placeholder="Phone number"
+            keyboardType="phone-pad"
+            autoCorrect={false}
           />
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangePassword}
-            value={password}
-            placeholder="Password"
-            secureTextEntry={true}
-          />
+          <TouchableOpacity style={styles.forgetPass}>
+            <Text style={{ color: "#2962FF" }}>Use email address instead?</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={onLoginPressed} style={styles.button}>
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={onSignUpPressed} style={styles.button}>
-          <Text style={styles.buttonText}>Sign Up</Text>
+        <TouchableOpacity style={styles.button} onPress={onSendPressed}>
+          <Text style={styles.buttonText}>Send</Text>
         </TouchableOpacity>
       </ImageBackground>
     </View>
@@ -72,7 +64,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
     width: "80%",
-    height: "20%",
+    height: "15%",
     borderRadius: 10,
     backgroundColor: "rgba(255, 255, 255, 255)",
     opacity: 0.9,
@@ -82,8 +74,7 @@ const styles = StyleSheet.create({
   title: {
     textAlign: "center",
     color: "rgba(85,82,82,1)",
-    fontSize: 32,
-    fontFamily: "Arial",
+    fontSize: 25,
     letterSpacing: -0.18,
   },
   button: {
@@ -102,14 +93,19 @@ const styles = StyleSheet.create({
   },
   input: {
     height: "30%",
-    margin: 12,
+    margin: 5,
     borderWidth: 0.5,
     paddingLeft: 10,
     borderRadius: 10,
     borderColor: "darkgrey",
     backgroundColor: "white",
-    fontSize: "20%",
+    fontSize: 18,
+  },
+  forgetPass: {
+    marginTop: 15,
+    fontSize: 14,
+    width: "60%",
+    alignSelf: "flex-end",
   },
 });
-
-export default Login;
+export default ForgetPassword;

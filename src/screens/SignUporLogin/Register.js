@@ -44,6 +44,7 @@ const Register = () => {
                 onChangeText={onChangeText}
                 value={username}
                 placeholder="Username"
+                autoCorrect={false}
               />
               <TextInput
                 style={styles.input}
@@ -51,6 +52,7 @@ const Register = () => {
                 value={password}
                 placeholder="Password"
                 secureTextEntry={true}
+                autoCorrect={false}
               />
               <TextInput
                 style={styles.input}
@@ -58,6 +60,7 @@ const Register = () => {
                 value={passwordConfirm}
                 placeholder="Confirm password"
                 secureTextEntry={true}
+                autoCorrect={false}
               />
 
               <TextInput
@@ -66,6 +69,7 @@ const Register = () => {
                 value={phoneNumber}
                 placeholder="Phone number"
                 keyboardType="phone-pad"
+                autoCorrect={false}
               ></TextInput>
               <TextInput
                 style={styles.input}
@@ -73,6 +77,7 @@ const Register = () => {
                 value={email}
                 placeholder="Email address"
                 keyboardType="email-address"
+                autoCorrect={false}
               />
             </View>
             <TouchableOpacity onPress={onSignUpPressed} style={styles.button}>
@@ -106,7 +111,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "rgba(85,82,82,1)",
     fontSize: 32,
-    fontFamily: "Arial",
+    //fontFamily: "Arial",
     letterSpacing: -0.18,
     margin: 40,
   },
@@ -132,7 +137,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: "darkgrey",
     backgroundColor: "white",
-    fontSize: "20%",
+    fontSize: 18,
     borderWidth: 0.5,
   },
 });
