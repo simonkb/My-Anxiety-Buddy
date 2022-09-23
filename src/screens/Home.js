@@ -5,7 +5,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ChatBot from "./chatbot";
 import community from "./Community";
 import treatment from "./Treatment";
-import profile from "./Profile";
+import profile from "./Profile/Profile";
 import { Image } from "react-native-web";
 
 const Tab = createBottomTabNavigator();
@@ -19,7 +19,6 @@ function BottomButtons() {
       screenOptions={{
         tabBarActiveTintColor: "#e91e63",
       }}
-      options={{ gestureEnabled: false, headerShown: false }}
     >
       <Tab.Screen
         name="Chatbot"
@@ -29,6 +28,7 @@ function BottomButtons() {
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="chat" color={color} size={size} />
           ),
+          headerShown: true,
         }}
       />
       <Tab.Screen
@@ -54,6 +54,7 @@ function BottomButtons() {
               size={size}
             />
           ),
+          headerShown: false,
         }}
       />
       <Tab.Screen
@@ -64,6 +65,7 @@ function BottomButtons() {
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
+          headerShown: false,
         }}
       />
     </Tab.Navigator>

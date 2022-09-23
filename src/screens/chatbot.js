@@ -3,7 +3,7 @@ import { ImageBackground, StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 const Chatbot = () => {
-  const background1 = {
+  var background1 = {
     uri: "https://nyc3.digitaloceanspaces.com/sizze-storage/media/images/w608HSFdrL1GbEz2kUQTnfsl.jpeg",
   };
 

@@ -7,8 +7,10 @@ import {
   TouchableOpacity,
   View,
   Button,
+  ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { KeyboardAwareView } from "react-native-keyboard-aware-view";
 
 const ForgetPassword = () => {
   const [phoneNumber, onChangeNumber] = React.useState(null);
@@ -29,21 +31,18 @@ const ForgetPassword = () => {
         style={styles.bgImage}
       >
         <Text style={styles.title}>
-          Enter your phone number/email, we will send you OTP to verfiy.
+          Enter your phone number/email, we will send you OTP to verify.
         </Text>
         <View style={styles.signInRectangle}>
           <TextInput
             style={styles.input}
             onChangeText={onChangeNumber}
             value={phoneNumber}
-            placeholder="Phone number"
-            keyboardType="phone-pad"
+            placeholder="Phone number or email"
             autoCorrect={false}
           />
-          <TouchableOpacity style={styles.forgetPass}>
-            <Text style={{ color: "#2962FF" }}>Use email address instead?</Text>
-          </TouchableOpacity>
         </View>
+
         <TouchableOpacity style={styles.button} onPress={onSendPressed}>
           <Text style={styles.buttonText}>Send</Text>
         </TouchableOpacity>
@@ -64,18 +63,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
     width: "80%",
-    height: "15%",
+    height: "10%",
     borderRadius: 10,
     backgroundColor: "rgba(255, 255, 255, 255)",
     opacity: 0.9,
-    marginTop: 40,
+    marginTop: 10,
     shadowOpacity: 0.05,
   },
   title: {
     textAlign: "center",
     color: "rgba(85,82,82,1)",
-    fontSize: 25,
-    letterSpacing: -0.18,
+    fontSize: 18,
+    width: 300,
+    alignSelf: "center",
   },
   button: {
     width: 165,
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   input: {
-    height: "30%",
+    height: "50%",
     margin: 5,
     borderWidth: 0.5,
     paddingLeft: 10,
@@ -100,12 +100,6 @@ const styles = StyleSheet.create({
     borderColor: "darkgrey",
     backgroundColor: "white",
     fontSize: 18,
-  },
-  forgetPass: {
-    marginTop: 15,
-    fontSize: 14,
-    width: "60%",
-    alignSelf: "flex-end",
   },
 });
 export default ForgetPassword;

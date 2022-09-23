@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     //fontFamily: "Arial",
     letterSpacing: -0.18,
     margin: 40,
-    paddingTop: "30%",
+    paddingTop: "20%",
   },
   button: {
     width: 165,
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: "rgba(142,94,181,1)",
     borderRadius: 15,
-    margin: 60,
+    margin: 20,
     padding: 8,
   },
   buttonText: {
