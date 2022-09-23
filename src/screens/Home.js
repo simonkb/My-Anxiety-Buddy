@@ -1,6 +1,7 @@
 import * as React from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { Image } from "react-native";
 
 const Home = () => {
   const background1 = {
@@ -10,15 +11,22 @@ const Home = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <ImageBackground
-        source={background1}
-        resizeMode="cover"
-        style={styles.bgImage}
-      ></ImageBackground>
-    </View>
+    <ImageBackground
+      source={background1}
+      resizeMode="cover"
+      style={styles.bgImage}
+    >
+      <Image
+        style={{ width: 300, height: 250 }}
+        resizeMode="contain"
+        source={{
+          uri: "https://coolbackgrounds.io/images/backgrounds/index/ranger-4df6c1b6.png",
+        }}
+      ></Image>
+    </ImageBackground>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
