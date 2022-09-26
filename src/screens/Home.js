@@ -17,7 +17,7 @@ const Home = () => {
       style={styles.bgImage}
     >
       <Image
-        style={{ width: 300, height: 250 }}
+        style={{ width: 301, height: 250 }}
         resizeMode="contain"
         source={{
           uri: "https://coolbackgrounds.io/images/backgrounds/index/ranger-4df6c1b6.png",
