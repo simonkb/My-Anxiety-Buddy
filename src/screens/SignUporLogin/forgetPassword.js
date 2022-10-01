@@ -11,22 +11,18 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { KeyboardAwareView } from "react-native-keyboard-aware-view";
+import { StaticImage } from "../../classes/StaticImages";
 
 const ForgetPassword = () => {
   const [phoneNumber, onChangeNumber] = React.useState(null);
   const navigator = useNavigation();
-  const background1 = {
-    ///uri: "https://img.freepik.com/free-vector/hand-painted-watercolor-pastel-sky-background_23-2148902771.jpg?w=2000",
-    //uri: "https://coolbackgrounds.io/images/backgrounds/index/ranger-4df6c1b6.png",
-    uri: "https://nyc3.digitaloceanspaces.com/sizze-storage/media/images/w608HSFdrL1GbEz2kUQTnfsl.jpeg",
-  };
   const onSendPressed = () => {
     navigator.navigate("ConfirmOTP");
   };
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={background1}
+        source={StaticImage.currentBackgroundImage}
         resizeMode="cover"
         style={styles.bgImage}
       >

@@ -1,16 +1,13 @@
 import * as React from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { StaticImage } from "../classes/StaticImages.js";
 
 const Community = () => {
-  const background1 = {
-    uri: "https://nyc3.digitaloceanspaces.com/sizze-storage/media/images/w608HSFdrL1GbEz2kUQTnfsl.jpeg",
-  };
-
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={background1}
+        source={StaticImage.currentBackgroundImage}
         resizeMode="cover"
         style={styles.bgImage}
       ></ImageBackground>

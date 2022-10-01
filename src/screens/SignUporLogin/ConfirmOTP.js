@@ -9,14 +9,10 @@ import {
   Button,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
+import { StaticImage } from "../../classes/StaticImages";
 const ConfirmOTP = () => {
   const [OTP, onChangeNumber] = React.useState(null);
-  const background1 = {
-    ///uri: "https://img.freepik.com/free-vector/hand-painted-watercolor-pastel-sky-background_23-2148902771.jpg?w=2000",
-    //uri: "https://coolbackgrounds.io/images/backgrounds/index/ranger-4df6c1b6.png",
-    uri: "https://nyc3.digitaloceanspaces.com/sizze-storage/media/images/w608HSFdrL1GbEz2kUQTnfsl.jpeg",
-  };
+
   const navigator = useNavigation();
   const oneDonePressed = () => {
     navigator.navigate("CreateNewPassword");
@@ -24,7 +20,7 @@ const ConfirmOTP = () => {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={background1}
+        source={StaticImage.currentBackgroundImage}
         resizeMode="cover"
         style={styles.bgImage}
       >

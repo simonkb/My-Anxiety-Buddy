@@ -5,13 +5,11 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ChatBot from "./chatbot";
 import community from "./Community";
 import treatment from "./Treatment";
-import profile from "./Profile/Profile";
+import Profile from "./Profile/Profile";
 import { Image } from "react-native-web";
 
 const Tab = createBottomTabNavigator();
-const chatbotIcon = {
-  uri: "https://nyc3.digitaloceanspaces.com/sizze-storage/media/images/Q4JhbWp965ZufzssZ8HUvrlU.png",
-};
+
 function BottomButtons() {
   return (
     <Tab.Navigator
@@ -59,7 +57,7 @@ function BottomButtons() {
       />
       <Tab.Screen
         name="Profile"
-        component={profile}
+        component={Profile}
         options={{
           tabBarLabel: "Profile",
           tabBarIcon: ({ color, size }) => (

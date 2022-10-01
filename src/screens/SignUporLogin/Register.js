@@ -10,6 +10,8 @@ import {
 } from "react-native";
 import { KeyboardAwareView } from "react-native-keyboard-aware-view";
 import { useNavigation } from "@react-navigation/native";
+import { StaticImage } from "../../classes/StaticImages";
+
 const Register = () => {
   const [username, onChangeText] = React.useState(null);
   const [password, onChangePassword] = React.useState(null);
@@ -17,12 +19,6 @@ const Register = () => {
 
   const [phoneNumber, onChangeNumber] = React.useState(null);
   const [email, onChangeEmail] = React.useState(null);
-
-  const background1 = {
-    //uri: "https://img.freepik.com/free-vector/hand-painted-watercolor-pastel-sky-background_23-2148902771.jpg?w=2000",
-    //uri: "https://coolbackgrounds.io/images/backgrounds/index/ranger-4df6c1b6.png",
-    uri: "https://nyc3.digitaloceanspaces.com/sizze-storage/media/images/w608HSFdrL1GbEz2kUQTnfsl.jpeg",
-  };
   const navigator = useNavigation();
   const onSignUpPressed = () => {
     //Validate, confirm password and save details.
@@ -31,11 +27,11 @@ const Register = () => {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={background1}
+        source={StaticImage.currentBackgroundImage}
         resizeMode="cover"
         style={styles.bgImage}
       >
-        <KeyboardAwareView animated={false}>
+        <KeyboardAwareView>
           <ScrollView>
             <Text style={styles.title}>Anti-anxiety</Text>
             <View style={styles.signUpRectangle}>
