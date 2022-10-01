@@ -26,7 +26,7 @@ function BottomButtons() {
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="chat" color={color} size={size} />
           ),
-          headerShown: true,
+          headerShown: false,
         }}
       />
       <Tab.Screen

@@ -46,6 +46,7 @@ const Settings = () => {
     } else if (value === "changeBackground") {
       function onSaveBackGround() {
         StaticImage.setCurrentBackgroundImage(bgImageUri);
+        //Reloading
         return setValue((value = "all"));
       }
       return (
@@ -174,7 +175,7 @@ const Settings = () => {
             borderWidth: 1,
             backgroundColor: "white",
             borderColor: "white",
-            opacity: 0.5,
+            opacity: 0.8,
           }}
         >
           <Display />
