@@ -14,18 +14,28 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import { StaticImage } from "../../classes/StaticImages";
-
+//import { StaticImage } from "../../classes/StaticImages";
+import bg1 from "../../../assets/bg1.jpeg";
+import bg2 from "../../../assets/bg2.jpg";
+import bg3 from "../../../assets/bg3.jpg";
+import { setGlobalState, useGlobalState } from "../../states/state.js";
 const ProfileHome = () => {
+  //Updating background
+  let defaultBg = useGlobalState("defaultBackgroundImage");
+  let currentBg;
+  if (defaultBg[0] === "bgOrange") {
+    currentBg = bg3;
+  } else if (defaultBg[0] === "bgBlue") {
+    currentBg = bg2;
+  } else {
+    currentBg = bg1;
+  }
+  //
   const navigator = useNavigation();
   const onSettingsPressed = () => {
     navigator.navigate("Settings");
   };
-  /*
-  const background1 = {
-    uri: "https://nyc3.digitaloceanspaces.com/sizze-storage/media/images/w608HSFdrL1GbEz2kUQTnfsl.jpeg",
-  };*/
-  //const onSettingsPressed = () => {};
+
   let [value, setValue] = useState("posts");
 
   const Display = () => {
@@ -53,7 +63,7 @@ const ProfileHome = () => {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={StaticImage.currentBackgroundImage}
+        source={currentBg}
         resizeMode="cover"
         style={styles.bgImage}
       >
@@ -94,7 +104,6 @@ const ProfileHome = () => {
                   </Text>
                 </MaterialCommunityIcons>
               </TouchableOpacity>
-              <TouchableOpacity></TouchableOpacity>
             </View>
           </View>
           <View

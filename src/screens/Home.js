@@ -6,7 +6,6 @@ import ChatBot from "./chatbot";
 import community from "./Community";
 import treatment from "./Treatment";
 import Profile from "./Profile/Profile";
-import { Image } from "react-native-web";
 
 const Tab = createBottomTabNavigator();
 

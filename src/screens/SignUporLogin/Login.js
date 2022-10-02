@@ -9,9 +9,22 @@ import {
   Button,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { StaticImage } from "../../classes/StaticImages";
-
+import bg1 from "../../../assets/bg1.jpeg";
+import bg2 from "../../../assets/bg2.jpg";
+import bg3 from "../../../assets/bg3.jpg";
+import { useGlobalState, setGlobalState } from "../../states/state";
 const Login = () => {
+  //Updating background
+  let defaultBg = useGlobalState("defaultBackgroundImage");
+  let currentBg;
+  if (defaultBg[0] === "bgOrange") {
+    currentBg = bg3;
+  } else if (defaultBg[0] === "bgBlue") {
+    currentBg = bg2;
+  } else {
+    currentBg = bg1;
+  }
+  //
   const navigator = useNavigation();
   const [username, onChangeText] = React.useState(null);
   const [password, onChangePassword] = React.useState(null);
@@ -21,7 +34,7 @@ const Login = () => {
   };
   const onLoginPressed = () => {
     //validate user
-    navigator.navigate("Home");
+    setGlobalState("isLoggedIn", true);
   };
   const onForgetPassPressed = () => {
     navigator.navigate("forgetPassword");
@@ -29,7 +42,7 @@ const Login = () => {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={StaticImage.currentBackgroundImage}
+        source={currentBg}
         resizeMode="cover"
         style={styles.bgImage}
       >

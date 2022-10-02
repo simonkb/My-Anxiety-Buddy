@@ -12,17 +12,23 @@ import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import bgImage1 from "../../../assets/bg1.jpeg";
-import bgImage2 from "../../../assets/bg2.jpg";
-import bgImage3 from "../../../assets/bg3.jpg";
-import { StaticImage } from "../../classes/StaticImages.js";
-let bg1 = bgImage1;
-let bg2 = bgImage2;
-let bg3 = bgImage3;
+import bg1 from "../../../assets/bg1.jpeg";
+import bg2 from "../../../assets/bg2.jpg";
+import bg3 from "../../../assets/bg3.jpg";
+import { setGlobalState, useGlobalState } from "../../states/state.js";
 
 const Settings = () => {
   let [value, setValue] = useState("all");
-  let [bgImageUri, setbgImageUri] = useState(bg1);
+  let defaultBg = useGlobalState("defaultBackgroundImage");
+  let currentBg;
+  if (defaultBg[0] === "bgOrange") {
+    currentBg = bg3;
+  } else if (defaultBg[0] === "bgBlue") {
+    currentBg = bg2;
+  } else {
+    currentBg = bg1;
+  }
+  let [bgImageUri, setbgImageUri] = useState(currentBg);
   const navigator = useNavigation();
   const onEditProfilePressed = () => {
     navigator.navigate("EditProfile");
@@ -44,9 +50,14 @@ const Settings = () => {
         </View>
       );
     } else if (value === "changeBackground") {
-      function onSaveBackGround() {
-        StaticImage.setCurrentBackgroundImage(bgImageUri);
-        //Reloading
+      function onDonePressed() {
+        if (bgImageUri === bg1) {
+          setGlobalState("defaultBackgroundImage", "bgPink");
+        } else if (bgImageUri === bg2) {
+          setGlobalState("defaultBackgroundImage", "bgBlue");
+        } else {
+          setGlobalState("defaultBackgroundImage", "bgOrange");
+        }
         return setValue((value = "all"));
       }
       return (
@@ -58,16 +69,16 @@ const Settings = () => {
           </TouchableOpacity>
           <ScrollView horizontal={true}>
             <TouchableOpacity onPress={() => setbgImageUri(bg2)}>
-              <Image source={bgImage2} style={styles.bgImageOptions}></Image>
+              <Image source={bg2} style={styles.bgImageOptions}></Image>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setbgImageUri(bg3)}>
-              <Image source={bgImage3} style={styles.bgImageOptions}></Image>
+              <Image source={bg3} style={styles.bgImageOptions}></Image>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setbgImageUri(bg1)}>
-              <Image source={bgImage1} style={styles.bgImageOptions}></Image>
+              <Image source={bg1} style={styles.bgImageOptions}></Image>
             </TouchableOpacity>
           </ScrollView>
-          <Button title="Done" onPress={() => onSaveBackGround()}></Button>
+          <Button title="Done" onPress={() => onDonePressed()}></Button>
         </View>
       );
     } else if (value === "changeLanguage") {
@@ -123,12 +134,28 @@ const Settings = () => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.rowStyle}
-            onPress={() => setValue((value = "changeLanguage"))}
+            onPress={() => setValue((value = "privacy"))}
           >
             <MaterialCommunityIcons name="security" size={20}>
               <Text> Privacy</Text>
             </MaterialCommunityIcons>
           </TouchableOpacity>
+          <View
+            style={{
+              alignContent: "center",
+              alignSelf: "center",
+              borderTopWidth: 0.5,
+              width: "80%",
+              margin: "10%",
+            }}
+          >
+            <Button
+              title="Logout"
+              onPress={() => {
+                setGlobalState("isLoggedIn", false);
+              }}
+            />
+          </View>
         </View>
       );
     }

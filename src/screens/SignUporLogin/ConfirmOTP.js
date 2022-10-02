@@ -9,8 +9,22 @@ import {
   Button,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { StaticImage } from "../../classes/StaticImages";
+import bg1 from "../../../assets/bg1.jpeg";
+import bg2 from "../../../assets/bg2.jpg";
+import bg3 from "../../../assets/bg3.jpg";
+import { useGlobalState } from "../../states/state";
 const ConfirmOTP = () => {
+  //Updating background
+  let defaultBg = useGlobalState("defaultBackgroundImage");
+  let currentBg;
+  if (defaultBg[0] === "bgOrange") {
+    currentBg = bg3;
+  } else if (defaultBg[0] === "bgBlue") {
+    currentBg = bg2;
+  } else {
+    currentBg = bg1;
+  }
+  //
   const [OTP, onChangeNumber] = React.useState(null);
 
   const navigator = useNavigation();
@@ -20,7 +34,7 @@ const ConfirmOTP = () => {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={StaticImage.currentBackgroundImage}
+        source={currentBg}
         resizeMode="cover"
         style={styles.bgImage}
       >

@@ -19,7 +19,22 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { KeyboardAwareView } from "react-native-keyboard-aware-view";
 import { StaticImage } from "../../classes/StaticImages";
+import bg1 from "../../../assets/bg1.jpeg";
+import bg2 from "../../../assets/bg2.jpg";
+import bg3 from "../../../assets/bg3.jpg";
+import { setGlobalState, useGlobalState } from "../../states/state.js";
 const EditProfile = () => {
+  //Updating background
+  let defaultBg = useGlobalState("defaultBackgroundImage");
+  let currentBg;
+  if (defaultBg[0] === "bgOrange") {
+    currentBg = bg3;
+  } else if (defaultBg[0] === "bgBlue") {
+    currentBg = bg2;
+  } else {
+    currentBg = bg1;
+  }
+  //
   const navigator = useNavigation();
   const profilePicture = {
     uri: "https://nyc3.digitaloceanspaces.com/sizze-storage/media/images/I1FDrRUQF9bnrTsQcmUnOnu0.png",
@@ -34,7 +49,7 @@ const EditProfile = () => {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={StaticImage.currentBackgroundImage}
+        source={currentBg}
         resizeMode="cover"
         style={styles.bgImage}
       >

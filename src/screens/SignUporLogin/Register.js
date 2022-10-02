@@ -10,9 +10,22 @@ import {
 } from "react-native";
 import { KeyboardAwareView } from "react-native-keyboard-aware-view";
 import { useNavigation } from "@react-navigation/native";
-import { StaticImage } from "../../classes/StaticImages";
-
+import bg1 from "../../../assets/bg1.jpeg";
+import bg2 from "../../../assets/bg2.jpg";
+import bg3 from "../../../assets/bg3.jpg";
+import { useGlobalState } from "../../states/state";
 const Register = () => {
+  //Updating background
+  let defaultBg = useGlobalState("defaultBackgroundImage");
+  let currentBg;
+  if (defaultBg[0] === "bgOrange") {
+    currentBg = bg3;
+  } else if (defaultBg[0] === "bgBlue") {
+    currentBg = bg2;
+  } else {
+    currentBg = bg1;
+  }
+  //
   const [username, onChangeText] = React.useState(null);
   const [password, onChangePassword] = React.useState(null);
   const [passwordConfirm, onChangePasswordConfirm] = React.useState(null);
@@ -27,7 +40,7 @@ const Register = () => {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={StaticImage.currentBackgroundImage}
+        source={currentBg}
         resizeMode="cover"
         style={styles.bgImage}
       >
