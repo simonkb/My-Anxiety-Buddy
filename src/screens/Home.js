@@ -3,7 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ChatBot from "./chatbot";
-import community from "./Community";
+import community from "./Community/Community";
 import treatment from "./Treatment";
 import Profile from "./Profile/Profile";
 

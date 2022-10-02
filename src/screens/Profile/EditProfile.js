@@ -18,7 +18,6 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { KeyboardAwareView } from "react-native-keyboard-aware-view";
-import { StaticImage } from "../../classes/StaticImages";
 import bg1 from "../../../assets/bg1.jpeg";
 import bg2 from "../../../assets/bg2.jpg";
 import bg3 from "../../../assets/bg3.jpg";
@@ -125,11 +124,15 @@ const EditProfile = () => {
                   margin: 15,
                 }}
               >
-                <Button title="Save" onPress={() => onSavePressed()}></Button>
-                <Button
-                  title="Cancel"
-                  onPress={() => onCancelPressed()}
-                ></Button>
+                <View
+                  style={{
+                    margin: 20,
+                    flexDirection: "row",
+                  }}
+                >
+                  <Button title="Save" onPress={() => onSavePressed()} />
+                  <Button title="Cancel" onPress={() => onCancelPressed()} />
+                </View>
               </View>
             </ScrollView>
           </KeyboardAwareView>
@@ -173,7 +176,7 @@ const styles = StyleSheet.create({
     borderColor: "gray",
     borderWidth: 0.5,
     borderRadius: 5,
-    height: "30%",
+    height: "10%",
     shadowColor: "grey",
     shadowOpacity: 0.5,
   },

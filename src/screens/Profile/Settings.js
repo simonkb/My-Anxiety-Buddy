@@ -78,7 +78,14 @@ const Settings = () => {
               <Image source={bg1} style={styles.bgImageOptions}></Image>
             </TouchableOpacity>
           </ScrollView>
-          <Button title="Done" onPress={() => onDonePressed()}></Button>
+          <View
+            style={{
+              maxWidth: 110,
+              alignSelf: "center",
+            }}
+          >
+            <Button title="Done" onPress={() => onDonePressed()}></Button>
+          </View>
         </View>
       );
     } else if (value === "changeLanguage") {
@@ -149,12 +156,22 @@ const Settings = () => {
               margin: "10%",
             }}
           >
-            <Button
-              title="Logout"
-              onPress={() => {
-                setGlobalState("isLoggedIn", false);
+            <View
+              style={{
+                maxWidth: 100,
+                borderRadius: 15,
+                alignContent: "center",
+                alignSelf: "center",
+                marginTop: 20,
               }}
-            />
+            >
+              <Button
+                title="Logout"
+                onPress={() => {
+                  setGlobalState("isLoggedIn", false);
+                }}
+              />
+            </View>
           </View>
         </View>
       );
@@ -197,7 +214,7 @@ const Settings = () => {
         <ScrollView
           style={{
             width: "100%",
-            marginBottom: "20%",
+            marginBottom: "0%",
             marginTop: 10,
             borderWidth: 1,
             backgroundColor: "white",
