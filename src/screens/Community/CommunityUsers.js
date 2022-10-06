@@ -34,18 +34,19 @@ const CommunityUsers = () => {
           style={{
             flexDirection: "row",
             width: "100%",
-            hight: 70,
+            hight: 80,
             top: 0,
             position: "absolute",
             backgroundColor: "white",
-            paddingTop: 30,
+            paddingTop: "15%",
             borderBottomRightRadius: 15,
             borderBottomLeftRadius: 15,
             opacity: 0.7,
+            paddingBottom: 15,
           }}
         >
           <TouchableOpacity onPress={onHomePressed}>
-            <View style={{ marginHorizontal: 20 }}>
+            <View style={{ marginHorizontal: 20, marginBottom: 15 }}>
               <MaterialCommunityIcons
                 name="home"
                 color={"grey"}

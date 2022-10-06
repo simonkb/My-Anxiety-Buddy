@@ -7,12 +7,12 @@ const CommunityStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        options={{ headerShown: false, gestureEnabled: false }}
+        options={{ headerShown: false, gestureEnabled: true }}
         name="CommunityHome"
         component={CommunityHome}
       />
       <Stack.Screen
-        options={{ headerShown: false, gestureEnabled: false }}
+        options={{ headerShown: false, gestureEnabled: true }}
         name="CommunityUsers"
         component={CommunityUsers}
       />

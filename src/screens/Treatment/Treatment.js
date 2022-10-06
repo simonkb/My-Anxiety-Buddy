@@ -1,12 +1,12 @@
 import { NavigationContainer } from "@react-navigation/native";
-import ProfileStack from "../../routes/profileStack";
+import TreatmentStack from "../../routes/treatmentStack";
 
-const Profile = () => {
+const Treatment = () => {
   return (
     <NavigationContainer independent={true}>
-      <ProfileStack />
+      <TreatmentStack />
     </NavigationContainer>
   );
 };
 
-export default Profile;
+export default Treatment;

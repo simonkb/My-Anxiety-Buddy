@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ChatBot from "./chatbot";
 import community from "./Community/Community";
-import treatment from "./Treatment";
+import treatment from "./Treatment/Treatment";
 import Profile from "./Profile/Profile";
 
 const Tab = createBottomTabNavigator();
@@ -36,6 +36,7 @@ function BottomButtons() {
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="lungs" color={color} size={size} />
           ),
+          headerShown: false,
         }}
       />
       <Tab.Screen
