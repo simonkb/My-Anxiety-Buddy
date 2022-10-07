@@ -23,7 +23,7 @@ const TreatmentHome = () => {
     currentBg = bg1;
   }
   //
-  navigator = useNavigation();
+  const navigator = useNavigation();
   const onShortReadingsPressed = () => {
     navigator.navigate("Readings");
   };
@@ -37,19 +37,19 @@ const TreatmentHome = () => {
         <View
           style={{
             width: "90%",
-            height: 120,
+            height: "22%",
             backgroundColor: "rgba(217, 217, 217, 0.53)",
             borderRadius: 15,
             left: "5%",
             right: "5%",
-            marginVertical: 10,
+            marginVertical: 5,
             paddingTop: 10,
           }}
         >
           <Text
             style={{
               textAlign: "center",
-              fontSize: 22,
+              fontSize: 18,
               fontWeight: "bold",
               paddingTop: 5,
             }}
@@ -75,21 +75,21 @@ const TreatmentHome = () => {
         <View
           style={{
             width: "90%",
-            height: 400,
+            height: "70%",
             backgroundColor: "rgba(217, 217, 217, 0.53)",
             borderRadius: 15,
             left: "5%",
             right: "5%",
-            marginVertical: 50,
-            paddingTop: 20,
+            paddingTop: 10,
+            marginVertical: 10,
           }}
         >
           <Text
             style={{
               textAlign: "center",
-              fontSize: 24,
+              fontSize: 18,
               fontWeight: "bold",
-              paddingTop: 10,
+              paddingTop: 4,
             }}
           >
             Long Term Treatments

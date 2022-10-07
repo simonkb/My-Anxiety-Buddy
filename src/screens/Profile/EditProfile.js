@@ -13,11 +13,11 @@ import {
   TextInput,
   Image,
   Alert,
+  KeyboardAvoidingView,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import { KeyboardAwareView } from "react-native-keyboard-aware-view";
 import bg1 from "../../../assets/bg1.jpeg";
 import bg2 from "../../../assets/bg2.jpg";
 import bg3 from "../../../assets/bg3.jpg";
@@ -55,42 +55,42 @@ const EditProfile = () => {
         <SafeAreaView
           style={{ backgroundColor: "white", opacity: 0.7, height: "100%" }}
         >
-          <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
-            <View>
-              <TouchableOpacity>
-                <Image
-                  source={profilePicture}
-                  style={styles.profilePictureStyle}
-                />
-              </TouchableOpacity>
-            </View>
-            <View>
-              <Text
-                name="profileUsername"
-                style={{ color: "black", fontSize: 18, paddinleft: 50 }}
-              >
-                Username
-              </Text>
-              <TextInput
-                placeholder="Old Username is shown here"
-                style={{
-                  backgroundColor: "white",
-
-                  opacity: 1,
-                  fontSize: 16,
-                  borderColor: "gray",
-                  borderWidth: 0.5,
-                  width: "100%",
-                  padding: 10,
-                  borderRadius: 15,
-                  shadowColor: "grey",
-                  shadowOpacity: 0.5,
-                }}
-              ></TextInput>
-            </View>
-          </View>
-          <KeyboardAwareView>
+          <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
             <ScrollView>
+              <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
+                <View>
+                  <TouchableOpacity>
+                    <Image
+                      source={profilePicture}
+                      style={styles.profilePictureStyle}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <View>
+                  <Text
+                    name="profileUsername"
+                    style={{ color: "black", fontSize: 18, paddinleft: 50 }}
+                  >
+                    Username
+                  </Text>
+                  <TextInput
+                    placeholder="Old Username is shown here"
+                    style={{
+                      backgroundColor: "white",
+
+                      opacity: 1,
+                      fontSize: 16,
+                      borderColor: "gray",
+                      borderWidth: 0.5,
+                      width: "100%",
+                      padding: 10,
+                      borderRadius: 15,
+                      shadowColor: "grey",
+                      shadowOpacity: 0.5,
+                    }}
+                  ></TextInput>
+                </View>
+              </View>
               <TextInput
                 placeholder="First name"
                 style={styles.testInputStyle}
@@ -135,7 +135,7 @@ const EditProfile = () => {
                 </View>
               </View>
             </ScrollView>
-          </KeyboardAwareView>
+          </KeyboardAvoidingView>
         </SafeAreaView>
       </ImageBackground>
     </View>

@@ -5,6 +5,7 @@ import {
   View,
   Text,
   TextInput,
+  SafeAreaView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import bg1 from "../../../assets/bg1.jpeg";
@@ -45,7 +46,6 @@ const CommunityHome = () => {
             top: 0,
             position: "absolute",
             backgroundColor: "white",
-            paddingTop: "15%",
             borderBottomRightRadius: 15,
             borderBottomLeftRadius: 15,
             opacity: 0.7,
@@ -53,28 +53,29 @@ const CommunityHome = () => {
           }}
         >
           <TouchableOpacity>
-            <View style={{ marginHorizontal: 20 }}>
+            <SafeAreaView style={{ marginHorizontal: 20, marginTop: 30 }}>
               <MaterialCommunityIcons
                 name="home"
                 color={"grey"}
-                size={30}
+                size={25}
               ></MaterialCommunityIcons>
-              <Text>Home</Text>
-            </View>
+              <Text style={{ fontSize: 12 }}>Home</Text>
+            </SafeAreaView>
           </TouchableOpacity>
           <TouchableOpacity onPress={onUsersPressed}>
-            <View
+            <SafeAreaView
               style={{
                 marginHorizontal: 20,
+                marginTop: 30,
               }}
             >
               <MaterialCommunityIcons
                 name="account-multiple"
                 color={"grey"}
-                size={30}
+                size={25}
               ></MaterialCommunityIcons>
-              <Text>Users</Text>
-            </View>
+              <Text style={{ fontSize: 12 }}>Users</Text>
+            </SafeAreaView>
           </TouchableOpacity>
         </View>
         <View

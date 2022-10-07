@@ -10,8 +10,6 @@ import {
   ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { KeyboardAwareView } from "react-native-keyboard-aware-view";
-//import { StaticImage } from "../../classes/StaticImages";
 import bg1 from "../../../assets/bg1.jpeg";
 import bg2 from "../../../assets/bg2.jpg";
 import bg3 from "../../../assets/bg3.jpg";

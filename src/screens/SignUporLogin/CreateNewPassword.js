@@ -8,8 +8,9 @@ import {
   View,
   ScrollView,
   Alert,
+  KeyboardAvoidingView,
 } from "react-native";
-import { KeyboardAwareView } from "react-native-keyboard-aware-view";
+//import { KeyboardAwareView } from "react-native-keyboard-aware-view";
 import { useNavigation } from "@react-navigation/native";
 //import { StaticImage } from "../../classes/StaticImages";
 import bg1 from "../../../assets/bg1.jpeg";
@@ -47,32 +48,32 @@ const CreateNewPassword = () => {
         resizeMode="cover"
         style={styles.bgImage}
       >
-        <KeyboardAwareView animated={false}>
-          <ScrollView>
-            <Text style={styles.title}>Create new password</Text>
-            <View style={styles.signUpRectangle}>
-              <TextInput
-                style={styles.input}
-                onChangeText={onChangePassword}
-                value={password}
-                placeholder="New password"
-                secureTextEntry={true}
-                autoCorrect={false}
-              />
-              <TextInput
-                style={styles.input}
-                onChangeText={onChangePasswordConfirm}
-                value={passwordConfirm}
-                placeholder="Confirm new password"
-                secureTextEntry={true}
-                autoCorrect={false}
-              />
-            </View>
+        <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+          <Text style={styles.title}>Create new password</Text>
+          <View style={styles.signUpRectangle}>
+            <TextInput
+              style={styles.input}
+              onChangeText={onChangePassword}
+              value={password}
+              placeholder="New password"
+              secureTextEntry={true}
+              autoCorrect={false}
+            />
+            <TextInput
+              style={styles.input}
+              onChangeText={onChangePasswordConfirm}
+              value={passwordConfirm}
+              placeholder="Confirm new password"
+              secureTextEntry={true}
+              autoCorrect={false}
+            />
+          </View>
+          <View>
             <TouchableOpacity onPress={onSavePressed} style={styles.button}>
               <Text style={styles.buttonText}>Save!</Text>
             </TouchableOpacity>
-          </ScrollView>
-        </KeyboardAwareView>
+          </View>
+        </KeyboardAvoidingView>
       </ImageBackground>
     </View>
   );
@@ -94,15 +95,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "rgba(255, 255, 255, 255)",
     opacity: 0.9,
+    maxHeight: 150,
   },
   title: {
     textAlign: "center",
     color: "rgba(85,82,82,1)",
-    fontSize: 32,
-    //fontFamily: "Arial",
+    fontSize: 24,
     letterSpacing: -0.18,
     margin: 40,
-    paddingTop: "20%",
+    paddingTop: 70,
   },
   button: {
     width: 165,
@@ -119,15 +120,16 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   input: {
-    height: "20%",
-    margin: "3%",
+    height: "40%",
+    maxHeight: 30,
+    margin: 5,
     borderWidth: 1,
     paddingLeft: 10,
     borderRadius: 10,
     borderColor: "darkgrey",
     backgroundColor: "white",
-    fontSize: 18,
-    borderWidth: 0.5,
+    fontSize: 16,
+    padding: 4,
   },
 });
 export default CreateNewPassword;

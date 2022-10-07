@@ -6,9 +6,9 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  ScrollView,
+  KeyboardAvoidingView,
 } from "react-native";
-import { KeyboardAwareView } from "react-native-keyboard-aware-view";
+import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import bg1 from "../../../assets/bg1.jpeg";
 import bg2 from "../../../assets/bg2.jpg";
@@ -44,7 +44,7 @@ const Register = () => {
         resizeMode="cover"
         style={styles.bgImage}
       >
-        <KeyboardAwareView>
+        <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
           <ScrollView>
             <Text style={styles.title}>Anti-anxiety</Text>
             <View style={styles.signUpRectangle}>
@@ -93,7 +93,7 @@ const Register = () => {
               <Text style={styles.buttonText}>Sign Up</Text>
             </TouchableOpacity>
           </ScrollView>
-        </KeyboardAwareView>
+        </KeyboardAvoidingView>
       </ImageBackground>
     </View>
   );

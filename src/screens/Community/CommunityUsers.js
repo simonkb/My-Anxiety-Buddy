@@ -1,5 +1,11 @@
 import * as React from "react";
-import { ImageBackground, StyleSheet, View, Text } from "react-native";
+import {
+  ImageBackground,
+  StyleSheet,
+  View,
+  Text,
+  SafeAreaView,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import bg1 from "../../../assets/bg1.jpeg";
 import bg2 from "../../../assets/bg2.jpg";
@@ -38,7 +44,7 @@ const CommunityUsers = () => {
             top: 0,
             position: "absolute",
             backgroundColor: "white",
-            paddingTop: "15%",
+            paddingTop: 10,
             borderBottomRightRadius: 15,
             borderBottomLeftRadius: 15,
             opacity: 0.7,
@@ -46,28 +52,29 @@ const CommunityUsers = () => {
           }}
         >
           <TouchableOpacity onPress={onHomePressed}>
-            <View style={{ marginHorizontal: 20, marginBottom: 15 }}>
+            <SafeAreaView style={{ marginHorizontal: 20, marginTop: 30 }}>
               <MaterialCommunityIcons
                 name="home"
                 color={"grey"}
-                size={30}
+                size={25}
               ></MaterialCommunityIcons>
-              <Text>Home</Text>
-            </View>
+              <Text style={{ fontSize: 12 }}>Home</Text>
+            </SafeAreaView>
           </TouchableOpacity>
           <TouchableOpacity>
-            <View
+            <SafeAreaView
               style={{
                 marginHorizontal: 20,
+                marginTop: 30,
               }}
             >
               <MaterialCommunityIcons
                 name="account-multiple"
                 color={"grey"}
-                size={30}
+                size={25}
               ></MaterialCommunityIcons>
-              <Text>Users</Text>
-            </View>
+              <Text style={{ fontSize: 12 }}>Users</Text>
+            </SafeAreaView>
           </TouchableOpacity>
         </View>
       </ImageBackground>

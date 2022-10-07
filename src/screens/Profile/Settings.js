@@ -84,7 +84,7 @@ const Settings = () => {
               alignSelf: "center",
             }}
           >
-            <Button title="Done" onPress={() => onDonePressed()}></Button>
+            <Button title="Save" onPress={() => onDonePressed()}></Button>
           </View>
         </View>
       );
@@ -217,9 +217,10 @@ const Settings = () => {
             marginBottom: "0%",
             marginTop: 10,
             borderWidth: 1,
-            backgroundColor: "white",
+            // backgroundColor: "white",
+            backgroundColor: "rgba(217, 217, 217, 0.53)",
+
             borderColor: "white",
-            opacity: 0.8,
           }}
         >
           <Display />
