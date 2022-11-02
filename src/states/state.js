@@ -3,6 +3,6 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   defaultLanguage: "eng",
   defaultBackgroundImage: "bgPink",
   isLoggedIn: false,
-  currentUser: "simon",
+  currentUser: null,
 });
 export { setGlobalState, useGlobalState };

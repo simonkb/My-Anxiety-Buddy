@@ -59,7 +59,10 @@ const ProfileHome = () => {
       );
     }
   };
-
+  let currentUser = "none";
+  if (useGlobalState("currentUser")[0] != null) {
+    currentUser = useGlobalState("currentUser")[0].email;
+  }
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -75,7 +78,7 @@ const ProfileHome = () => {
                   name="profileUsername"
                   style={{ color: "black", fontSize: 18 }}
                 >
-                  Username
+                  {currentUser}
                 </Text>
               </MaterialCommunityIcons>
 

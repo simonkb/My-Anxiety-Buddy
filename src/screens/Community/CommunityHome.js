@@ -56,7 +56,7 @@ const CommunityHome = () => {
             <SafeAreaView style={{ marginHorizontal: 20, marginTop: 30 }}>
               <MaterialCommunityIcons
                 name="home"
-                color={"grey"}
+                color={"gray"}
                 size={25}
               ></MaterialCommunityIcons>
               <Text style={{ fontSize: 12 }}>Home</Text>

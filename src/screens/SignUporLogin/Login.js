@@ -7,12 +7,16 @@ import {
   TouchableOpacity,
   View,
   Button,
+  Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import bg1 from "../../../assets/bg1.jpeg";
 import bg2 from "../../../assets/bg2.jpg";
 import bg3 from "../../../assets/bg3.jpg";
 import { useGlobalState, setGlobalState } from "../../states/state";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../config/firebaseConfig";
+
 const Login = () => {
   //Updating background
   let defaultBg = useGlobalState("defaultBackgroundImage");
@@ -26,15 +30,24 @@ const Login = () => {
   }
   //
   const navigator = useNavigation();
-  const [username, onChangeText] = React.useState(null);
+  const [email, onChangeText] = React.useState(null);
   const [password, onChangePassword] = React.useState(null);
   const onSignUpPressed = () => {
-    //validate user
     navigator.navigate("Register");
   };
   const onLoginPressed = () => {
-    //validate user
-    setGlobalState("isLoggedIn", true);
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        setGlobalState("isLoggedIn", true);
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        Alert.alert(errorCode, errorMessage);
+      });
   };
   const onForgetPassPressed = () => {
     navigator.navigate("forgetPassword");
@@ -52,8 +65,9 @@ const Login = () => {
           <TextInput
             style={styles.input}
             onChangeText={onChangeText}
-            value={username}
-            placeholder="Username"
+            value={email}
+            placeholder="Email"
+            keyboardType="email-address"
             autoCorrect={false}
           />
           <TextInput
@@ -98,7 +112,8 @@ const styles = StyleSheet.create({
     height: "25%",
     borderRadius: 10,
     backgroundColor: "rgba(255, 255, 255, 255)",
-    opacity: 0.9,
+    //backgroundColor: "rgba(255, 255, 255, 0.27)",
+    // opacity: 0.9,
     marginTop: 40,
     shadowOpacity: 0.05,
   },

@@ -27,7 +27,18 @@ const Readings = () => {
   }
   //
   let [value, setValue] = useState("readings");
-
+  //From database
+  let data = {
+    title: "How to build confidence?",
+    body:
+      "Not everyone is born with an inbuilt sense of self-confidence. Sometimes it" +
+      "can be hard to develop confidence, either because personal experiences have caused you " +
+      "to lose confidence or because you suffer from low self-esteem." +
+      "It’s easy to lose confidence if you believe" +
+      +"you haven’t achieved anything. Make a list of all the things you’re proud of in your life, whether it’s getting a " +
+      "good mark on an exam or learning to surf. Keep the list close by and add to it whenever you do something you’re proud of. " +
+      "When you’re low in confidence, pull out the list and use it to remind yourself of all the awesome stuff you've done.",
+  };
   const Display = () => {
     if (value === "qoutes") {
       return (
@@ -360,7 +371,7 @@ const Readings = () => {
                     padding: 10,
                   }}
                 >
-                  How to build confidence?
+                  {data.title}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity>

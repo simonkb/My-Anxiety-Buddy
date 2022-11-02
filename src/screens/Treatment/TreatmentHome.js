@@ -154,6 +154,21 @@ const TreatmentHome = () => {
               </Text>
             </View>
           </TouchableOpacity>
+          <TouchableOpacity>
+            <View style={styles.shortTermRow}>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  fontSize: 17,
+                  color: "#FFFFFF",
+                  padding: 4,
+                }}
+              >
+                Journaling
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </ImageBackground>
     </View>

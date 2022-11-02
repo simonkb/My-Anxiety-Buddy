@@ -1,3 +1,4 @@
+import { useState } from "react";
 import * as React from "react";
 import {
   ImageBackground,
@@ -7,6 +8,7 @@ import {
   TouchableOpacity,
   View,
   KeyboardAvoidingView,
+  Alert,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
@@ -14,6 +16,12 @@ import bg1 from "../../../assets/bg1.jpeg";
 import bg2 from "../../../assets/bg2.jpg";
 import bg3 from "../../../assets/bg3.jpg";
 import { useGlobalState } from "../../states/state";
+import { auth } from "../../config/firebaseConfig";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { updateProfile } from "firebase/auth";
+//import { collection } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
+
 const Register = () => {
   //Updating background
   let defaultBg = useGlobalState("defaultBackgroundImage");
@@ -35,7 +43,29 @@ const Register = () => {
   const navigator = useNavigation();
   const onSignUpPressed = () => {
     //Validate, confirm password and save details.
-    navigator.navigate("Login");
+    if (password != null) {
+      if ((password.length >= 8) & (password === passwordConfirm)) {
+        //const auth = getAuth();
+        createUserWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            // Signed in
+
+            const user = userCredential.user;
+
+            updateProfile(user, { displayName: username });
+            navigator.navigate("Login");
+            // console.log("New User: " + user.email);
+            const usersCollectionRef = collection(db, "users");
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            Alert.alert(errorCode, errorMessage);
+          });
+      } else {
+        Alert.alert(password, passwordConfirm);
+      }
+    }
   };
   return (
     <View style={styles.container}>
@@ -50,11 +80,13 @@ const Register = () => {
             <View style={styles.signUpRectangle}>
               <TextInput
                 style={styles.input}
-                onChangeText={onChangeText}
-                value={username}
-                placeholder="Username"
+                onChangeText={onChangeEmail}
+                value={email}
+                placeholder="Email address"
+                keyboardType="email-address"
                 autoCorrect={false}
               />
+
               <TextInput
                 style={styles.input}
                 onChangeText={onChangePassword}
@@ -76,16 +108,15 @@ const Register = () => {
                 style={styles.input}
                 onChangeText={onChangeNumber}
                 value={phoneNumber}
-                placeholder="Phone number"
+                placeholder="Phone number (optional)"
                 keyboardType="phone-pad"
                 autoCorrect={false}
               ></TextInput>
               <TextInput
                 style={styles.input}
-                onChangeText={onChangeEmail}
-                value={email}
-                placeholder="Email address"
-                keyboardType="email-address"
+                onChangeText={onChangeText}
+                value={username}
+                placeholder="Username (optional)"
                 autoCorrect={false}
               />
             </View>

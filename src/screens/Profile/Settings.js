@@ -8,6 +8,9 @@ import {
   Touchable,
   Alert,
 } from "react-native";
+import { signOut } from "firebase/auth";
+import { auth } from "../../config/firebaseConfig";
+
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
@@ -168,7 +171,16 @@ const Settings = () => {
               <Button
                 title="Logout"
                 onPress={() => {
-                  setGlobalState("isLoggedIn", false);
+                  //const auth = getAuth();
+                  signOut(auth)
+                    .then(() => {
+                      //setGlobalState("currentUser", null);
+                      setGlobalState("isLoggedIn", false);
+                      Alert.alert("Success", "Logout successful!");
+                    })
+                    .catch((error) => {
+                      // An error happened.
+                    });
                 }}
               />
             </View>
