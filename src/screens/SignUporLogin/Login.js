@@ -14,8 +14,15 @@ import bg1 from "../../../assets/bg1.jpeg";
 import bg2 from "../../../assets/bg2.jpg";
 import bg3 from "../../../assets/bg3.jpg";
 import { useGlobalState, setGlobalState } from "../../states/state";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../config/firebaseConfig";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  sendEmailVerification,
+  onAuthStateChanged,
+} from "firebase/auth";
+import { collection, doc, setDoc, getDoc } from "firebase/firestore";
+
+import { auth, db } from "../../config/firebaseConfig";
 
 const Login = () => {
   //Updating background
@@ -40,7 +47,23 @@ const Login = () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        setGlobalState("isLoggedIn", true);
+        if (user.emailVerified === false) {
+          sendEmailVerification(auth.currentUser).then(() => {
+            Alert.alert(
+              "error",
+              "Please verfy your email. A new verification email has been sent."
+            );
+          });
+        } else {
+          onAuthStateChanged(auth, async (user) => {
+            const docRef = doc(db, "Users", user.uid);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+              setGlobalState("currentUser", user);
+              setGlobalState("isLoggedIn", true);
+            }
+          });
+        }
         // ...
       })
       .catch((error) => {
@@ -50,7 +73,7 @@ const Login = () => {
       });
   };
   const onForgetPassPressed = () => {
-    navigator.navigate("forgetPassword");
+    navigator.navigate("Forget Password");
   };
   return (
     <View style={styles.container}>
@@ -69,6 +92,7 @@ const Login = () => {
             placeholder="Email"
             keyboardType="email-address"
             autoCorrect={false}
+            autoCapitalize={false}
           />
           <TextInput
             style={styles.input}

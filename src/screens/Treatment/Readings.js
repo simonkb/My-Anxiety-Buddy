@@ -5,6 +5,8 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
+  FlatList,
+  Linking,
 } from "react-native";
 import React, { useState } from "react";
 
@@ -14,6 +16,20 @@ import bg1 from "../../../assets/bg1.jpeg";
 import bg2 from "../../../assets/bg2.jpg";
 import bg3 from "../../../assets/bg3.jpg";
 import { useGlobalState } from "../../states/state.js";
+import firebase from "firebase/app";
+import {
+  collection,
+  doc,
+  setDoc,
+  query,
+  getDocs,
+  updateDoc,
+  orderBy,
+} from "firebase/firestore";
+import { db, auth } from "../../config/firebaseConfig";
+import { async } from "@firebase/util";
+import { onAuthStateChanged } from "firebase/auth";
+
 const Readings = () => {
   //Updating background
   let defaultBg = useGlobalState("defaultBackgroundImage");
@@ -27,23 +43,46 @@ const Readings = () => {
   }
   //
   let [value, setValue] = useState("readings");
-  //From database
-  let data = {
-    title: "How to build confidence?",
-    body:
-      "Not everyone is born with an inbuilt sense of self-confidence. Sometimes it" +
-      "can be hard to develop confidence, either because personal experiences have caused you " +
-      "to lose confidence or because you suffer from low self-esteem." +
-      "It’s easy to lose confidence if you believe" +
-      +"you haven’t achieved anything. Make a list of all the things you’re proud of in your life, whether it’s getting a " +
-      "good mark on an exam or learning to surf. Keep the list close by and add to it whenever you do something you’re proud of. " +
-      "When you’re low in confidence, pull out the list and use it to remind yourself of all the awesome stuff you've done.",
-  };
+
+  var i = 0;
+
   const Display = () => {
-    if (value === "qoutes") {
+    if (value === "quotes") {
+      const [allQuotes, setQuotes] = useState("");
+      async function read() {
+        let list = [];
+        const querySnapshot = await getDocs(
+          query(collection(db, "quotes"), orderBy("viewsCount", "desc"))
+        );
+        querySnapshot.forEach((doc) => {
+          var temp = {
+            quote: doc.data().quote,
+            viewsCount: doc.data().viewsCount,
+            id: doc.id,
+          };
+          list.push(temp);
+        });
+
+        return list;
+      }
+
+      read()
+        .then((data) => {
+          setQuotes(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      async function updateCount(id, vCount) {
+        const qoutesRef = collection(db, "quotes");
+
+        await updateDoc(doc(qoutesRef, id), {
+          viewsCount: vCount + 1,
+        });
+      }
       return (
         <>
-          <ScrollView
+          <View
             style={{
               width: "94%",
               height: "100%",
@@ -53,7 +92,6 @@ const Readings = () => {
               top: 70,
               flex: 1,
             }}
-            contentContainerStyle={{ flexGrow: 1 }}
           >
             <View
               style={{
@@ -68,121 +106,104 @@ const Readings = () => {
                   color: "#FFFFFF",
                   fontWeight: "400",
                   padding: 10,
+                  width: "90%",
                 }}
               >
-                Inspiring qoutes
+                Inspiring quotes
               </Text>
             </View>
-            <View
-              style={{
-                width: "100%",
-                height: 40,
-                backgroundColor: "rgba(255, 255, 255, 0.31)",
-                flexDirection: "row",
-                shadowColor: "rgba(0, 0, 0, 0.25)",
-                borderBottomColor: "gray",
-                borderBottomWidth: 2,
-              }}
-            >
-              <TouchableOpacity>
-                <Text
-                  style={{
-                    fontSize: 18,
-                    color: "#000000",
-                    fontWeight: "400",
-                    padding: 10,
-                  }}
-                >
-                  I don't know
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <MaterialCommunityIcons
-                  name="eye"
-                  color={"gray"}
-                  size={18}
-                  style={{ padding: 10, left: 15 }}
-                >
-                  <Text style={{ fontSize: 14 }}>232</Text>
-                </MaterialCommunityIcons>
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                width: "100%",
-                height: 40,
-                backgroundColor: "rgba(255, 255, 255, 0.31)",
-                flexDirection: "row",
-                shadowColor: "rgba(0, 0, 0, 0.25)",
-                borderBottomColor: "gray",
-                borderBottomWidth: 2,
-              }}
-            >
-              <TouchableOpacity>
-                <Text
-                  style={{
-                    fontSize: 18,
-                    color: "#000000",
-                    fontWeight: "400",
-                    padding: 10,
-                  }}
-                >
-                  You gotta provide some{" "}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <MaterialCommunityIcons
-                  name="eye"
-                  color={"gray"}
-                  size={18}
-                  style={{ padding: 10, paddingLeft: 30, position: "absolute" }}
-                >
-                  <Text style={{ fontSize: 14 }}>232</Text>
-                </MaterialCommunityIcons>
-              </TouchableOpacity>
-            </View>
-
-            <View
-              style={{
-                width: "100%",
-                height: 40,
-                backgroundColor: "rgba(255, 255, 255, 0.31)",
-                flexDirection: "row",
-                shadowColor: "rgba(0, 0, 0, 0.25)",
-                borderBottomColor: "gray",
-                borderBottomWidth: 2,
-              }}
-            >
-              <TouchableOpacity>
-                <Text
-                  style={{
-                    fontSize: 18,
-                    color: "#000000",
-                    fontWeight: "400",
-                    padding: 10,
-                  }}
-                >
-                  I said it{" "}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <MaterialCommunityIcons
-                  name="eye"
-                  color={"gray"}
-                  size={18}
-                  style={{ padding: 10, paddingLeft: 30, position: "absolute" }}
-                >
-                  <Text style={{ fontSize: 14 }}>232</Text>
-                </MaterialCommunityIcons>
-              </TouchableOpacity>
-            </View>
-          </ScrollView>
+            <FlatList
+              data={allQuotes}
+              renderItem={({ item }) => (
+                <View>
+                  <TouchableOpacity
+                    style={{
+                      width: "100%",
+                      backgroundColor: "rgba(255, 255, 255, 0.31)",
+                      flexDirection: "row",
+                      shadowColor: "rgba(0, 0, 0, 0.25)",
+                      borderBottomColor: "gray",
+                      borderBottomWidth: 2,
+                    }}
+                    onPress={() => updateCount(item.id, item.viewsCount)}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        color: "#000000",
+                        fontWeight: "400",
+                        padding: 10,
+                        width: "90%",
+                      }}
+                    >
+                      {item.quote}
+                    </Text>
+                    <MaterialCommunityIcons
+                      name="eye"
+                      color={"gray"}
+                      size={18}
+                      style={{
+                        padding: 10,
+                        paddingLeft: 30,
+                        right: 0,
+                        position: "absolute",
+                      }}
+                    >
+                      <Text style={{ fontSize: 14 }}> {item.viewsCount}</Text>
+                    </MaterialCommunityIcons>
+                  </TouchableOpacity>
+                </View>
+              )}
+            />
+          </View>
         </>
       );
     } else if (value === "links") {
+      const [array, setArray] = useState("");
+      async function read() {
+        let list = [];
+        const querySnapshot = await getDocs(
+          query(collection(db, "links"), orderBy("viewsCount", "desc"))
+        );
+        querySnapshot.forEach((doc) => {
+          var temp = {
+            link: doc.data().link,
+            viewsCount: doc.data().viewsCount,
+            description: doc.data().description,
+            id: doc.id,
+          };
+          list.push(temp);
+        });
+
+        return list;
+      }
+
+      read()
+        .then((data) => {
+          setArray(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      async function openLinkInBrowser(url, id, vCount) {
+        Linking.canOpenURL(url).then((supported) => {
+          if (supported) {
+            Linking.openURL(url);
+          } else {
+            console.log("Don't know how to open URI: " + url);
+          }
+        });
+        const linksRef = collection(db, "links");
+
+        await updateDoc(doc(linksRef, id), {
+          viewsCount: vCount + 1,
+        });
+      }
+
       return (
         <>
-          <ScrollView
+          <View
             style={{
               width: "94%",
               height: "100%",
@@ -192,7 +213,6 @@ const Readings = () => {
               top: 70,
               flex: 1,
             }}
-            contentContainerStyle={{ flexGrow: 1 }}
           >
             <View
               style={{
@@ -212,116 +232,99 @@ const Readings = () => {
                 Important links
               </Text>
             </View>
-            <View
-              style={{
-                width: "100%",
-                height: 40,
-                backgroundColor: "rgba(255, 255, 255, 0.31)",
-                flexDirection: "row",
-                shadowColor: "rgba(0, 0, 0, 0.25)",
-                borderBottomColor: "gray",
-                borderBottomWidth: 2,
-              }}
-            >
-              <TouchableOpacity>
-                <Text
-                  style={{
-                    fontSize: 18,
-                    color: "#000000",
-                    fontWeight: "400",
-                    padding: 10,
-                  }}
-                >
-                  How to build confidence?
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <MaterialCommunityIcons
-                  name="eye"
-                  color={"gray"}
-                  size={18}
-                  style={{ padding: 10, left: 15 }}
-                >
-                  <Text style={{ fontSize: 14 }}>232</Text>
-                </MaterialCommunityIcons>
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                width: "100%",
-                height: 40,
-                backgroundColor: "rgba(255, 255, 255, 0.31)",
-                flexDirection: "row",
-                shadowColor: "rgba(0, 0, 0, 0.25)",
-                borderBottomColor: "gray",
-                borderBottomWidth: 2,
-              }}
-            >
-              <TouchableOpacity>
-                <Text
-                  style={{
-                    fontSize: 18,
-                    color: "#000000",
-                    fontWeight: "400",
-                    padding: 10,
-                  }}
-                >
-                  Habits to reduce anxiety
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <MaterialCommunityIcons
-                  name="eye"
-                  color={"gray"}
-                  size={18}
-                  style={{ padding: 10, paddingLeft: 30, position: "absolute" }}
-                >
-                  <Text style={{ fontSize: 14 }}>232</Text>
-                </MaterialCommunityIcons>
-              </TouchableOpacity>
-            </View>
+            <FlatList
+              data={array}
+              renderItem={({ item }) => (
+                <View>
+                  <TouchableOpacity
+                    style={{
+                      width: "100%",
+                      backgroundColor: "rgba(255, 255, 255, 0.31)",
+                      flexDirection: "row",
+                      shadowColor: "rgba(0, 0, 0, 0.25)",
+                      borderBottomColor: "gray",
+                      borderBottomWidth: 2,
+                    }}
+                    onPress={() =>
+                      openLinkInBrowser(item.link, item.id, item.viewsCount)
+                    }
+                  >
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        color: "#000000",
+                        fontWeight: "400",
+                        padding: 10,
+                        width: "90%",
+                      }}
+                    >
+                      {item.description}
+                    </Text>
 
-            <View
-              style={{
-                width: "100%",
-                height: 40,
-                backgroundColor: "rgba(255, 255, 255, 0.31)",
-                flexDirection: "row",
-                shadowColor: "rgba(0, 0, 0, 0.25)",
-                borderBottomColor: "gray",
-                borderBottomWidth: 2,
-              }}
-            >
-              <TouchableOpacity>
-                <Text
-                  style={{
-                    fontSize: 18,
-                    color: "#000000",
-                    fontWeight: "400",
-                    padding: 10,
-                  }}
-                >
-                  Habits to reduce anxiety
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <MaterialCommunityIcons
-                  name="eye"
-                  color={"gray"}
-                  size={18}
-                  style={{ padding: 10, paddingLeft: 30, position: "absolute" }}
-                >
-                  <Text style={{ fontSize: 14 }}>232</Text>
-                </MaterialCommunityIcons>
-              </TouchableOpacity>
-            </View>
-          </ScrollView>
+                    <MaterialCommunityIcons
+                      name="eye"
+                      color={"gray"}
+                      size={18}
+                      style={{
+                        padding: 10,
+                        paddingLeft: 30,
+                        right: 0,
+                        position: "absolute",
+                      }}
+                    >
+                      <Text style={{ fontSize: 14 }}>{item.viewsCount}</Text>
+                    </MaterialCommunityIcons>
+                  </TouchableOpacity>
+                </View>
+              )}
+            />
+          </View>
         </>
       );
     } else {
+      const [state, setState] = useState("");
+      async function read() {
+        let list = [];
+        const querySnapshot = await getDocs(
+          query(collection(db, "Readings"), orderBy("viewsCount", "desc"))
+        );
+        querySnapshot.forEach((doc) => {
+          var temp = {
+            id: doc.id,
+            title: doc.data().title,
+            content: doc.data().body,
+            expanded: false,
+            viewsCount: doc.data().viewsCount,
+          };
+          list.push(temp);
+        });
+        setState({ items: list });
+      }
+      if (i < 1) {
+        read();
+        i++;
+      }
+
+      const toggleExpanded = async (id) => {
+        let vCount = 0;
+        const updatedItems = state.items.map((item) => {
+          vCount = item.viewsCount;
+          if (item.id === id) {
+            item.expanded = !item.expanded;
+          }
+          return item;
+        });
+        setState({ items: updatedItems });
+        const readingsRef = collection(db, "Readings");
+
+        await updateDoc(doc(readingsRef, id), {
+          viewsCount: vCount + 1,
+        });
+      };
+
       return (
         <>
-          <ScrollView
+          <FlatList
             style={{
               width: "94%",
               height: "100%",
@@ -331,147 +334,58 @@ const Readings = () => {
               top: 70,
               flex: 1,
             }}
-            contentContainerStyle={{ flexGrow: 1 }}
-          >
-            <View
-              style={{
-                width: "100%",
-                height: 40,
-                backgroundColor: "#A984C3",
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 18,
-                  color: "#FFFFFF",
-                  fontWeight: "400",
-                  padding: 10,
-                }}
-              >
-                Popular this week
-              </Text>
-            </View>
-            <View
-              style={{
-                width: "100%",
-                height: 40,
-                backgroundColor: "rgba(255, 255, 255, 0.31)",
-                flexDirection: "row",
-                shadowColor: "rgba(0, 0, 0, 0.25)",
-                borderBottomColor: "gray",
-                borderBottomWidth: 2,
-              }}
-            >
-              <TouchableOpacity>
-                <Text
+            data={state.items}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <View>
+                <TouchableOpacity
+                  onPress={() => toggleExpanded(item.id)}
                   style={{
-                    fontSize: 18,
-                    color: "#000000",
-                    fontWeight: "400",
-                    padding: 10,
+                    width: "100%",
+                    backgroundColor: "rgba(255, 255, 255, 0.31)",
+                    flexDirection: "row",
+                    shadowColor: "rgba(0, 0, 0, 0.25)",
+                    borderBottomColor: "gray",
+                    borderBottomWidth: 2,
                   }}
                 >
-                  {data.title}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <MaterialCommunityIcons
-                  name="eye"
-                  color={"gray"}
-                  size={18}
-                  style={{ padding: 10, left: 15 }}
-                >
-                  <Text style={{ fontSize: 14 }}>232</Text>
-                </MaterialCommunityIcons>
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                width: "100%",
-                height: 40,
-                backgroundColor: "rgba(255, 255, 255, 0.31)",
-                flexDirection: "row",
-                shadowColor: "rgba(0, 0, 0, 0.25)",
-                borderBottomColor: "gray",
-                borderBottomWidth: 2,
-              }}
-            >
-              <TouchableOpacity>
-                <Text
-                  style={{
-                    fontSize: 18,
-                    color: "#000000",
-                    fontWeight: "400",
-                    padding: 10,
-                  }}
-                >
-                  Habits to reduce anxiety
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <MaterialCommunityIcons
-                  name="eye"
-                  color={"gray"}
-                  size={18}
-                  style={{ padding: 10, paddingLeft: 30, position: "absolute" }}
-                >
-                  <Text style={{ fontSize: 14 }}>232</Text>
-                </MaterialCommunityIcons>
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                width: "100%",
-                height: 40,
-                backgroundColor: "#A984C3",
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 18,
-                  color: "#FFFFFF",
-                  fontWeight: "400",
-                  padding: 10,
-                }}
-              >
-                Latest Releases
-              </Text>
-            </View>
-            <View
-              style={{
-                width: "100%",
-                height: 40,
-                backgroundColor: "rgba(255, 255, 255, 0.31)",
-                flexDirection: "row",
-                shadowColor: "rgba(0, 0, 0, 0.25)",
-                borderBottomColor: "gray",
-                borderBottomWidth: 2,
-              }}
-            >
-              <TouchableOpacity>
-                <Text
-                  style={{
-                    fontSize: 18,
-                    color: "#000000",
-                    fontWeight: "400",
-                    padding: 10,
-                  }}
-                >
-                  Habits to reduce anxiety
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <MaterialCommunityIcons
-                  name="eye"
-                  color={"gray"}
-                  size={18}
-                  style={{ padding: 10, paddingLeft: 30, position: "absolute" }}
-                >
-                  <Text style={{ fontSize: 14 }}>232</Text>
-                </MaterialCommunityIcons>
-              </TouchableOpacity>
-            </View>
-          </ScrollView>
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      color: "#000000",
+                      fontWeight: "400",
+                      padding: 10,
+                      width: "90%",
+                    }}
+                  >
+                    {item.title}
+                  </Text>
+                  <MaterialCommunityIcons
+                    name="eye"
+                    color={"gray"}
+                    size={18}
+                    style={{
+                      padding: 10,
+                      paddingLeft: 30,
+                      right: 0,
+                      position: "absolute",
+                    }}
+                  >
+                    <Text style={{ fontSize: 14 }}>{item.viewsCount}</Text>
+                  </MaterialCommunityIcons>
+                </TouchableOpacity>
+                {item.expanded && (
+                  <Text
+                    style={{
+                      padding: 15,
+                    }}
+                  >
+                    {item.content}
+                  </Text>
+                )}
+              </View>
+            )}
+          />
         </>
       );
     }
@@ -508,7 +422,7 @@ const Readings = () => {
               Readings
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setValue("qoutes")}>
+          <TouchableOpacity onPress={() => setValue("quotes")}>
             <Text
               style={{
                 fontSize: 18,

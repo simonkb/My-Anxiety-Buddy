@@ -10,7 +10,10 @@ import { useNavigation } from "@react-navigation/native";
 import bg1 from "../../../assets/bg1.jpeg";
 import bg2 from "../../../assets/bg2.jpg";
 import bg3 from "../../../assets/bg3.jpg";
-import { useGlobalState } from "../../states/state.js";
+import { setGlobalState, useGlobalState } from "../../states/state.js";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
 const TreatmentHome = () => {
   //Updating background
   let defaultBg = useGlobalState("defaultBackgroundImage");
@@ -27,6 +30,21 @@ const TreatmentHome = () => {
   const onShortReadingsPressed = () => {
     navigator.navigate("Readings");
   };
+  const onBreathingPressed = () => {
+    setGlobalState("chat", "breathing");
+    navigator.navigate("Home", {
+      screen: "Your Buddy",
+      params: { chatType: "breathing" },
+    });
+  };
+  const onBrainExercisePressed = () => {
+    setGlobalState("chat", "brain");
+    navigator.navigate("Home", {
+      screen: "Your Buddy",
+      params: { chatType: "brain" },
+    });
+  };
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -56,7 +74,7 @@ const TreatmentHome = () => {
           >
             Short Term Treatment
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onBreathingPressed}>
             <View style={styles.shortTermRow}>
               <Text
                 style={{
@@ -72,6 +90,7 @@ const TreatmentHome = () => {
             </View>
           </TouchableOpacity>
         </View>
+
         <View
           style={{
             width: "90%",
@@ -94,7 +113,7 @@ const TreatmentHome = () => {
           >
             Long Term Treatments
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onBrainExercisePressed}>
             <View style={styles.shortTermRow}>
               <Text
                 style={{

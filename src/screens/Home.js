@@ -6,27 +6,29 @@ import ChatBot from "./chatbot";
 import community from "./Community/Community";
 import treatment from "./Treatment/Treatment";
 import Profile from "./Profile/Profile";
+import { useGlobalState, setGlobalState } from "../states/state";
 
 const Tab = createBottomTabNavigator();
 
 function BottomButtons() {
   return (
     <Tab.Navigator
-      initialRouteName="Chatbot"
+      initialRouteName="Your Buddy"
       screenOptions={{
         tabBarActiveTintColor: "#e91e63",
       }}
     >
       <Tab.Screen
-        name="Chatbot"
+        name="Your Buddy"
         component={ChatBot}
         options={{
-          tabBarLabel: "Chatbot",
+          tabBarLabel: "Your Buddy",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="chat" color={color} size={size} />
           ),
-          headerShown: false,
+          headerShown: true,
         }}
+        initialParams={{ chatType: "default", otherParam: "nothing" }}
       />
       <Tab.Screen
         name="Treatment"
@@ -44,6 +46,8 @@ function BottomButtons() {
         component={community}
         options={{
           tabBarLabel: "Community",
+          tabBarBadge: 7,
+
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               //name="home-group"
@@ -59,6 +63,7 @@ function BottomButtons() {
         name="Profile"
         component={Profile}
         options={{
+          tabBarBadge: 5,
           tabBarLabel: "Profile",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
@@ -71,9 +76,5 @@ function BottomButtons() {
 }
 
 export default function Home() {
-  return (
-    <NavigationContainer independent={true}>
-      <BottomButtons />
-    </NavigationContainer>
-  );
+  return <BottomButtons />;
 }

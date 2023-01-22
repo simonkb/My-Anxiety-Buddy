@@ -15,7 +15,7 @@ import { useGlobalState } from "../../states/state.js";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 
-const CommunityHome = () => {
+const CommunityHome = ({ navigation }) => {
   let defaultBg = useGlobalState("defaultBackgroundImage");
   let currentBg;
   if (defaultBg[0] === "bgOrange") {

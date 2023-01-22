@@ -2,11 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import ProfileStack from "../../routes/profileStack";
 
 const Profile = () => {
-  return (
-    <NavigationContainer independent={true}>
-      <ProfileStack />
-    </NavigationContainer>
-  );
+  return <ProfileStack />;
 };
 
 export default Profile;

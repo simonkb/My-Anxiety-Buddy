@@ -16,11 +16,13 @@ import bg1 from "../../../assets/bg1.jpeg";
 import bg2 from "../../../assets/bg2.jpg";
 import bg3 from "../../../assets/bg3.jpg";
 import { useGlobalState } from "../../states/state";
-import { auth } from "../../config/firebaseConfig";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../../config/firebaseConfig";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import { updateProfile } from "firebase/auth";
-//import { collection } from "firebase/firestore";
-import { doc, setDoc } from "firebase/firestore";
+import { collection, doc, setDoc } from "firebase/firestore";
 
 const Register = () => {
   //Updating background
@@ -44,18 +46,32 @@ const Register = () => {
   const onSignUpPressed = () => {
     //Validate, confirm password and save details.
     if (password != null) {
-      if ((password.length >= 8) & (password === passwordConfirm)) {
+      if ((password.length >= 6) & (password === passwordConfirm)) {
         //const auth = getAuth();
         createUserWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
             // Signed in
 
             const user = userCredential.user;
+            sendEmailVerification(auth.currentUser)
+              .then(async () => {
+                Alert.alert(
+                  "Verify",
+                  "Verification email sent, please check your email."
+                );
+                const usersRef = collection(db, "Users");
+                await setDoc(doc(usersRef, user.uid), {
+                  username: username,
+                  email_address: email,
+                  phone_number: phoneNumber,
+                  birthDate: "00/00/00",
+                });
 
-            updateProfile(user, { displayName: username });
-            navigator.navigate("Login");
-            // console.log("New User: " + user.email);
-            const usersCollectionRef = collection(db, "users");
+                navigator.navigate("Login");
+              })
+              .catch((error) => {
+                Alert.alert(error.code, error.message);
+              });
           })
           .catch((error) => {
             const errorCode = error.code;
@@ -63,7 +79,7 @@ const Register = () => {
             Alert.alert(errorCode, errorMessage);
           });
       } else {
-        Alert.alert(password, passwordConfirm);
+        Alert.alert("error", "Password doesn't match");
       }
     }
   };
@@ -85,6 +101,7 @@ const Register = () => {
                 placeholder="Email address"
                 keyboardType="email-address"
                 autoCorrect={false}
+                autoCapitalize={false}
               />
 
               <TextInput

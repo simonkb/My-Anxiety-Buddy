@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   ImageBackground,
@@ -9,18 +9,29 @@ import {
   TouchableOpacity,
   ScrollView,
   Touchable,
+  Alert,
   TouchableHighlight,
+  Spinner,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-//import { StaticImage } from "../../classes/StaticImages";
 import bg1 from "../../../assets/bg1.jpeg";
 import bg2 from "../../../assets/bg2.jpg";
 import bg3 from "../../../assets/bg3.jpg";
 import { setGlobalState, useGlobalState } from "../../states/state.js";
-const ProfileHome = () => {
-  //Updating background
+import { auth, db } from "../../config/firebaseConfig";
+import {
+  collection,
+  doc,
+  onSnapshot,
+  setDoc,
+  getDoc,
+} from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
+import { getDatabase, ref, onValue } from "firebase/database";
+
+const ProfileHome = ({ navigation }) => {
   let defaultBg = useGlobalState("defaultBackgroundImage");
   let currentBg;
   if (defaultBg[0] === "bgOrange") {
@@ -30,7 +41,7 @@ const ProfileHome = () => {
   } else {
     currentBg = bg1;
   }
-  //
+
   const navigator = useNavigation();
   const onSettingsPressed = () => {
     navigator.navigate("Settings");
@@ -59,10 +70,68 @@ const ProfileHome = () => {
       );
     }
   };
-  let currentUser = "none";
-  if (useGlobalState("currentUser")[0] != null) {
-    currentUser = useGlobalState("currentUser")[0].email;
-  }
+  const [currentUser, setUser] = useState("Loading...");
+  const [bio, setBio] = useState("Loading...");
+  /*if (useGlobalState("currentUser")[0] != null) {
+    currentUser = useGlobalState("currentUser")[0].username;
+    bio = useGlobalState("currentUser")[0].bio;
+  }*/
+  //   //onAuthStateChanged(auth, async (user) => {
+  //     const usersRef = collection(db, "Users");
+
+  //     if (user != null) {
+  //       const docRef = doc(db, "Users", user.uid);
+  //       const docSnap =  getDoc(docRef);
+
+  //     }
+  //  // });
+  // let id = useGlobalState("currentUser")[0];
+
+  // if (id != null) {
+  //   console.log(id + "This is id");
+  //   const db = getDatabase();
+
+  //   const url = "Users/" + "XsRboHvl1aTmmqmNOac2sbPBKrZ2";
+  //   const userRef = ref(db, url);
+  //   onValue(userRef, async (snapshot) => {
+  //     const data = await snapshot.val();
+  //     //updateStarCount(postElement, data);
+  //     console.log(data);
+  //     setUser(data);
+  //     setBio(data.bio);
+  //   });
+  // }
+  // const querySnapshot = getDocs(collection(db, "users"));
+  // querySnapshot.forEach((doc) => {
+  //   console.log(`${doc.id} => ${doc.data()}`);
+  // });
+  // async function readUser() {
+  //   const docRef = doc(db, "cities", "SF");
+  //   const docSnap = await getDoc(docRef);
+
+  //   if (docSnap.exists()) {
+  //     console.log("Document data:", docSnap.data());
+  //   } else {
+  //     console.log("No such document!");
+  //   }
+  // }
+  onAuthStateChanged(auth, (user) => {
+    if (user != null) {
+      const uid = user.uid;
+      try {
+        const unsub = onSnapshot(doc(db, "Users", uid), (doc) => {
+          setGlobalState("currentUser", doc.data());
+          setUser(doc.data().username);
+          setBio(doc.data().bio);
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      // User is signed out
+    }
+  });
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -86,10 +155,9 @@ const ProfileHome = () => {
                 name="profileBio"
                 style={{ width: "60%", paddingTop: 5, fontSize: 12 }}
               >
-                Here goes the profile discription bio
+                {bio}
               </Text>
             </View>
-
             <View
               style={{
                 padding: 5,

@@ -8,17 +8,27 @@ import ConfirmOTP from "../screens/SignUporLogin/ConfirmOTP";
 import CreateNewPassword from "../screens/SignUporLogin/CreateNewPassword";
 import { setGlobalState, useGlobalState } from "../states/state";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../config/firebaseConfig";
+import { auth, db } from "../config/firebaseConfig";
+import { doc, getDoc } from "firebase/firestore";
 
 const Stack = createStackNavigator();
 const HomeStack = () => {
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
+  onAuthStateChanged(auth, async (user) => {
+    if (user != null) {
       // User is signed in, see docs for a list of available properties
       // https://firebase.google.com/docs/reference/js/firebase.User
-      const uid = user.uid;
-      setGlobalState("isLoggedIn", true);
-      setGlobalState("currentUser", user);
+      setGlobalState("isLoggedIn", user.emailVerified);
+      const docRef = doc(db, "Users", user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        setGlobalState("currentUser", docSnap.data());
+        //Change needed
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }
+
       // ...
     } else {
       // User is signed out
@@ -48,8 +58,8 @@ const HomeStack = () => {
             options={{ gestureEnabled: true }}
           />
           <Stack.Screen
-            options={{ headerShown: false, gestureEnabled: false }}
-            name="forgetPassword"
+            options={{ headerShown: true, gestureEnabled: true }}
+            name="Forget Password"
             component={forgetPassword}
           />
           <Stack.Screen

@@ -34,7 +34,7 @@ const Settings = () => {
   let [bgImageUri, setbgImageUri] = useState(currentBg);
   const navigator = useNavigation();
   const onEditProfilePressed = () => {
-    navigator.navigate("EditProfile");
+    navigator.navigate("Edit Profile");
   };
   const onSavePressed = () => setValue((value = "all"));
   const onCancelPressed = () => setValue((value = "all"));
@@ -174,12 +174,13 @@ const Settings = () => {
                   //const auth = getAuth();
                   signOut(auth)
                     .then(() => {
-                      //setGlobalState("currentUser", null);
+                      setGlobalState("currentUser", null);
                       setGlobalState("isLoggedIn", false);
                       Alert.alert("Success", "Logout successful!");
                     })
                     .catch((error) => {
                       // An error happened.
+                      Alert.alert("Error", error);
                     });
                 }}
               />

@@ -4,5 +4,7 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   defaultBackgroundImage: "bgPink",
   isLoggedIn: false,
   currentUser: null,
+  chat: "default",
+  navigation: null,
 });
 export { setGlobalState, useGlobalState };

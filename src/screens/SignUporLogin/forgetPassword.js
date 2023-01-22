@@ -8,12 +8,16 @@ import {
   View,
   Button,
   ScrollView,
+  Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import bg1 from "../../../assets/bg1.jpeg";
 import bg2 from "../../../assets/bg2.jpg";
 import bg3 from "../../../assets/bg3.jpg";
 import { useGlobalState } from "../../states/state";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "../../config/firebaseConfig";
+
 const ForgetPassword = () => {
   //Updating background
   let defaultBg = useGlobalState("defaultBackgroundImage");
@@ -26,10 +30,21 @@ const ForgetPassword = () => {
     currentBg = bg1;
   }
   //
-  const [phoneNumber, onChangeNumber] = React.useState(null);
+  const [email, onChangeNumber] = React.useState(null);
   const navigator = useNavigation();
   const onSendPressed = () => {
-    navigator.navigate("ConfirmOTP");
+    //navigator.navigate("ConfirmOTP");
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        Alert.alert(
+          "Message",
+          "Password reset email has been sent to your email address"
+        );
+        navigator.navigate("Login");
+      })
+      .catch((error) => {
+        Alert.alert(error.code, error.message);
+      });
   };
   return (
     <View style={styles.container}>
@@ -39,15 +54,18 @@ const ForgetPassword = () => {
         style={styles.bgImage}
       >
         <Text style={styles.title}>
-          Enter your phone number/email, we will send you OTP to verify.
+          Enter your email, to reset your password.
         </Text>
+
         <View style={styles.signInRectangle}>
           <TextInput
             style={styles.input}
             onChangeText={onChangeNumber}
-            value={phoneNumber}
-            placeholder="Phone number or email"
+            value={email}
+            placeholder="email"
             autoCorrect={false}
+            autoCapitalize={false}
+            keyboardType="email-address"
           />
         </View>
 
