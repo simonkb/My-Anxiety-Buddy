@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useRef } from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
 import {
   ImageBackground,
   StyleSheet,
@@ -20,9 +17,97 @@ import bg1 from "../../assets/bg1.jpeg";
 import bg2 from "../../assets/bg2.jpg";
 import bg3 from "../../assets/bg3.jpg";
 import { useGlobalState, setGlobalState } from "../states/state.js";
-import Chat from "./Chat";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import GAD7Questionnaire from "./GAD1Questionnaire";
+const Chat = (props) => {
+  return (
+    <View
+      style={
+        props.type === "toUser"
+          ? {
+              flexDirection: "row",
+              position: "relative",
+              padding: 10,
+              width: "100%",
+              marginVertical: 30,
+              alignSelf: "baseline",
+            }
+          : {
+              left: 5,
+              flexDirection: "row",
+              position: "relative",
+              padding: 10,
+              marginTop: 20,
+            }
+      }
+    >
+      {props.type === "toUser" && (
+        <>
+          <View
+            style={{
+              position: "absolute",
+              right: "14%",
+              width: "80%",
+              alignSelf: "baseline",
+              backgroundColor: "rgba(0, 0, 0, 0.4)",
+              borderRadius: 10,
+              opacity: 0.8,
+            }}
+          >
+            <Text style={{ color: "#FFFFFF", padding: 10 }}>
+              {props.message}
+            </Text>
+          </View>
+          <View style={{ position: "absolute", right: "5%" }}>
+            <MaterialCommunityIcons
+              name="account"
+              color={"gray"}
+              size={30}
+            ></MaterialCommunityIcons>
+          </View>
+        </>
+      )}
+      {props.type === "toBot" && (
+        <>
+          <View style={{ position: "absolute" }}>
+            <MaterialCommunityIcons
+              name="account"
+              color={"gray"}
+              size={30}
+            ></MaterialCommunityIcons>
+          </View>
+          <View
+            style={{
+              position: "absolute",
+              left: 40,
+              width: "80%",
+              alignSelf: "baseline",
+              backgroundColor: "rgba(255, 255, 255, 0.7)",
+              borderRadius: 5,
+              padding: 5,
+            }}
+          >
+            {props.responses.map((option) => (
+              <TouchableOpacity
+                key={option}
+                style={{
+                  backgroundColor: "rgba(0, 0, 0, 0.4)",
+                  opacity: 0.7,
+                  padding: 5,
+                  borderRadius: 5,
+                  marginVertical: 2,
+                }}
+                onPress={() => props.handleOnPress(props.message, option)}
+              >
+                <Text>{option}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </>
+      )}
+    </View>
+  );
+};
 const Chatbot = ({ route, navigation }) => {
   //Updating background
   let defaultBg = useGlobalState("defaultBackgroundImage");
@@ -35,19 +120,38 @@ const Chatbot = ({ route, navigation }) => {
     currentBg = bg1;
   }
   //
-  const treatment = () => {
-    //validate user
-    navigation.navigate("Treatment");
-  };
   let [chatType, setChatType] = useState(route.params.chatType);
-
   const AfterBreathing = () => {
     setGlobalState("chat", "afterBreathing");
     setChatType("afterBreathing");
     navigation.setParams({
       chatType: "afterBreathing",
     });
-    navigation.navigate("Treatment");
+  };
+
+  const handleOnpress = (question, selectedOption) => {
+    if (selectedOption === "I am feeling anxious, I need some help") {
+      setGlobalState("chat", "GAD7");
+      setChatType("GAD7");
+    } else if (question === "Done with GAD7") {
+      let sum = selectedOption.reduce((total, num) => total + num);
+      if (sum < 5) {
+        console.log("Normal");
+      } else if (sum > 4 && sum < 10) {
+        console.log("Mild Anxiety");
+      } else if (sum > 9 && sum < 15) {
+        console.log("Moderate Anxiety");
+      } else {
+        console.log("Severe Anxiety");
+      }
+      setGlobalState("chat", "breathing");
+      // setChatType("breathing");
+    } else if (selectedOption === "To use the breathing guide in your app") {
+      setGlobalState("chat", "breathing");
+      setChatType("breathing");
+    } else if (selectedOption === "To connect with people and have fun") {
+      navigation.navigate("Community");
+    }
   };
 
   const DisplayChat = () => {
@@ -94,34 +198,6 @@ const Chatbot = ({ route, navigation }) => {
           useNativeDriver: false,
         }),
       ]).start();
-      // Animated.loop(
-      //   Animated.sequence([
-      //     Animated.timing(fadeAnim4, {
-      //       toValue: 1,
-      //       duration: 1000,
-      //       useNativeDriver: false,
-      //     }),
-
-      //     Animated.timing(scaleAnim, {
-      //       toValue: 7,
-      //       duration: 4000,
-      //       useNativeDriver: false,
-      //     }),
-      //     Animated.timing(scaleAnim, {
-      //       toValue: 7,
-      //       duration: 7000,
-      //       useNativeDriver: false,
-      //     }),
-      //     Animated.timing(scaleAnim, {
-      //       toValue: 1,
-      //       duration: 8000,
-      //       useNativeDriver: false,
-      //     }),
-      //   ]),
-      //   {
-      //     iterations: 5,
-      //   }
-      // ).start();
       const DisplayBreathingAnime = () => {
         Animated.timing(scaleChat, {
           toValue: 0,
@@ -212,7 +288,6 @@ const Chatbot = ({ route, navigation }) => {
               iterations: 2,
             }
           ),
-
           Animated.timing(scaleButton2, {
             toValue: 1,
             duration: 5,
@@ -222,11 +297,6 @@ const Chatbot = ({ route, navigation }) => {
       };
 
       Animated.sequence([
-        // Animated.timing(fadeAnim5, {
-        //   toValue: 0,
-        //   duration: 70000,
-        //   useNativeDriver: false,
-        // }),
         Animated.timing(fadeAnim5, {
           toValue: 1,
           duration: 100,
@@ -277,15 +347,6 @@ const Chatbot = ({ route, navigation }) => {
           >
             <Chat type={"toUser"} message={"Sit down in relaxed position"} />
             <Chat type={"toUser"} message={"Are you ready?"} />
-            {/* <Chat
-              type={"toBot"}
-              responses={{ option_1: "Yes", option_2: "Not yet" }}
-              onPress={(option) => {
-                if (option === "Yes") {
-                  DisplayBreathingAnime();
-                }
-              }}
-            /> */}
           </Animated.View>
           <Animated.View
             style={[
@@ -450,36 +511,356 @@ const Chatbot = ({ route, navigation }) => {
                   title="Click me if you want to do it again"
                   onPress={DisplayBreathingAnime}
                 ></Button>
-                <Button
-                  title="Continue to the other services"
-                  onPress={AfterBreathing}
-                ></Button>
+                <Button title="Done" onPress={AfterBreathing}></Button>
               </Animated.View>
             </View>
           </Animated.View>
         </>
       );
     } else if (useGlobalState("chat")[0] === "default") {
+      //Keep track of the last message so that you can continue to the new one
       return (
         <>
           <Chat type={"toUser"} message={"Welcome to Anti-Anxiety app"} />
           <Chat type={"toUser"} message={"Why are you here today?"} />
           <Chat
             type={"toBot"}
-            responses={{
-              option_1: "I am feeling anxious, I need some help",
-              option_2: "I don't know, just trying to learn how the app works",
-              option_3: "Connect with people and have fun",
-            }}
+            message={"Why are you here today?"}
+            responses={[
+              "I am feeling anxious, I need some help",
+              "To use the breathing guide in your app",
+              "I want to learn more about your services",
+              "To connect with people and have fun",
+            ]}
+            handleOnPress={handleOnpress}
           />
         </>
       );
     } else if (useGlobalState("chat")[0] === "afterBreathing") {
-      return <></>;
+      return (
+        <>
+          <Chat
+            type={"toUser"}
+            message={
+              "Good job, you have completed your breathing exercise for today."
+            }
+          />
+          <Chat
+            type={"toUser"}
+            message={
+              'You can do it again anytime by going to treatment section, and clicking on "Breathing Exercise"'
+            }
+          />
+          <Chat
+            type={"toUser"}
+            message={"How do you feel after doing the breathing exercise?"}
+          />
+          <Chat
+            type={"toBot"}
+            message={"How do you feel after doing the breathing exercise?"}
+            responses={[
+              "I feel better now, it helped me relax",
+              "It helped me relax, but I'm still anxious",
+              "I don't like the exercise, do you have anything else?",
+            ]}
+            handleOnPress={handleOnpress}
+          />
+        </>
+      );
     } else if (useGlobalState("chat")[0] === "brain") {
-      return <></>;
+      const brainExercises = [
+        {
+          message: "Welcome to the Brain Excercise section",
+          responses: ["Thank you"],
+          feedbacks: [],
+          answer: -1,
+        },
+        {
+          message:
+            "Let's start training your adaptive memory? This helps to avoid anxiety in long term.",
+          responses: [
+            "Good, I would love doing that.",
+            "Sorry, I can't do that today",
+          ],
+          feedbacks: [
+            "Respond to the following questions, I will give you feedbacks for every answer",
+            "Okay, you may do it later",
+          ],
+          answer: -1,
+        },
+        {
+          message:
+            "What is the best thing to do when you are feeling overwhelmed?",
+          responses: [
+            "Sleeping",
+            "Jump to finding a solution",
+            "Ignoring the situation",
+            "Take a deep breath",
+          ],
+          feedbacks: [
+            "sleeping",
+            "jump",
+            "ignore",
+            "Good Job! Deep Breathing enables more air flow to your lungs and help calming your nerves so you can think clearly for a better solution!",
+          ],
+          answer: 3,
+        },
+        {
+          message:
+            "If you are having a hardtime finishing your daily tasks what should you do?",
+          responses: [
+            "Delay the tasks until last minute ",
+            "Do not start until I have the energy to do it",
+            "Start with the hardest task to finish early",
+            "Plan ahead and start with the small tasks",
+          ],
+          feedbacks: [
+            "sleeping",
+            "jump",
+            "ignore",
+            "Good Job! Planning and breaking larger tasks into a smaller ones  helps improving your productivity and gives you a sense of achivement.",
+          ],
+          answer: 3,
+        },
+        {
+          message:
+            "If you lost track on your routine, what is the best thing to do?",
+          responses: [
+            "Blaming my self",
+            "Take more days off to rest",
+            "Focus on what I can work with today then get back on track",
+            "I knew this will happen",
+          ],
+          feedbacks: [
+            "sleeping",
+            "jump",
+            "Good Job! Prioritize what is needed to be done today. There is time, you will be able to catch up with what you have missed.",
+            "last one",
+          ],
+          answer: 2,
+        },
+        {
+          message:
+            "What should you do when there is no time to finish your work?",
+          responses: [
+            "Organize my work place and take a power nap when needed",
+            "Delay it, either ways I’m not going to be abe to finish it on time",
+            "Sacrifice my sleep to finish the work",
+            "Check my watch constantly to make sure I’m not wasting time ",
+          ],
+
+          feedbacks: [
+            "Good Job! Organizing your work place will help you clear your mind and get you in the mood to work. Remember your body sometimes needs to rest, a  power nap will help you to increase your focus and restore your energy.",
+            "2",
+            "3",
+            "4",
+          ],
+          answer: 0,
+        },
+
+        {
+          message: "What should you do when you feel stressed?",
+          responses: [
+            " I’m probably stressed because I did not achieve a lot this week",
+            "Take a time out and talk to a friend ",
+            "I knew this will happen ",
+            "Go eat something to fill the void ",
+          ],
+          feedbacks: [
+            "1",
+            "Good Job! Talking to a friend, Doing fun activities like meditation or exercise will help reduce anxiety and stress.",
+            "3",
+            "4",
+          ],
+          answer: 1,
+        },
+      ];
+      const [currentQuestion, setCurrentQuestion] = useState(0);
+      const [currentResponse, setCurrentResponse] = useState(null);
+      const ChatBrain = (props) => {
+        return (
+          <View
+            style={
+              props.type === "toUser"
+                ? {
+                    flexDirection: "row",
+                    position: "relative",
+                    padding: 10,
+                    width: "100%",
+                    marginVertical: 30,
+                    alignSelf: "baseline",
+                  }
+                : {
+                    left: 5,
+                    flexDirection: "row",
+                    position: "relative",
+                    padding: 10,
+                    marginTop: 20,
+                  }
+            }
+          >
+            {props.type === "toUser" && (
+              <>
+                <View
+                  style={{
+                    position: "absolute",
+                    right: "14%",
+                    width: "80%",
+                    alignSelf: "baseline",
+                    backgroundColor: "rgba(0, 0, 0, 0.4)",
+                    borderRadius: 10,
+                    opacity: 0.8,
+                  }}
+                >
+                  <Text style={{ color: "#FFFFFF", padding: 10 }}>
+                    {props.message}
+                  </Text>
+                </View>
+                <View style={{ position: "absolute", right: "5%" }}>
+                  <MaterialCommunityIcons
+                    name="account"
+                    color={"gray"}
+                    size={30}
+                  ></MaterialCommunityIcons>
+                </View>
+              </>
+            )}
+            {props.type === "toBot" && (
+              <>
+                <View style={{ position: "absolute" }}>
+                  <MaterialCommunityIcons
+                    name="account"
+                    color={"gray"}
+                    size={30}
+                  ></MaterialCommunityIcons>
+                </View>
+                <View
+                  style={{
+                    position: "absolute",
+                    left: 40,
+                    width: "80%",
+                    alignSelf: "baseline",
+                    backgroundColor: "rgba(255, 255, 255, 0.7)",
+                    borderRadius: 5,
+                    padding: 5,
+                  }}
+                >
+                  {props.responses.map((option) => (
+                    <TouchableOpacity
+                      key={option}
+                      style={{
+                        backgroundColor: "rgba(0, 0, 0, 0.4)",
+                        opacity: 0.7,
+                        padding: 5,
+                        borderRadius: 5,
+                        marginVertical: 2,
+                      }}
+                      onPress={() =>
+                        props.handleSelection(
+                          props.responses.indexOf(option),
+                          props.answer
+                        )
+                      }
+                    >
+                      <Text>{option}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </>
+            )}
+          </View>
+        );
+      };
+      const handleSelection = (response, answer) => {
+        setCurrentResponse(response);
+        console.log(response, answer);
+        if (
+          response === answer ||
+          (currentQuestion < 2 && !(response === 1 && answer === -1))
+        ) {
+          if (currentQuestion !== 0) {
+            setTimeout(() => {
+              setCurrentQuestion(currentQuestion + 1);
+              setCurrentResponse(null);
+            }, 10000);
+          } else {
+            setCurrentQuestion(currentQuestion + 1);
+            setCurrentResponse(null);
+          }
+        } else if (response === 1 && answer === -1) {
+          setChatType("brainCanceled");
+          setGlobalState("chat", "brainCanceled");
+        } else if (answer === "Done with BE") {
+          setChatType("afterBrain");
+          setGlobalState("chat", "afterBrain");
+        } else {
+          Alert.alert("Not the best", "Please try another option!");
+        }
+      };
+      return (
+        <>
+          {currentQuestion < brainExercises.length ? (
+            <>
+              <ChatBrain
+                type="toUser"
+                message={brainExercises[currentQuestion].message}
+              />
+              <ChatBrain
+                type="toBot"
+                responses={brainExercises[currentQuestion].responses}
+                handleSelection={handleSelection}
+                answer={brainExercises[currentQuestion].answer}
+              />
+              {currentResponse !== null &&
+                brainExercises[currentQuestion].feedbacks.length > 0 && (
+                  <View style={{ position: "relative", marginVertical: 300 }}>
+                    <ChatBrain
+                      type="toUser"
+                      message={
+                        brainExercises[currentQuestion].feedbacks[
+                          currentResponse
+                        ]
+                      }
+                    />
+                  </View>
+                )}
+            </>
+          ) : (
+            <>
+              <ChatBrain
+                type={"toUser"}
+                message={
+                  "Well done! You have completed your brain exercise for today."
+                }
+              />
+              <ChatBrain
+                type={"toUser"}
+                message={
+                  'You can do more anytime by going to treatment section, and clicking on "Brain Exercise"'
+                }
+              />
+              <ChatBrain
+                type={"toUser"}
+                message={"How do you feel after doing the brain exercise?"}
+              />
+              <ChatBrain
+                type={"toBot"}
+                message={"How do you feel after doing the breathing exercise?"}
+                responses={[
+                  "I feel better now, it helped me learn so many things",
+                  "It's is so complicated",
+                  "It is so simple and nice",
+                  "I don't like the exercise, do you have anything else?",
+                ]}
+                handleSelection={handleSelection}
+                answer="Done with BE"
+              />
+            </>
+          )}
+        </>
+      );
     } else if (useGlobalState("chat")[0] === "GAD7") {
-      return <GAD7Questionnaire />;
+      return <GAD7Questionnaire handleOnPress={handleOnpress} />;
     }
   };
 
@@ -493,7 +874,6 @@ const Chatbot = ({ route, navigation }) => {
         >
           <ScrollView style={{ width: "97%", left: "1.5%", right: "1.5%" }}>
             <DisplayChat></DisplayChat>
-            {/* <GAD7Questionnaire /> */}
           </ScrollView>
         </ImageBackground>
       </SafeAreaView>
