@@ -9,6 +9,8 @@ import {
   View,
   KeyboardAvoidingView,
   Alert,
+  ActivityIndicator,
+  Button,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
@@ -21,7 +23,7 @@ import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
 } from "firebase/auth";
-import { updateProfile } from "firebase/auth";
+import { updateProfile, onAuthStateChanged } from "firebase/auth";
 import { collection, doc, setDoc } from "firebase/firestore";
 
 const Register = () => {
@@ -43,41 +45,109 @@ const Register = () => {
   const [phoneNumber, onChangeNumber] = React.useState(null);
   const [email, onChangeEmail] = React.useState(null);
   const navigator = useNavigation();
+  const [isLoading, setIsLoading] = useState(false);
+  const resend = () => {
+    if (auth.currentUser !== null && !auth.currentUser.emailVerified)
+      sendEmailVerification(auth.currentUser)
+        .then(() => {
+          Alert.alert(
+            "Verify",
+            "Verification email sent again, please check your email."
+          );
+          setIsLoading(!auth.currentUser.emailVerified);
+        })
+        .catch((error) => {
+          Alert.alert(error.code, error.message);
+        });
+  };
   const onSignUpPressed = () => {
     //Validate, confirm password and save details.
     if (password != null) {
       if ((password.length >= 6) & (password === passwordConfirm)) {
         //const auth = getAuth();
         createUserWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
+          .then(async (userCredential) => {
             // Signed in
-
             const user = userCredential.user;
+
             sendEmailVerification(auth.currentUser)
-              .then(async () => {
+              .then(() => {
                 Alert.alert(
                   "Verify",
                   "Verification email sent, please check your email."
                 );
-                const usersRef = collection(db, "Users");
-                await setDoc(doc(usersRef, user.uid), {
-                  username: username,
-                  email_address: email,
-                  phone_number: phoneNumber,
-                  birthDate: "00/00/00",
-                });
-
-                navigator.navigate("Login");
               })
               .catch((error) => {
                 Alert.alert(error.code, error.message);
               });
+            const usersRef = collection(db, "Users");
+            await setDoc(doc(usersRef, user.uid), {
+              username: username,
+              email_address: email,
+              phone_number: phoneNumber,
+              birthDate: "1/1/2000",
+            }).catch((error) => {
+              Alert.alert(error.errorCode, error.message);
+            });
+
+            navigator.navigate("Login");
+            // if (user.emailVerified) {
+            //   const usersRef = collection(db, "Users");
+            //   await setDoc(doc(usersRef, user.uid), {
+            //     username: username,
+            //     email_address: email,
+            //     phone_number: phoneNumber,
+            //     birthDate: "00/00/00",
+            //   })
+            //     .then(() => {
+            //       navigator.navigate("Login");
+            //     })
+            //     .catch((error) => {
+            //       Alert.alert(error.errorCode, error.message);
+            //     });
+            // }
+
+            // const newCollectionRef = doc(usersRef, user.uid).collection(
+            //   "Sessions"
+            // );
+            // await setDoc(doc(newCollectionRef, "na"), {
+            //   default: "default",
+            // });
+            // await newCollectionRef.add({
+            //   data-field-1: "value-1",
+            //   data-field-2: "value-2",
+            // })
           })
           .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             Alert.alert(errorCode, errorMessage);
           });
+
+        // onAuthStateChanged(auth, async (user) => {
+        //   if (user.emailVerified) {
+        //     const usersRef = collection(db, "Users");
+        //     usersRef
+        //       .doc(user.uid)
+        //       .set({
+        //         username: username,
+        //         email_address: email,
+        //         phone_number: phoneNumber,
+        //         birthDate: "00/00/00",
+        //       })
+        //       .then(() => {
+        //         console.log("User data has been added to the Users collection");
+        //         setIsLoading(false);
+        //       })
+        //       .catch((error) => {
+        //         console.error(error);
+        //       });
+        //   } else {
+        //     console.log(
+        //       "User email is not verified. Wait for the email verification."
+        //     );
+        //   }
+        // });
       } else {
         Alert.alert("error", "Password doesn't match");
       }
@@ -90,6 +160,13 @@ const Register = () => {
         resizeMode="cover"
         style={styles.bgImage}
       >
+        {/* {isLoading && (
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <ActivityIndicator size="large" />
+          </View>
+        )} */}
         <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
           <ScrollView>
             <Text style={styles.title}>Anti-anxiety</Text>
@@ -140,6 +217,12 @@ const Register = () => {
             <TouchableOpacity onPress={onSignUpPressed} style={styles.button}>
               <Text style={styles.buttonText}>Sign Up</Text>
             </TouchableOpacity>
+            {isLoading && (
+              <Button
+                title="Resend the verification email"
+                onPress={resend()}
+              ></Button>
+            )}
           </ScrollView>
         </KeyboardAvoidingView>
       </ImageBackground>

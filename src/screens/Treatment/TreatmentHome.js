@@ -128,21 +128,6 @@ const TreatmentHome = () => {
               </Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
-            <View style={styles.shortTermRow}>
-              <Text
-                style={{
-                  fontWeight: "bold",
-                  textAlign: "center",
-                  fontSize: 17,
-                  color: "#FFFFFF",
-                  padding: 4,
-                }}
-              >
-                Create Routines
-              </Text>
-            </View>
-          </TouchableOpacity>
           <TouchableOpacity onPress={onShortReadingsPressed}>
             <View style={styles.shortTermRow}>
               <Text
@@ -158,6 +143,22 @@ const TreatmentHome = () => {
               </Text>
             </View>
           </TouchableOpacity>
+          <TouchableOpacity>
+            <View style={styles.shortTermRow}>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  fontSize: 17,
+                  color: "#FFFFFF",
+                  padding: 4,
+                }}
+              >
+                Create Routines
+              </Text>
+            </View>
+          </TouchableOpacity>
+
           <TouchableOpacity>
             <View style={styles.shortTermRow}>
               <Text

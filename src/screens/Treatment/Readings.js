@@ -7,6 +7,7 @@ import {
   ScrollView,
   FlatList,
   Linking,
+  Button,
 } from "react-native";
 import React, { useState } from "react";
 
@@ -26,9 +27,9 @@ import {
   updateDoc,
   orderBy,
 } from "firebase/firestore";
-import { db, auth } from "../../config/firebaseConfig";
-import { async } from "@firebase/util";
-import { onAuthStateChanged } from "firebase/auth";
+import { db } from "../../config/firebaseConfig";
+
+import * as Speech from "expo-speech";
 
 const Readings = () => {
   //Updating background
@@ -45,7 +46,24 @@ const Readings = () => {
   let [value, setValue] = useState("readings");
 
   var i = 0;
+  const [isReading, setIsReading] = useState(false);
+  const handleReadOutLoudPress = (text) => {
+    // Start the TTS engine and pass the text as a parameter
+    // Initialize the TTS engine
+    //
+    // if (!isReading) {
+    setIsReading(true);
 
+    try {
+      Speech.speak(text, { language: "en-US" });
+    } catch (error) {
+      console.error(error);
+    }
+    // } else {
+    //   setIsReading(false);
+    //   Speech.stop();
+    // }
+  };
   const Display = () => {
     if (value === "quotes") {
       const [allQuotes, setQuotes] = useState("");
@@ -312,6 +330,9 @@ const Readings = () => {
           if (item.id === id) {
             item.expanded = !item.expanded;
           }
+          if (!item.expanded) {
+            Speech.stop();
+          }
           return item;
         });
         setState({ items: updatedItems });
@@ -375,13 +396,50 @@ const Readings = () => {
                   </MaterialCommunityIcons>
                 </TouchableOpacity>
                 {item.expanded && (
-                  <Text
-                    style={{
-                      padding: 15,
-                    }}
-                  >
-                    {item.content}
-                  </Text>
+                  <View>
+                    <TouchableOpacity
+                      style={{ marginBottom: 20, marginTop: 20 }}
+                      onPress={() => {
+                        handleReadOutLoudPress(item.content);
+                      }}
+                    >
+                      <MaterialCommunityIcons
+                        name="speaker-wireless"
+                        color={"green"}
+                        size={20}
+                        style={{
+                          padding: 10,
+                          paddingLeft: 30,
+                          right: 0,
+                          position: "absolute",
+                        }}
+                      ></MaterialCommunityIcons>
+                    </TouchableOpacity>
+                    {/* 
+                    {isReading ? (
+                      <TouchableOpacity
+
+                        onPress={handleReadOutLoudPress(item.content)}
+                      >
+                      <Text>Start Reading</Text>
+                      </TouchableOpacity>
+                    ) : (
+                       <TouchableOpacity
+
+                        onPress={handleReadOutLoudPress(item.content)}
+                      >
+                      <Text>Start Reading</Text>
+                      </TouchableOpacity>
+                    )} */}
+
+                    <Text
+                      style={{
+                        padding: 15,
+                      }}
+                    >
+                      {item.content}
+                    </Text>
+                  </View>
                 )}
               </View>
             )}

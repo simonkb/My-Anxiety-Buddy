@@ -116,10 +116,10 @@ const ProfileHome = ({ navigation }) => {
   //   }
   // }
   onAuthStateChanged(auth, (user) => {
-    if (user != null) {
+    if (user !== null && user.emailVerified) {
       const uid = user.uid;
       try {
-        const unsub = onSnapshot(doc(db, "Users", uid), (doc) => {
+        onSnapshot(doc(db, "Users", uid), (doc) => {
           setGlobalState("currentUser", doc.data());
           setUser(doc.data().username);
           setBio(doc.data().bio);

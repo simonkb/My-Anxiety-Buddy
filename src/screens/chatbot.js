@@ -12,6 +12,8 @@ import {
   Animated,
   Button,
   Alert,
+  Platform,
+  ActivityIndicator,
 } from "react-native";
 import bg1 from "../../assets/bg1.jpeg";
 import bg2 from "../../assets/bg2.jpg";
@@ -19,7 +21,35 @@ import bg3 from "../../assets/bg3.jpg";
 import { useGlobalState, setGlobalState } from "../states/state.js";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import GAD7Questionnaire from "./GAD1Questionnaire";
+import { db, auth } from "../config/firebaseConfig";
+import {
+  collection,
+  doc,
+  setDoc,
+  query,
+  getDoc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
+import * as Speech from "expo-speech";
+import Loading from "../loading";
+
 const Chat = (props) => {
+  // Function to handle the "Read Text Out Loud" button press
+  const handleReadOutLoudPress = async (text) => {
+    // Start the TTS engine and pass the text as a parameter
+    // Initialize the TTS engine
+    //
+    try {
+      await Speech.speak(text, { language: "en-US" });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    handleReadOutLoudPress(props.message);
+  });
+
   return (
     <View
       style={
@@ -128,29 +158,20 @@ const Chatbot = ({ route, navigation }) => {
       chatType: "afterBreathing",
     });
   };
-
   const handleOnpress = (question, selectedOption) => {
     if (selectedOption === "I am feeling anxious, I need some help") {
       setGlobalState("chat", "GAD7");
       setChatType("GAD7");
-    } else if (question === "Done with GAD7") {
-      let sum = selectedOption.reduce((total, num) => total + num);
-      if (sum < 5) {
-        console.log("Normal");
-      } else if (sum > 4 && sum < 10) {
-        console.log("Mild Anxiety");
-      } else if (sum > 9 && sum < 15) {
-        console.log("Moderate Anxiety");
-      } else {
-        console.log("Severe Anxiety");
-      }
-      setGlobalState("chat", "breathing");
-      // setChatType("breathing");
     } else if (selectedOption === "To use the breathing guide in your app") {
       setGlobalState("chat", "breathing");
       setChatType("breathing");
     } else if (selectedOption === "To connect with people and have fun") {
       navigation.navigate("Community");
+    } else {
+      if (question === "Done with GAD7") {
+        setGlobalState("chat", "breathing");
+        setChatType("breathing");
+      }
     }
   };
 
@@ -525,7 +546,6 @@ const Chatbot = ({ route, navigation }) => {
           <Chat type={"toUser"} message={"Why are you here today?"} />
           <Chat
             type={"toBot"}
-            message={"Why are you here today?"}
             responses={[
               "I am feeling anxious, I need some help",
               "To use the breathing guide in your app",
@@ -568,115 +588,145 @@ const Chatbot = ({ route, navigation }) => {
         </>
       );
     } else if (useGlobalState("chat")[0] === "brain") {
-      const brainExercises = [
-        {
-          message: "Welcome to the Brain Excercise section",
-          responses: ["Thank you"],
-          feedbacks: [],
-          answer: -1,
-        },
-        {
-          message:
-            "Let's start training your adaptive memory? This helps to avoid anxiety in long term.",
-          responses: [
-            "Good, I would love doing that.",
-            "Sorry, I can't do that today",
-          ],
-          feedbacks: [
-            "Respond to the following questions, I will give you feedbacks for every answer",
-            "Okay, you may do it later",
-          ],
-          answer: -1,
-        },
-        {
-          message:
-            "What is the best thing to do when you are feeling overwhelmed?",
-          responses: [
-            "Sleeping",
-            "Jump to finding a solution",
-            "Ignoring the situation",
-            "Take a deep breath",
-          ],
-          feedbacks: [
-            "sleeping",
-            "jump",
-            "ignore",
-            "Good Job! Deep Breathing enables more air flow to your lungs and help calming your nerves so you can think clearly for a better solution!",
-          ],
-          answer: 3,
-        },
-        {
-          message:
-            "If you are having a hardtime finishing your daily tasks what should you do?",
-          responses: [
-            "Delay the tasks until last minute ",
-            "Do not start until I have the energy to do it",
-            "Start with the hardest task to finish early",
-            "Plan ahead and start with the small tasks",
-          ],
-          feedbacks: [
-            "sleeping",
-            "jump",
-            "ignore",
-            "Good Job! Planning and breaking larger tasks into a smaller ones  helps improving your productivity and gives you a sense of achivement.",
-          ],
-          answer: 3,
-        },
-        {
-          message:
-            "If you lost track on your routine, what is the best thing to do?",
-          responses: [
-            "Blaming my self",
-            "Take more days off to rest",
-            "Focus on what I can work with today then get back on track",
-            "I knew this will happen",
-          ],
-          feedbacks: [
-            "sleeping",
-            "jump",
-            "Good Job! Prioritize what is needed to be done today. There is time, you will be able to catch up with what you have missed.",
-            "last one",
-          ],
-          answer: 2,
-        },
-        {
-          message:
-            "What should you do when there is no time to finish your work?",
-          responses: [
-            "Organize my work place and take a power nap when needed",
-            "Delay it, either ways I’m not going to be abe to finish it on time",
-            "Sacrifice my sleep to finish the work",
-            "Check my watch constantly to make sure I’m not wasting time ",
-          ],
+      const [brainExercises, setBrainExercises] = useState([]);
 
-          feedbacks: [
-            "Good Job! Organizing your work place will help you clear your mind and get you in the mood to work. Remember your body sometimes needs to rest, a  power nap will help you to increase your focus and restore your energy.",
-            "2",
-            "3",
-            "4",
-          ],
-          answer: 0,
-        },
+      async function read() {
+        const docRef = doc(db, "exercises", "brainExercises");
 
-        {
-          message: "What should you do when you feel stressed?",
-          responses: [
-            " I’m probably stressed because I did not achieve a lot this week",
-            "Take a time out and talk to a friend ",
-            "I knew this will happen ",
-            "Go eat something to fill the void ",
-          ],
-          feedbacks: [
-            "1",
-            "Good Job! Talking to a friend, Doing fun activities like meditation or exercise will help reduce anxiety and stress.",
-            "3",
-            "4",
-          ],
-          answer: 1,
-        },
-      ];
-      const [currentQuestion, setCurrentQuestion] = useState(0);
-      const [currentResponse, setCurrentResponse] = useState(null);
+        const docSnap = await getDoc(docRef);
+        return docSnap.data();
+      }
+      if (brainExercises.length === 0) {
+        read()
+          .then((data) => {
+            setBrainExercises(data.questions);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+
+      // const brainExercises = [
+      //   {
+      //     message: "Welcome to the Brain Exercise section",
+      //     responses: ["Thank you"],
+      //     feedbacks: ["You're welcome"],
+      //     answer: 0,
+      //   },
+      //   {
+      //     message:
+      //       "Let's start training your adaptive memory. This helps to avoid anxiety in long term.",
+      //     responses: [
+      //       "Good, I would love doing that.",
+      //       "Sorry, I can't do that today",
+      //     ],
+      //     feedbacks: [
+      //       "Respond to the following questions, I will give you feedbacks for every answer",
+      //       "Okay, you may do it later",
+      //     ],
+      //     answer: 0,
+      //   },
+      //   {
+      //     message:
+      //       "What is the best thing to do when you are feeling overwhelmed?",
+      //     responses: [
+      //       "Sleeping",
+      //       "Jump to finding a solution",
+      //       "Ignoring the situation",
+      //       "Take a deep breath",
+      //     ],
+      //     feedbacks: [
+      //       "sleeping",
+      //       "jump",
+      //       "ignore",
+      //       "Good Job! Deep Breathing enables more air flow to your lungs and help calming your nerves so you can think clearly for a better solution!",
+      //     ],
+      //     answer: 3,
+      //   },
+      //   {
+      //     message:
+      //       "If you are having a hardtime finishing your daily tasks what should you do?",
+      //     responses: [
+      //       "Delay the tasks until last minute ",
+      //       "Do not start until I have the energy to do it",
+      //       "Start with the hardest task to finish early",
+      //       "Plan ahead and start with the small tasks",
+      //     ],
+      //     feedbacks: [
+      //       "sleeping",
+      //       "jump",
+      //       "ignore",
+      //       "Good Job! Planning and breaking larger tasks into a smaller ones  helps improving your productivity and gives you a sense of achivement.",
+      //     ],
+      //     answer: 3,
+      //   },
+      //   {
+      //     message:
+      //       "If you lost track on your routine, what is the best thing to do?",
+      //     responses: [
+      //       "Blaming my self",
+      //       "Take more days off to rest",
+      //       "Focus on what I can work with today then get back on track",
+      //       "I knew this will happen",
+      //     ],
+      //     feedbacks: [
+      //       "sleeping",
+      //       "jump",
+      //       "Good Job! Prioritize what is needed to be done today. There is time, you will be able to catch up with what you have missed.",
+      //       "last one",
+      //     ],
+      //     answer: 2,
+      //   },
+      //   {
+      //     message:
+      //       "What should you do when there is no time to finish your work?",
+      //     responses: [
+      //       "Organize my work place and take a power nap when needed",
+      //       "Delay it, either ways I’m not going to be abe to finish it on time",
+      //       "Sacrifice my sleep to finish the work",
+      //       "Check my watch constantly to make sure I’m not wasting time ",
+      //     ],
+
+      //     feedbacks: [
+      //       "Good Job! Organizing your work place will help you clear your mind and get you in the mood to work. Remember your body sometimes needs to rest, a  power nap will help you to increase your focus and restore your energy.",
+      //       "2",
+      //       "3",
+      //       "4",
+      //     ],
+      //     answer: 0,
+      //   },
+
+      //   {
+      //     message: "What should you do when you feel stressed?",
+      //     responses: [
+      //       " I’m probably stressed because I did not achieve a lot this week",
+      //       "Take a time out and talk to a friend ",
+      //       "I knew this will happen ",
+      //       "Go eat something to fill the void ",
+      //     ],
+      //     feedbacks: [
+      //       "1",
+      //       "Good Job! Talking to a friend, Doing fun activities like meditation or exercise will help reduce anxiety and stress.",
+      //       "3",
+      //       "4",
+      //     ],
+      //     answer: 1,
+      //   },
+      // ];
+
+      // const addQuestionsToFirestore = async () => {
+      //   const usersRef = collection(db, "exercises");
+
+      //   await setDoc(doc(usersRef, "brainExercises"), {
+      //     questions: brainExercises,
+      //   })
+      //     .then(() => {
+      //       console.log("Document added updated!");
+      //     })
+      //     .catch((error) => {
+      //       console.error("Error updating document: ", error);
+      //     });
+      // };
       const ChatBrain = (props) => {
         return (
           <View
@@ -695,7 +745,7 @@ const Chatbot = ({ route, navigation }) => {
                     flexDirection: "row",
                     position: "relative",
                     padding: 10,
-                    marginTop: 20,
+                    marginTop: 30,
                   }
             }
           >
@@ -726,7 +776,7 @@ const Chatbot = ({ route, navigation }) => {
               </>
             )}
             {props.type === "toBot" && (
-              <>
+              <View style={{ flex: 1, marginBottom: 170 }}>
                 <View style={{ position: "absolute" }}>
                   <MaterialCommunityIcons
                     name="account"
@@ -750,10 +800,10 @@ const Chatbot = ({ route, navigation }) => {
                       key={option}
                       style={{
                         backgroundColor: "rgba(0, 0, 0, 0.4)",
-                        opacity: 0.7,
+                        opacity: 0.8,
                         padding: 5,
                         borderRadius: 5,
-                        marginVertical: 2,
+                        marginVertical: 8,
                       }}
                       onPress={() =>
                         props.handleSelection(
@@ -766,97 +816,128 @@ const Chatbot = ({ route, navigation }) => {
                     </TouchableOpacity>
                   ))}
                 </View>
-              </>
+              </View>
             )}
           </View>
         );
       };
-      const handleSelection = (response, answer) => {
-        setCurrentResponse(response);
-        console.log(response, answer);
-        if (
-          response === answer ||
-          (currentQuestion < 2 && !(response === 1 && answer === -1))
-        ) {
-          if (currentQuestion !== 0) {
-            setTimeout(() => {
-              setCurrentQuestion(currentQuestion + 1);
-              setCurrentResponse(null);
-            }, 10000);
-          } else {
-            setCurrentQuestion(currentQuestion + 1);
-            setCurrentResponse(null);
-          }
-        } else if (response === 1 && answer === -1) {
-          setChatType("brainCanceled");
-          setGlobalState("chat", "brainCanceled");
-        } else if (answer === "Done with BE") {
-          setChatType("afterBrain");
-          setGlobalState("chat", "afterBrain");
-        } else {
-          Alert.alert("Not the best", "Please try another option!");
+      const handleReadOutLoudPress = async (text) => {
+        // Start the TTS engine and pass the text as a parameter
+        // Initialize the TTS engine
+
+        try {
+          await Speech.speak(text, { language: "en-US" });
+        } catch (error) {
+          console.error(error);
         }
       };
+      const [currentIndex, setCurrentIndex] = useState(0);
+      const [selectedResponse, setSelectedResponse] = useState(-1);
+      const handleResponsePress = (index) => {
+        setSelectedResponse(index);
+        if (currentIndex >= brainExercises.length) {
+          console.log("done with brain E");
+        } else {
+          handleReadOutLoudPress(brainExercises[currentIndex].feedbacks[index]);
+        }
+      };
+
+      const handleNextPress = () => {
+        if (selectedResponse === brainExercises[currentIndex].answer) {
+          setCurrentIndex(currentIndex + 1);
+          setSelectedResponse(-1);
+        } else {
+          // Show feedback message
+          console.log(brainExercises[currentIndex].feedbacks[selectedResponse]);
+        }
+      };
+
+      useEffect(() => {
+        if (currentIndex < brainExercises.length)
+          handleReadOutLoudPress(brainExercises[currentIndex].message);
+      }, [currentIndex]);
+      const handleAfterBrain = () => {
+        handleReadOutLoudPress(
+          "Good job, I will provide advanced training next time. Now you may check out our other services."
+        );
+      };
+
       return (
         <>
-          {currentQuestion < brainExercises.length ? (
-            <>
-              <ChatBrain
-                type="toUser"
-                message={brainExercises[currentQuestion].message}
-              />
-              <ChatBrain
-                type="toBot"
-                responses={brainExercises[currentQuestion].responses}
-                handleSelection={handleSelection}
-                answer={brainExercises[currentQuestion].answer}
-              />
-              {currentResponse !== null &&
-                brainExercises[currentQuestion].feedbacks.length > 0 && (
-                  <View style={{ position: "relative", marginVertical: 300 }}>
-                    <ChatBrain
-                      type="toUser"
-                      message={
-                        brainExercises[currentQuestion].feedbacks[
-                          currentResponse
-                        ]
-                      }
-                    />
-                  </View>
-                )}
-            </>
-          ) : (
-            <>
-              <ChatBrain
-                type={"toUser"}
-                message={
-                  "Well done! You have completed your brain exercise for today."
-                }
-              />
-              <ChatBrain
-                type={"toUser"}
-                message={
-                  'You can do more anytime by going to treatment section, and clicking on "Brain Exercise"'
-                }
-              />
-              <ChatBrain
-                type={"toUser"}
-                message={"How do you feel after doing the brain exercise?"}
-              />
-              <ChatBrain
-                type={"toBot"}
-                message={"How do you feel after doing the breathing exercise?"}
-                responses={[
-                  "I feel better now, it helped me learn so many things",
-                  "It's is so complicated",
-                  "It is so simple and nice",
-                  "I don't like the exercise, do you have anything else?",
-                ]}
-                handleSelection={handleSelection}
-                answer="Done with BE"
-              />
-            </>
+          {currentIndex < brainExercises.length && (
+            <View
+              style={{
+                flexDirection: "column",
+                justifyContent: "space-between",
+              }}
+            >
+              <View>
+                <ChatBrain
+                  type="toUser"
+                  message={brainExercises[currentIndex].message}
+                />
+              </View>
+              <View>
+                <ChatBrain
+                  type="toBot"
+                  responses={brainExercises[currentIndex].responses}
+                  handleSelection={handleResponsePress}
+                  answer={brainExercises[currentIndex].answer}
+                />
+              </View>
+              {brainExercises[currentIndex].feedbacks[selectedResponse] && (
+                <View>
+                  <ChatBrain
+                    type="toUser"
+                    message={
+                      brainExercises[currentIndex].feedbacks[selectedResponse]
+                    }
+                  />
+                </View>
+              )}
+              <View style={{ marginTop: 60 }}>
+                {selectedResponse === brainExercises[currentIndex].answer ? (
+                  <Button title="Next" onPress={handleNextPress} />
+                ) : null}
+              </View>
+            </View>
           )}
+          {brainExercises.length === 0 && <Loading />}
+          {currentIndex === brainExercises.length &&
+            brainExercises.length !== 0 && (
+              <>
+                <ChatBrain
+                  type={"toUser"}
+                  message={
+                    "Well done! You have completed your brain exercise for today."
+                  }
+                />
+                <ChatBrain
+                  type={"toUser"}
+                  message={
+                    'You can do more anytime by going to treatment section, and clicking on "Brain Exercise"'
+                  }
+                />
+                <ChatBrain
+                  type={"toUser"}
+                  message={"How do you feel after doing the brain exercise?"}
+                />
+                <ChatBrain
+                  type={"toBot"}
+                  message={
+                    "How do you feel after doing the breathing exercise?"
+                  }
+                  responses={[
+                    "I feel better now, it helped me learn so many things",
+                    "It's is so complicated",
+                    "It is so simple and nice",
+                    "I don't like the exercise, do you have anything else?",
+                  ]}
+                  handleSelection={handleAfterBrain}
+                  answer={1}
+                />
+              </>
+            )}
         </>
       );
     } else if (useGlobalState("chat")[0] === "GAD7") {
@@ -873,7 +954,7 @@ const Chatbot = ({ route, navigation }) => {
           style={styles.bgImage}
         >
           <ScrollView style={{ width: "97%", left: "1.5%", right: "1.5%" }}>
-            <DisplayChat></DisplayChat>
+            <DisplayChat> </DisplayChat>
           </ScrollView>
         </ImageBackground>
       </SafeAreaView>

@@ -1,11 +1,38 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Button } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import * as Speech from "expo-speech";
+import { auth, db } from "../config/firebaseConfig";
+import {
+  collection,
+  doc,
+  setDoc,
+  query,
+  getDoc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
+import firebase from "firebase/app";
+import "firebase/firestore";
 
+import Loading from "../loading";
 const GAD7Questionnaire = (props) => {
   // GAD 7 questionnaire questions and options
 
   const Chat = (props) => {
+    const handleReadOutLoudPress = async (text) => {
+      // Start the TTS engine and pass the text as a parameter
+      // Initialize the TTS engine
+      //
+      try {
+        await Speech.speak(text, { language: "en-US" });
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    useEffect(() => {
+      handleReadOutLoudPress(props.message);
+    });
     return (
       <View
         style={
@@ -94,150 +121,84 @@ const GAD7Questionnaire = (props) => {
       </View>
     );
   };
-  const questions = [
-    {
-      question: "How are you feeling today?",
-      options: ["Very good", "Good", "Not good", "Bad"],
-    },
-    {
-      question: "How do you rate your day/week?",
-      options: ["Very good", "Good", "Not good", "Bad"],
-    },
-    {
-      question: "Do you know what anxiety is?",
-      options: ["Yes", "NO"],
-    },
-    {
-      question: "Do you feel overwhelmed or worried?",
-      options: ["Yes", "NO"],
-    },
 
-    {
-      question: "Have you ever experienced anxiety? Yes or no",
-      options: ["Yes", "NO"],
-    },
-    {
-      question:
-        "Over the last 2 weeks, how often have you been bothered by the following problem: feeling nervous, anxious or on edge?",
-      options: [
-        "Not at all",
-        "Several days",
-        "More than half the days",
-        "Nearly every day",
-      ],
-    },
-    {
-      question:
-        "Over the last 2 weeks, how often have you been bothered by the following problem: not being able to stop or control worrying?",
-      options: [
-        "Not at all",
-        "Several days",
-        "More than half the days",
-        "Nearly every day",
-      ],
-    },
-    {
-      question:
-        "Over the last 2 weeks, how often have you been bothered by the following problem: worrying too much about different things?",
-      options: [
-        "Not at all",
-        "Several days",
-        "More than half the days",
-        "Nearly every day",
-      ],
-    },
-    {
-      question:
-        "Over the last 2 weeks, how often have you been bothered by the following problem: trouble relaxing?",
-      options: [
-        "Not at all",
-        "Several days",
-        "More than half the days",
-        "Nearly every day",
-      ],
-    },
-    {
-      question:
-        "Over the last 2 weeks, how often have you been bothered by the following problem: being so restless that it is hard to sit still?",
-      options: [
-        "Not at all",
-        "Several days",
-        "More than half the days",
-        "Nearly every day",
-      ],
-    },
-    {
-      question:
-        "Over the last 2 weeks, how often have you been bothered by the following problem: becoming easily annoyed or irritable?",
-      options: [
-        "Not at all",
-        "Several days",
-        "More than half the days",
-        "Nearly every day",
-      ],
-    },
-    {
-      question:
-        "Over the last 2 weeks, how often have you been bothered by the following problem: feeling afraid as if something awful might happen?",
-      options: [
-        "Not at all",
-        "Several days",
-        "More than half the days",
-        "Nearly every day",
-      ],
-    },
-  ];
+  const [questions, setQuestions] = useState([]);
 
-  // Initialize state to store current question and user responses
+  async function read() {
+    const docRef = doc(db, "exercises", "GAD7");
+
+    const docSnap = await getDoc(docRef);
+    return docSnap.data();
+  }
+
+  if (questions.length === 0) {
+    read()
+      .then((data) => {
+        setQuestions(data.questions);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [responses, setResponses] = useState([]);
 
   // Function to handle user selection
-  const handleSelection = (response) => {
+  const handleSelection = async (response) => {
     // Add response to responses array
     setResponses([...responses, response]);
     setCurrentQuestion(currentQuestion + 1);
   };
 
-  if (currentQuestion === questions.length) {
+  if (currentQuestion === questions.length && questions.length !== 0) {
+    let sum = responses.slice(5, 12).reduce((total, num) => total + num);
+    let decision = "";
+    if (sum < 5) {
+      decision = "Normal";
+      console.log("Normal");
+    } else if (sum > 4 && sum < 10) {
+      decision = "Mild Anxiety";
+      console.log("Mild Anxiety");
+    } else if (sum > 9 && sum < 15) {
+      decision = "Moderate Anxiety";
+      console.log("Moderate Anxiety");
+    } else {
+      decision = "Severe Anxiety";
+      console.log("Severe Anxiety");
+    }
+    const currentUserId = auth.currentUser.uid;
+    setDoc(doc(db, "/Users/" + currentUserId + "/Sessions", Date()), {
+      GAD7Score: responses.slice(5, 12),
+      decision: decision,
+      averageHeartRate: 0,
+      averageO2level: 0,
+      date: Date(),
+    });
     props.handleOnPress("Done with GAD7", responses.slice(5, 12));
-    console.log(responses.slice(5, 12));
   }
 
   return (
     <View style={styles.container}>
-      <Chat type="toUser" message="Please answer the follwing questions:" />
+      {currentQuestion === 0 && (
+        <Chat type="toUser" message="Please answer the follwing questions:" />
+      )}
 
-      {currentQuestion < questions.length ? (
+      {currentQuestion < questions.length && questions.length !== 0 && (
         <>
-          <Chat type="toUser" message={questions[currentQuestion].question} />
-          <Chat
-            type="toBot"
-            responses={questions[currentQuestion].options}
-            handleSelection={handleSelection}
-          />
-        </>
-      ) : (
-        // <View>
-        //   <Text style={styles.question}>
-        //     {questions[currentQuestion].question}
-        //   </Text>
-
-        //   {questions[currentQuestion].options.map((option, index) => (
-        //     <TouchableOpacity
-        //       key={index}
-        //       style={styles.option}
-        //       onPress={() => handleSelection(index)}
-        //     >
-        //       <Text>{option}</Text>
-        //     </TouchableOpacity>
-        //   ))}
-        // </View>
-        <>
-          <Text>Done, Great Job</Text>
-          <Text>Let's continue to breathing section</Text>
+          <View style={{ marginVertical: 20 }}>
+            <Chat type="toUser" message={questions[currentQuestion].question} />
+          </View>
+          <View style={{ marginVertical: 20 }}>
+            <Chat
+              type="toBot"
+              responses={questions[currentQuestion].options}
+              handleSelection={handleSelection}
+            />
+          </View>
         </>
       )}
+      {questions.length === 0 && <Loading />}
     </View>
   );
 };
@@ -245,16 +206,15 @@ const GAD7Questionnaire = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
   },
   question: {
     fontSize: 18,
     marginBottom: 20,
     textAlign: "center",
+    marginVertical: 30,
   },
   option: {
-    marginVertical: 10,
+    marginVertical: 20,
     padding: 10,
     borderWidth: 1,
     borderRadius: 5,
