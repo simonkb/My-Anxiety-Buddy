@@ -30,6 +30,9 @@ const TreatmentHome = () => {
   const onShortReadingsPressed = () => {
     navigator.navigate("Readings");
   };
+  const onJournalingPressed = () => {
+    navigator.navigate("Journal Chat");
+  };
   const onBreathingPressed = () => {
     setGlobalState("chat", "breathing");
     navigator.navigate("Home", {
@@ -174,7 +177,7 @@ const TreatmentHome = () => {
               </Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onJournalingPressed}>
             <View style={styles.shortTermRow}>
               <Text
                 style={{

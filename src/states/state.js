@@ -6,5 +6,6 @@ const { setGlobalState, useGlobalState } = createGlobalState({
   currentUser: null,
   chat: "default",
   navigation: null,
+  speakEnabled: false,
 });
 export { setGlobalState, useGlobalState };

@@ -2,6 +2,7 @@ import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import TreatmentHome from "../screens/Treatment/TreatmentHome";
 import Readings from "../screens/Treatment/Readings";
+import JournalChat from "../screens/Treatment/JournalChat";
 const Stack = createStackNavigator();
 const TreatmentStack = () => {
   return (
@@ -15,6 +16,11 @@ const TreatmentStack = () => {
         options={{ headerShown: true, gestureEnabled: true }}
         name="Readings"
         component={Readings}
+      />
+      <Stack.Screen
+        options={{ headerShown: true, gestureEnabled: true }}
+        name="Journal Chat"
+        component={JournalChat}
       />
     </Stack.Navigator>
   );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Button } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as Speech from "expo-speech";
@@ -14,9 +14,12 @@ import {
 } from "firebase/firestore";
 import firebase from "firebase/app";
 import "firebase/firestore";
-
+import { useGlobalState } from "../states/state";
+import { GlobalStateContext } from "../states/GlobalState";
 import Loading from "../loading";
 const GAD7Questionnaire = (props) => {
+  const { globalState, setGlobalStateNew } = useContext(GlobalStateContext);
+
   // GAD 7 questionnaire questions and options
 
   const Chat = (props) => {
@@ -25,7 +28,8 @@ const GAD7Questionnaire = (props) => {
       // Initialize the TTS engine
       //
       try {
-        await Speech.speak(text, { language: "en-US" });
+        if (globalState.speakEnabled)
+          await Speech.speak(text, { language: "en-US" });
       } catch (error) {
         console.error(error);
       }

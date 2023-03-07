@@ -33,15 +33,21 @@ import {
 } from "firebase/firestore";
 import * as Speech from "expo-speech";
 import Loading from "../loading";
-
+import { useContext } from "react";
+import { GlobalStateContext } from "../states/GlobalState";
 const Chat = (props) => {
+  const { globalState, setGlobalStateNew } = useContext(GlobalStateContext);
+
   // Function to handle the "Read Text Out Loud" button press
   const handleReadOutLoudPress = async (text) => {
     // Start the TTS engine and pass the text as a parameter
     // Initialize the TTS engine
     //
+
     try {
-      await Speech.speak(text, { language: "en-US" });
+      // alert('Permission to use speech not granted');
+      if (globalState.speakEnabled)
+        await Speech.speak(text, { language: "en-US" });
     } catch (error) {
       console.error(error);
     }
@@ -61,6 +67,7 @@ const Chat = (props) => {
               width: "100%",
               marginVertical: 30,
               alignSelf: "baseline",
+              flex: 1,
             }
           : {
               left: 5,
@@ -68,11 +75,16 @@ const Chat = (props) => {
               position: "relative",
               padding: 10,
               marginTop: 20,
+              flex: 1,
             }
       }
     >
       {props.type === "toUser" && (
-        <>
+        <View
+          style={{
+            flex: 1,
+          }}
+        >
           <View
             style={{
               position: "absolute",
@@ -95,10 +107,14 @@ const Chat = (props) => {
               size={30}
             ></MaterialCommunityIcons>
           </View>
-        </>
+        </View>
       )}
       {props.type === "toBot" && (
-        <>
+        <View
+          style={{
+            flex: 1,
+          }}
+        >
           <View style={{ position: "absolute" }}>
             <MaterialCommunityIcons
               name="account"
@@ -133,9 +149,46 @@ const Chat = (props) => {
               </TouchableOpacity>
             ))}
           </View>
-        </>
+        </View>
       )}
     </View>
+  );
+};
+
+const ReadOutLoudButton = () => {
+  const [isReading, setIsReading] = useState(true);
+  const { globalState, setGlobalStateNew } = useContext(GlobalStateContext);
+
+  const handleToggle = () => {
+    // if (isReading) {
+    //   Speech.pause();
+    // } else {
+    //   Speech.resume();
+    // }
+    // setIsReading(!isReading);
+    // if (isReading) {
+    //   Speech.stop();
+    // }
+    // Speech.speak("");
+    // setIsReading(!isReading);
+    // if (useGlobalState("speakEnabled")[0]) {
+    //   setGlobalState("speakEnabled", true);
+    // }
+    if (globalState.speakEnabled) {
+      setGlobalStateNew({ ...globalState, speakEnabled: false });
+    } else {
+      setGlobalStateNew({ ...globalState, speakEnabled: true });
+    }
+  };
+
+  const icon = globalState.speakEnabled
+    ? require("../../assets/speak.png")
+    : require("../../assets/pause.png");
+
+  return (
+    <TouchableOpacity onPress={handleToggle} style={styles.buttonSpeaker}>
+      <Image source={icon} style={styles.icon} />
+    </TouchableOpacity>
   );
 };
 const Chatbot = ({ route, navigation }) => {
@@ -151,6 +204,8 @@ const Chatbot = ({ route, navigation }) => {
   }
   //
   let [chatType, setChatType] = useState(route.params.chatType);
+  const { globalState, setGlobalStateNew } = useContext(GlobalStateContext);
+
   const AfterBreathing = () => {
     setGlobalState("chat", "afterBreathing");
     setChatType("afterBreathing");
@@ -171,6 +226,7 @@ const Chatbot = ({ route, navigation }) => {
       if (question === "Done with GAD7") {
         setGlobalState("chat", "breathing");
         setChatType("breathing");
+        Speech.stop();
       }
     }
   };
@@ -826,7 +882,8 @@ const Chatbot = ({ route, navigation }) => {
         // Initialize the TTS engine
 
         try {
-          await Speech.speak(text, { language: "en-US" });
+          if (globalState.speakEnabled)
+            await Speech.speak(text, { language: "en-US" });
         } catch (error) {
           console.error(error);
         }
@@ -944,20 +1001,41 @@ const Chatbot = ({ route, navigation }) => {
       return <GAD7Questionnaire handleOnPress={handleOnpress} />;
     }
   };
-
   return (
     <View style={styles.container}>
-      <SafeAreaView style={styles.container}>
-        <ImageBackground
-          source={currentBg}
-          resizeMode="cover"
-          style={styles.bgImage}
+      <ImageBackground
+        source={currentBg}
+        resizeMode="cover"
+        style={styles.bgImage}
+      >
+        <View
+          style={{
+            flex: 1,
+            width: "97%",
+            left: "1.5%",
+            right: "1.5%",
+            height: "100%",
+          }}
         >
-          <ScrollView style={{ width: "97%", left: "1.5%", right: "1.5%" }}>
+          <ScrollView
+            style={{
+              flex: 1,
+            }}
+          >
             <DisplayChat> </DisplayChat>
           </ScrollView>
-        </ImageBackground>
-      </SafeAreaView>
+        </View>
+
+        <View
+          style={{
+            position: "absolute",
+            right: 20,
+            bottom: 20,
+          }}
+        >
+          <ReadOutLoudButton></ReadOutLoudButton>
+        </View>
+      </ImageBackground>
     </View>
   );
 };
@@ -1073,6 +1151,7 @@ const styles = StyleSheet.create({
     top: "-70%",
     start: "0%",
   },
+
   button: {
     width: "80%",
     height: "35%",
@@ -1088,6 +1167,18 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontSize: 18,
   },
-});
 
+  buttonSpeaker: {
+    backgroundColor: "white",
+    borderRadius: 25,
+    width: 50,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  icon: {
+    width: 30,
+    height: 30,
+  },
+});
 export default Chatbot;
