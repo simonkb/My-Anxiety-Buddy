@@ -22,15 +22,7 @@ import { useGlobalState, setGlobalState } from "../states/state.js";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import GAD7Questionnaire from "./GAD1Questionnaire";
 import { db, auth } from "../config/firebaseConfig";
-import {
-  collection,
-  doc,
-  setDoc,
-  query,
-  getDoc,
-  getDocs,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import * as Speech from "expo-speech";
 import Loading from "../loading";
 import { useContext } from "react";

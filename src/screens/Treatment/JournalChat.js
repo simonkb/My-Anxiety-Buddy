@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,13 +8,25 @@ import {
   TouchableOpacity,
   ImageBackground,
   StyleSheet,
+  Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import bg1 from "../../../assets/bg1.jpeg";
 import bg2 from "../../../assets/bg2.jpg";
 import bg3 from "../../../assets/bg3.jpg";
 import { setGlobalState, useGlobalState } from "../../states/state.js";
-
+import { auth, db } from "../../config/firebaseConfig.js";
+import {
+  collection,
+  doc,
+  setDoc,
+  query,
+  getDoc,
+  getDocs,
+  updateDoc,
+  where,
+  orderBy,
+} from "firebase/firestore";
 const JournalChat = () => {
   let defaultBg = useGlobalState("defaultBackgroundImage");
   let currentBg;
@@ -37,16 +49,39 @@ const JournalChat = () => {
   const [response3, setResponse3] = useState("");
 
   const handleResponseSubmit = () => {
-    const responseObj = {
-      questions: journalList,
-      responses: [response1, response2, response3],
-      date: new Date().toString(),
-    };
-    setJournalResponses([...journalResponses, responseObj]);
-    setResponse1("");
-    setResponse2("");
-    setResponse3("");
+    if ((response1 === "") | (response2 === "") | (response3 === "")) {
+      Alert.alert("Messeage", "Please answer all of the above questions.");
+    } else {
+      const responseObj = {
+        questions: journalList,
+        responses: [response1, response2, response3],
+        date: new Date().toString(),
+      };
+      const currentUserId = auth.currentUser.uid;
+      setDoc(doc(db, "/Users/" + currentUserId + "/Journals", Date()), {
+        questions: journalList,
+        responses: [response1, response2, response3],
+        date: new Date().toString(),
+      });
+      setJournalResponses([responseObj, ...journalResponses]);
+      setResponse1("");
+      setResponse2("");
+      setResponse3("");
+    }
   };
+  useEffect(() => {
+    const currentUserId = auth.currentUser.uid;
+    const journalsRef = collection(db, "Users", currentUserId, "Journals");
+    const q = query(journalsRef, orderBy("date", "desc"));
+    getDocs(q)
+      .then((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => doc.data());
+        setJournalResponses(data);
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
+      });
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -92,7 +127,9 @@ const JournalChat = () => {
           {journalResponses.map((responseObj, index) => (
             <TouchableOpacity key={index} style={styles.response}>
               <View>
-                <Text style={styles.dateText}>{responseObj.date}</Text>
+                <Text style={styles.dateText}>
+                  Your journal on {responseObj.date.substring(0, 16)}
+                </Text>
               </View>
               <View style={styles.responses}>
                 <Text>{responseObj.questions[0]}</Text>
@@ -155,7 +192,7 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 20,
     backgroundColor: "white",
-    opacity: 0.7,
+    opacity: 0.6,
   },
   dateText: {
     fontSize: 16,

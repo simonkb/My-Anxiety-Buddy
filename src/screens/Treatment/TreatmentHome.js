@@ -31,7 +31,7 @@ const TreatmentHome = () => {
     navigator.navigate("Readings");
   };
   const onJournalingPressed = () => {
-    navigator.navigate("Journal Chat");
+    navigator.navigate("Journals");
   };
   const onBreathingPressed = () => {
     setGlobalState("chat", "breathing");
@@ -58,13 +58,14 @@ const TreatmentHome = () => {
         <View
           style={{
             width: "90%",
-            height: "22%",
+            //height: "22%",
             backgroundColor: "rgba(217, 217, 217, 0.53)",
             borderRadius: 15,
             left: "5%",
             right: "5%",
-            marginVertical: 5,
+            marginVertical: 20,
             paddingTop: 10,
+            top: 10,
           }}
         >
           <Text
@@ -97,13 +98,13 @@ const TreatmentHome = () => {
         <View
           style={{
             width: "90%",
-            height: "70%",
+            //height: "70%",
             backgroundColor: "rgba(217, 217, 217, 0.53)",
             borderRadius: 15,
             left: "5%",
             right: "5%",
             paddingTop: 10,
-            marginVertical: 10,
+            marginVertical: 20,
           }}
         >
           <Text
@@ -146,37 +147,6 @@ const TreatmentHome = () => {
               </Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
-            <View style={styles.shortTermRow}>
-              <Text
-                style={{
-                  fontWeight: "bold",
-                  textAlign: "center",
-                  fontSize: 17,
-                  color: "#FFFFFF",
-                  padding: 4,
-                }}
-              >
-                Create Routines
-              </Text>
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity>
-            <View style={styles.shortTermRow}>
-              <Text
-                style={{
-                  fontWeight: "bold",
-                  textAlign: "center",
-                  fontSize: 17,
-                  color: "#FFFFFF",
-                  padding: 4,
-                }}
-              >
-                Meditation
-              </Text>
-            </View>
-          </TouchableOpacity>
           <TouchableOpacity onPress={onJournalingPressed}>
             <View style={styles.shortTermRow}>
               <Text
@@ -192,6 +162,36 @@ const TreatmentHome = () => {
               </Text>
             </View>
           </TouchableOpacity>
+          {/* <TouchableOpacity>
+            <View style={styles.shortTermRow}>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  fontSize: 17,
+                  color: "#FFFFFF",
+                  padding: 4,
+                }}
+              >
+                Create Routines
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <View style={styles.shortTermRow}>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  fontSize: 17,
+                  color: "#FFFFFF",
+                  padding: 4,
+                }}
+              >
+                Meditation
+              </Text>
+            </View>
+          </TouchableOpacity> */}
         </View>
       </ImageBackground>
     </View>
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
   },
   bgImage: {
     flex: 1,
-    justifyContent: "center",
+    //justifyContent: "center",
   },
   shortTermRow: {
     width: "90%",
