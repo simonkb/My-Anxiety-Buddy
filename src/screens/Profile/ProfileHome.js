@@ -21,18 +21,12 @@ import {
   collection,
   doc,
   onSnapshot,
-  setDoc,
-  getDoc,
   getDocs,
   query,
   orderBy,
 } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
-import Icon from "react-native-vector-icons/FontAwesome"; // import the FontAwesome icon library
-import Histogram from "./Histogram";
-import { BarChart } from "react-native-chart-kit";
-import Graph from "./Graph";
-//import BarGraph from "./BarGraph";
+import Icon from "react-native-vector-icons/FontAwesome";
 import BarGraph from "./BarGraph2";
 const ProfileHome = ({ navigation }) => {
   let defaultBg = useGlobalState("defaultBackgroundImage");
@@ -44,7 +38,6 @@ const ProfileHome = ({ navigation }) => {
   } else {
     currentBg = bg1;
   }
-
   const navigator = useNavigation();
   const onSettingsPressed = () => {
     navigator.navigate("Settings");

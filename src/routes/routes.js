@@ -6,8 +6,7 @@ import forgetPassword from "../screens/SignUporLogin/forgetPassword";
 import ConfirmOTP from "../screens/SignUporLogin/ConfirmOTP";
 import CreateNewPassword from "../screens/SignUporLogin/CreateNewPassword";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from "../config/firebaseConfig";
-import { doc, getDoc } from "firebase/firestore";
+import { auth } from "../config/firebaseConfig";
 import ProfileHome from "../screens/Profile/ProfileHome";
 import Settings from "../screens/Profile/Settings";
 import EditProfile from "../screens/Profile/EditProfile";
@@ -18,9 +17,28 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ChatBot from "../screens/chatbot";
 import { NavigationContainer } from "@react-navigation/native";
+import CommunityHome from "../screens/Community/CommunityHome";
+import CommunityUsers from "../screens/Community/CommunityUsers";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+
+const CommunityStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        options={{ headerShown: false, gestureEnabled: true }}
+        name="CommunityHome"
+        component={CommunityHome}
+      />
+      <Stack.Screen
+        options={{ headerShown: false, gestureEnabled: true }}
+        name="CommunityUsers"
+        component={CommunityUsers}
+      />
+    </Stack.Navigator>
+  );
+};
 
 const MainStack = () => {
   return (

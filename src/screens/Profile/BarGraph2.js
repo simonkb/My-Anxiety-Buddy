@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef } from "react";
 import { View, ScrollView, Text } from "react-native";
 import { Svg, Rect, Text as T } from "react-native-svg";
 

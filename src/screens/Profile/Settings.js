@@ -177,7 +177,6 @@ const Settings = () => {
                       //navigator.navigate("Auth");
                     })
                     .catch((error) => {
-                      // An error happened.
                       Alert.alert("Error", error);
                     });
                 }}
@@ -228,9 +227,7 @@ const Settings = () => {
             marginBottom: "0%",
             marginTop: 10,
             borderWidth: 1,
-            // backgroundColor: "white",
             backgroundColor: "rgba(217, 217, 217, 0.53)",
-
             borderColor: "white",
           }}
         >
