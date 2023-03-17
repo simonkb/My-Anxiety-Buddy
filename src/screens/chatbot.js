@@ -194,37 +194,41 @@ const Chatbot = ({ route, navigation }) => {
   } else {
     currentBg = bg1;
   }
-  //
-  let [chatType, setChatType] = useState(route.params.chatType);
   const { globalState, setGlobalStateNew } = useContext(GlobalStateContext);
-
   const AfterBreathing = () => {
-    setGlobalState("chat", "afterBreathing");
-    setChatType("afterBreathing");
     navigation.setParams({
       chatType: "afterBreathing",
     });
   };
   const handleOnpress = (question, selectedOption) => {
     if (selectedOption === "I am feeling anxious, I need some help") {
-      setGlobalState("chat", "GAD7");
-      setChatType("GAD7");
+      navigation.setParams({
+        chatType: "GAD7",
+      });
     } else if (selectedOption === "To use the breathing guide in your app") {
-      setGlobalState("chat", "breathing");
-      setChatType("breathing");
-    } else if (selectedOption === "To connect with people and have fun") {
-      navigation.navigate("Community");
+      navigation.setParams({
+        chatType: "breathing",
+      });
+    } else if (selectedOption === "I want to read more about anxiety") {
+      navigation.navigate("Treatment", {
+        screen: "Readings",
+      });
+    } else if (selectedOption === "I want to do my journal of today") {
+      navigation.navigate("Treatment", {
+        screen: "Journals",
+      });
     } else {
       if (question === "Done with GAD7") {
-        setGlobalState("chat", "breathing");
-        setChatType("breathing");
+        navigation.setParams({
+          chatType: "breathing",
+        });
         Speech.stop();
       }
     }
   };
 
   const DisplayChat = () => {
-    if (useGlobalState("chat")[0] === "breathing") {
+    if (route.params.chatType === "breathing") {
       const fadeAnim = useRef(new Animated.Value(0)).current;
       const fadeAnim2 = useRef(new Animated.Value(0)).current;
       const fadeAnim3 = useRef(new Animated.Value(0)).current;
@@ -586,25 +590,28 @@ const Chatbot = ({ route, navigation }) => {
           </Animated.View>
         </>
       );
-    } else if (useGlobalState("chat")[0] === "default") {
+    } else if (route.params.chatType === "default") {
       //Keep track of the last message so that you can continue to the new one
       return (
         <>
-          <Chat type={"toUser"} message={"Welcome to Anti-Anxiety app"} />
+          <Chat
+            type={"toUser"}
+            message={"Welcome to Anti-Anxiety app home section!"}
+          />
           <Chat type={"toUser"} message={"Why are you here today?"} />
           <Chat
             type={"toBot"}
             responses={[
               "I am feeling anxious, I need some help",
               "To use the breathing guide in your app",
-              "I want to learn more about your services",
-              "To connect with people and have fun",
+              "I want to read more about anxiety",
+              "I want to do my journal of today",
             ]}
             handleOnPress={handleOnpress}
           />
         </>
       );
-    } else if (useGlobalState("chat")[0] === "afterBreathing") {
+    } else if (route.params.chatType === "afterBreathing") {
       return (
         <>
           <Chat
@@ -635,7 +642,7 @@ const Chatbot = ({ route, navigation }) => {
           />
         </>
       );
-    } else if (useGlobalState("chat")[0] === "brain") {
+    } else if (route.params.chatType === "brain") {
       const [brainExercises, setBrainExercises] = useState([]);
 
       async function read() {
@@ -989,7 +996,7 @@ const Chatbot = ({ route, navigation }) => {
             )}
         </>
       );
-    } else if (useGlobalState("chat")[0] === "GAD7") {
+    } else if (route.params.chatType === "GAD7") {
       return <GAD7Questionnaire handleOnPress={handleOnpress} />;
     }
   };
@@ -1027,6 +1034,24 @@ const Chatbot = ({ route, navigation }) => {
         >
           <ReadOutLoudButton></ReadOutLoudButton>
         </View>
+        {route.params.chatType !== "default" && (
+          <View
+            style={{
+              position: "absolute",
+              left: 20,
+              bottom: 20,
+            }}
+          >
+            <Button
+              title="Back to home"
+              onPress={() => {
+                navigation.setParams({
+                  chatType: "default",
+                });
+              }}
+            ></Button>
+          </View>
+        )}
       </ImageBackground>
     </View>
   );

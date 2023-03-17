@@ -7,16 +7,14 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
-  Touchable,
-  TouchableHighlight,
   TextInput,
   Image,
   Alert,
   KeyboardAvoidingView,
-  Spinner,
   Platform,
+  Modal,
+  ActivityIndicator,
 } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import bg1 from "../../../assets/bg1.jpeg";
@@ -24,21 +22,12 @@ import bg2 from "../../../assets/bg2.jpg";
 import bg3 from "../../../assets/bg3.jpg";
 import { setGlobalState, useGlobalState } from "../../states/state.js";
 import { db, auth } from "../../config/firebaseConfig";
-import {
-  collection,
-  doc,
-  onSnapshot,
-  setDoc,
-  getDoc,
-  updateDoc,
-} from "firebase/firestore";
-import { onAuthStateChanged } from "firebase/auth";
-import { async } from "@firebase/util";
-import firebase from "firebase/app";
+import { collection, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import DateTimePicker from "@react-native-community/datetimepicker";
+
 const EditProfile = () => {
   //Updating background
-  let defaultBg = useGlobalState("defaultBackgroundImage");
+  const defaultBg = useGlobalState("defaultBackgroundImage");
   let currentBg;
   if (defaultBg[0] === "bgOrange") {
     currentBg = bg3;
@@ -47,71 +36,72 @@ const EditProfile = () => {
   } else {
     currentBg = bg1;
   }
-  //
+
   const navigator = useNavigation();
-  const profilePicture = {
-    uri: "https://nyc3.digitaloceanspaces.com/sizze-storage/media/images/I1FDrRUQF9bnrTsQcmUnOnu0.png",
-  };
-  const [username, onChangeUsername] = React.useState(
-    useGlobalState("currentUser")[0].username
-  );
-  const [firstName, onChangeFirstName] = React.useState(
-    useGlobalState("currentUser")[0].firstName
-  );
-  const [lastName, onChangeLastName] = React.useState(
-    useGlobalState("currentUser")[0].lastName
-  );
-  const [email, onChangeEmail] = React.useState(
-    useGlobalState("currentUser")[0].email_address
-  );
-  const [phone, onChangePhone] = React.useState(
-    useGlobalState("currentUser")[0].phone_number
-  );
-  const [birthDate, onChangeBirthDate] = React.useState(
-    useGlobalState("currentUser")[0].birthDate
-  );
-  const [location, onChangeLocation] = React.useState(
-    useGlobalState("currentUser")[0].location
-  );
-  const [bio, onChangeBio] = React.useState(
-    useGlobalState("currentUser")[0].bio
-  );
-  const onSavePressed = () => {
-    onAuthStateChanged(auth, async (user) => {
-      const usersRef = collection(db, "Users");
-      if (user != null) {
-        await updateDoc(doc(usersRef, user.uid), {
-          username: username,
-          phone_number: phone,
-          bio: bio,
-          firstName: firstName,
-          lastName: lastName,
-          birthDate: date.toLocaleDateString(),
-          email_address: email,
-          location: location,
-        })
-          .then(() => {
-            console.log("Document successfully updated!");
-            navigator.navigate("Settings");
-          })
-          .catch((error) => {
-            console.error("Error updating document: ", error);
-          });
+  const [userData, setUserData] = useState({
+    username: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    birthDate: "",
+    location: "",
+    bio: "",
+  });
+
+  const fetchUserData = async () => {
+    const user = auth.currentUser;
+    if (user !== null && user.emailVerified) {
+      const uid = user.uid;
+      try {
+        onSnapshot(doc(db, "Users", uid), (doc) => {
+          setUserData(doc.data());
+        });
+      } catch (error) {
+        console.log(error);
       }
-    });
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onSavePressed = async () => {
+    setIsLoading(true);
+
+    const user = auth.currentUser;
+    const usersRef = collection(db, "Users");
+    if (user) {
+      await updateDoc(doc(usersRef, user.uid), userData)
+        .then(() => {
+          Alert.alert("Success", "Changes made successfully");
+          setIsLoading(false);
+          navigator.navigate("Settings");
+        })
+        .catch((error) => {
+          console.error("Error updating document: ", error);
+        });
+    }
   };
 
   const onCancelPressed = () => {
     navigator.navigate("Settings");
   };
 
-  const [date, setDate] = useState(
-    new Date(useGlobalState("currentUser")[0].birthDate)
-  );
+  const onChange = (key, value) => {
+    setUserData((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
+  };
   const [show, setShow] = useState(Platform.OS === "ios");
   const [mode, setMode] = useState("date");
-  const [dateText, setText] = useState("Empty");
-
+  const profilePicture = {
+    uri: "https://nyc3.digitaloceanspaces.com/sizze-storage/media/images/I1FDrRUQF9bnrTsQcmUnOnu0.png",
+  };
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -155,35 +145,36 @@ const EditProfile = () => {
                       shadowColor: "grey",
                       shadowOpacity: 0.5,
                     }}
-                    onChangeText={onChangeUsername}
-                    value={username}
+                    value={userData.username}
+                    onChangeText={(text) => onChange("username", text)}
                   ></TextInput>
                 </View>
               </View>
+
               <TextInput
-                placeholder="First name"
-                style={styles.testInputStyle}
-                onChangeText={onChangeFirstName}
-                value={firstName}
+                style={styles.textInputStyle}
+                placeholder="First Name"
+                value={userData.firstName}
+                onChangeText={(text) => onChange("firstName", text)}
               />
               <TextInput
-                placeholder="Last name"
-                style={styles.testInputStyle}
-                onChangeText={onChangeLastName}
-                value={lastName}
+                style={styles.textInputStyle}
+                placeholder="Last Name"
+                value={userData.lastName}
+                onChangeText={(text) => onChange("lastName", text)}
               />
               <TextInput
+                style={styles.textInputStyle}
                 placeholder="Email"
-                style={styles.testInputStyle}
-                onChangeText={onChangeEmail}
-                value={email}
+                value={userData.email_address}
+                onChangeText={(text) => onChange("email", text)}
                 editable={false}
               />
               <TextInput
-                placeholder="Phone Number"
-                style={styles.testInputStyle}
-                onChangeText={onChangePhone}
-                value={phone}
+                style={styles.textInputStyle}
+                placeholder="Phone"
+                value={userData.phone_number}
+                onChangeText={(text) => onChange("phone", text)}
               />
               <View
                 style={{
@@ -194,67 +185,76 @@ const EditProfile = () => {
                 }}
               >
                 <View>
-                  <TouchableOpacity onPress={() => setShow(true)}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setShow(true);
+                      setMode("date");
+                    }}
+                  >
                     {Platform.OS === "ios" ? (
                       <Text style={{ fontSize: 18 }}>Birth date:</Text>
                     ) : (
                       <Text style={{ fontSize: 18 }}>
-                        Birth date: {date.toLocaleDateString()}
+                        Birth date:
+                        {new Date(userData.birthDate).toLocaleDateString()}
                       </Text>
                     )}
                   </TouchableOpacity>
                 </View>
-
                 <View style={{ minWidth: 130 }}>
                   {show && (
                     <DateTimePicker
-                      testID="dateTimePicker"
-                      value={date}
+                      value={new Date(userData.birthDate)}
                       mode={mode}
-                      display="default"
                       is24Hour={true}
+                      display="default"
                       onChange={(event, selectedDate) => {
+                        const currentDate = selectedDate;
                         setShow(Platform.OS === "ios");
-                        if (selectedDate) setDate(selectedDate);
+                        onChange("birthDate", currentDate);
                       }}
                     />
                   )}
                 </View>
               </View>
-
               <TextInput
+                style={styles.textInputStyle}
                 placeholder="Location"
-                style={styles.testInputStyle}
-                editable={true}
-                onChangeText={onChangeLocation}
-                value={location}
+                value={userData.location}
+                onChangeText={(text) => onChange("location", text)}
               />
-              <Text style={styles.testInputStyle}>Edit Bio</Text>
+              <Text style={styles.textInputStyle}>Edit Bio</Text>
               <TextInput
-                placeholder="Bio"
                 style={styles.bioFieldStyle}
+                placeholder="Bio"
                 multiline={true}
                 numberOfLines={10}
                 maxLength={100}
-                onChangeText={onChangeBio}
-                value={bio}
+                value={userData.bio}
+                onChangeText={(text) => onChange("bio", text)}
               />
+              <Modal
+                visible={isLoading}
+                transparent={true}
+                animationType="fade"
+                statusBarTranslucent={true}
+              >
+                <View style={styles.modalBackground}>
+                  <View style={styles.activityIndicatorWrapper}>
+                    <ActivityIndicator size="large" color="#0000ff" />
+                    <Text style={styles.loadingText}>Saving...</Text>
+                  </View>
+                </View>
+              </Modal>
               <View
                 style={{
+                  margin: 20,
                   flexDirection: "row",
                   alignSelf: "center",
-                  margin: 15,
                 }}
               >
-                <View
-                  style={{
-                    margin: 20,
-                    flexDirection: "row",
-                  }}
-                >
-                  <Button title="Save" onPress={() => onSavePressed()} />
-                  <Button title="Cancel" onPress={() => onCancelPressed()} />
-                </View>
+                <Button title="Save" onPress={() => onSavePressed()} />
+                <Button title="Cancel" onPress={() => onCancelPressed()} />
               </View>
             </ScrollView>
           </KeyboardAvoidingView>
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
     height: 60,
     opacity: 1,
   },
-  testInputStyle: {
+  textInputStyle: {
     backgroundColor: "white",
 
     opacity: 1,
@@ -301,6 +301,24 @@ const styles = StyleSheet.create({
     height: "10%",
     shadowColor: "grey",
     shadowOpacity: 0.5,
+  },
+  modalBackground: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  activityIndicatorWrapper: {
+    backgroundColor: "#FFFFFF",
+    height: 100,
+    width: 200,
+    borderRadius: 10,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-around",
+  },
+  loadingText: {
+    fontSize: 16,
   },
 });
 

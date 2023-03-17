@@ -1,8 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { GlobalStateContext } from "./src/states/GlobalState";
-import HomeStack from "./src/routes/homeStack";
-import { NavigationContainer } from "@react-navigation/native";
+import Navigation from "./src/routes/routes.js";
 const App = () => {
   const [globalState, setGlobalStateNew] = useState({
     speakEnabled: false,
@@ -10,11 +9,8 @@ const App = () => {
 
   return (
     <GlobalStateContext.Provider value={{ globalState, setGlobalStateNew }}>
-      <NavigationContainer independent={true}>
-        <HomeStack />
-      </NavigationContainer>
+      <Navigation></Navigation>
     </GlobalStateContext.Provider>
-    // <RoutineScreen />
   );
 };
 export default App;

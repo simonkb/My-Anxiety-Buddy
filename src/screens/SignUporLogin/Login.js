@@ -15,7 +15,6 @@ import bg2 from "../../../assets/bg2.jpg";
 import bg3 from "../../../assets/bg3.jpg";
 import { useGlobalState, setGlobalState } from "../../states/state";
 import {
-  getAuth,
   signInWithEmailAndPassword,
   sendEmailVerification,
   onAuthStateChanged,
@@ -45,7 +44,6 @@ const Login = () => {
   const onLoginPressed = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed in
         const user = userCredential.user;
         if (user.emailVerified === false) {
           sendEmailVerification(auth.currentUser).then(() => {
@@ -56,15 +54,20 @@ const Login = () => {
           });
         } else {
           onAuthStateChanged(auth, async (user) => {
-            const docRef = doc(db, "Users", user.uid);
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-              setGlobalState("currentUser", user);
-              setGlobalState("isLoggedIn", true);
+            if (user !== null) {
+              const docRef = doc(db, "Users", user.uid);
+              const docSnap = await getDoc(docRef);
+              if (docSnap.exists()) {
+                setGlobalState("currentUser", user);
+                setGlobalState("isLoggedIn", true);
+              }
             }
           });
+          navigator.navigate("Main", {
+            screen: "Your Buddy",
+            params: { chatType: "default" },
+          });
         }
-        // ...
       })
       .catch((error) => {
         const errorCode = error.code;

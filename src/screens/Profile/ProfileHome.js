@@ -8,10 +8,6 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
-  Touchable,
-  Alert,
-  TouchableHighlight,
-  Spinner,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -27,10 +23,17 @@ import {
   onSnapshot,
   setDoc,
   getDoc,
+  getDocs,
+  query,
+  orderBy,
 } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
-import { getDatabase, ref, onValue } from "firebase/database";
-
+import Icon from "react-native-vector-icons/FontAwesome"; // import the FontAwesome icon library
+import Histogram from "./Histogram";
+import { BarChart } from "react-native-chart-kit";
+import Graph from "./Graph";
+//import BarGraph from "./BarGraph";
+import BarGraph from "./BarGraph2";
 const ProfileHome = ({ navigation }) => {
   let defaultBg = useGlobalState("defaultBackgroundImage");
   let currentBg;
@@ -46,81 +49,64 @@ const ProfileHome = ({ navigation }) => {
   const onSettingsPressed = () => {
     navigator.navigate("Settings");
   };
-
-  let [value, setValue] = useState("posts");
-
-  const Display = () => {
-    if (value === "followers") {
-      return (
-        <View>
-          <Text>All your followers will be listed here </Text>
-        </View>
-      );
-    } else if (value === "saved") {
-      return (
-        <View>
-          <Text>Your saved posts will appear here</Text>
-        </View>
-      );
-    } else {
-      return (
-        <View>
-          <Text>Your Posts will appear here</Text>
-        </View>
-      );
-    }
+  const [isCollapsed, setIsCollapsed] = useState(true);
+  const CollapsibleBar = ({ title, children }) => {
+    return (
+      <View
+        style={{
+          backgroundColor: "#f8f8f8",
+          borderRadius: 5,
+          marginBottom: 10,
+          overflow: "hidden",
+          width: "90%",
+        }}
+      >
+        <TouchableOpacity
+          style={styles.header}
+          onPress={() => setIsCollapsed(!isCollapsed)}
+        >
+          <Text style={{ fontWeight: "600" }}>{title}</Text>
+          <Icon
+            name={isCollapsed ? "chevron-down" : "chevron-up"}
+            size={20}
+            color="#555"
+          />
+        </TouchableOpacity>
+        {isCollapsed ? null : children}
+      </View>
+    );
   };
+
+  // let [value, setValue] = useState("posts");
+
+  // const Display = () => {
+  //   if (value === "followers") {
+  //     return (
+  //       <View>
+  //         <Text>All your followers will be listed here </Text>
+  //       </View>
+  //     );
+  //   } else if (value === "saved") {
+  //     return (
+  //       <View>
+  //         <Text>Your saved posts will appear here</Text>
+  //       </View>
+  //     );
+  //   } else {
+  //     return (
+  //       <View>
+  //         <Text>Your Posts will appear here</Text>
+  //       </View>
+  //     );
+  //   }
+  // };
   const [currentUser, setUser] = useState("Loading...");
   const [bio, setBio] = useState("Loading...");
-  /*if (useGlobalState("currentUser")[0] != null) {
-    currentUser = useGlobalState("currentUser")[0].username;
-    bio = useGlobalState("currentUser")[0].bio;
-  }*/
-  //   //onAuthStateChanged(auth, async (user) => {
-  //     const usersRef = collection(db, "Users");
-
-  //     if (user != null) {
-  //       const docRef = doc(db, "Users", user.uid);
-  //       const docSnap =  getDoc(docRef);
-
-  //     }
-  //  // });
-  // let id = useGlobalState("currentUser")[0];
-
-  // if (id != null) {
-  //   console.log(id + "This is id");
-  //   const db = getDatabase();
-
-  //   const url = "Users/" + "XsRboHvl1aTmmqmNOac2sbPBKrZ2";
-  //   const userRef = ref(db, url);
-  //   onValue(userRef, async (snapshot) => {
-  //     const data = await snapshot.val();
-  //     //updateStarCount(postElement, data);
-  //     console.log(data);
-  //     setUser(data);
-  //     setBio(data.bio);
-  //   });
-  // }
-  // const querySnapshot = getDocs(collection(db, "users"));
-  // querySnapshot.forEach((doc) => {
-  //   console.log(`${doc.id} => ${doc.data()}`);
-  // });
-  // async function readUser() {
-  //   const docRef = doc(db, "cities", "SF");
-  //   const docSnap = await getDoc(docRef);
-
-  //   if (docSnap.exists()) {
-  //     console.log("Document data:", docSnap.data());
-  //   } else {
-  //     console.log("No such document!");
-  //   }
-  // }
   onAuthStateChanged(auth, (user) => {
     if (user !== null && user.emailVerified) {
       const uid = user.uid;
       try {
         onSnapshot(doc(db, "Users", uid), (doc) => {
-          setGlobalState("currentUser", doc.data());
           setUser(doc.data().username);
           setBio(doc.data().bio);
         });
@@ -131,6 +117,35 @@ const ProfileHome = ({ navigation }) => {
       // User is signed out
     }
   });
+  const [anxietyData, setData] = useState([]);
+
+  useEffect(() => {
+    const currentUserId = auth.currentUser.uid;
+    const journalsRef = collection(db, "Users", currentUserId, "Sessions");
+    const q = query(journalsRef, orderBy("date", "asc"));
+    getDocs(q)
+      .then((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => doc.data());
+        const values = [];
+        for (let d in data) {
+          values.push({
+            date: new Date(data[d].date).toString().substring(0, 10),
+            level:
+              data[d].decision === "Severe Anxiety"
+                ? 4
+                : data[d].decision === "Mild Anxiety"
+                ? 2
+                : data[d].decision === "Moderate Anxiety"
+                ? 3
+                : 1,
+          });
+        }
+        setData(values);
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
+      });
+  }, [isCollapsed]);
 
   return (
     <View style={styles.container}>
@@ -182,13 +197,14 @@ const ProfileHome = ({ navigation }) => {
               flexDirection: "row",
               justifyContent: "center",
               margin: 0,
-              borderBottomWidth: 2,
+              borderBottomWidth: 10,
               right: 18,
               marginTop: 10,
               backgroundColor: "white",
+              borderBottomColor: "white",
             }}
           >
-            <View style={styles.topBarViews}>
+            {/* <View style={styles.topBarViews}>
               <TouchableOpacity
                 id="yourPosts"
                 onPress={() => setValue((value = "posts"))}
@@ -216,10 +232,27 @@ const ProfileHome = ({ navigation }) => {
                 <Text>Saved</Text>
                 <Text>3</Text>
               </TouchableOpacity>
-            </View>
+            </View> */}
           </View>
           <ScrollView>
-            <Display></Display>
+            <Text style={styles.title}>Your Activity Analytics</Text>
+            <CollapsibleBar title="Your GAD7 Analytics">
+              <View style={styles.container}>
+                {anxietyData.length > 0 ? (
+                  <BarGraph data={anxietyData} />
+                ) : (
+                  <Text>Loading</Text>
+                )}
+              </View>
+            </CollapsibleBar>
+
+            <CollapsibleBar title="Your Journal Analytics">
+              <Text>
+                This is the content for the Your Journal Analytics collapsible
+                bar
+              </Text>
+            </CollapsibleBar>
+            {/* <Display></Display> */}
           </ScrollView>
         </SafeAreaView>
       </ImageBackground>
@@ -237,6 +270,19 @@ const styles = StyleSheet.create({
   topBarViews: {
     width: "25%",
     alignContent: "center",
+  },
+  title: {
+    color: "#333", // color of the title text
+    fontSize: 20, // size of the title text
+    fontWeight: "bold", // make the text bold
+    marginVertical: 10,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
   },
 });
 

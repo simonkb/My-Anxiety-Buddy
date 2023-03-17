@@ -10,13 +10,14 @@ import { setGlobalState, useGlobalState } from "../states/state";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../config/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
-
 const Stack = createStackNavigator();
 const HomeStack = () => {
+  const [user, setUser] = React.useState(null);
   onAuthStateChanged(auth, async (user) => {
-    if (user != null) {
+    if (user !== null) {
       // User is signed in, see docs for a list of available properties
       // https://firebase.google.com/docs/reference/js/firebase.User
+      if (user.emailVerified) setUser(user);
       setGlobalState("isLoggedIn", user.emailVerified);
       const docRef = doc(db, "Users", user.uid);
       const docSnap = await getDoc(docRef);
@@ -37,7 +38,7 @@ const HomeStack = () => {
   });
   return (
     <Stack.Navigator>
-      {useGlobalState("isLoggedIn")[0] ? (
+      {user !== null ? (
         <Stack.Group>
           <Stack.Screen
             options={{ headerShown: false, gestureEnabled: false }}

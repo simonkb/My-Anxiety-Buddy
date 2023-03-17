@@ -55,13 +55,13 @@ const JournalChat = () => {
       const responseObj = {
         questions: journalList,
         responses: [response1, response2, response3],
-        date: new Date().toString(),
+        date: new Date().getTime(),
       };
       const currentUserId = auth.currentUser.uid;
       setDoc(doc(db, "/Users/" + currentUserId + "/Journals", Date()), {
         questions: journalList,
         responses: [response1, response2, response3],
-        date: new Date().toString(),
+        date: new Date().getTime(),
       });
       setJournalResponses([responseObj, ...journalResponses]);
       setResponse1("");
@@ -128,7 +128,8 @@ const JournalChat = () => {
             <TouchableOpacity key={index} style={styles.response}>
               <View>
                 <Text style={styles.dateText}>
-                  Your journal on {responseObj.date.substring(0, 16)}
+                  Your journal on{" "}
+                  {new Date(responseObj.date).toString().substring(0, 16)}
                 </Text>
               </View>
               <View style={styles.responses}>

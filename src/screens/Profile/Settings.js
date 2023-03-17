@@ -171,12 +171,10 @@ const Settings = () => {
               <Button
                 title="Logout"
                 onPress={() => {
-                  //const auth = getAuth();
                   signOut(auth)
                     .then(() => {
-                      setGlobalState("currentUser", null);
-                      setGlobalState("isLoggedIn", false);
                       Alert.alert("Success", "Logout successful!");
+                      //navigator.navigate("Auth");
                     })
                     .catch((error) => {
                       // An error happened.

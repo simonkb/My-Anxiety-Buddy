@@ -172,12 +172,14 @@ const GAD7Questionnaire = (props) => {
       console.log("Severe Anxiety");
     }
     const currentUserId = auth.currentUser.uid;
-    setDoc(doc(db, "/Users/" + currentUserId + "/Sessions", Date()), {
+    const date = new Date();
+
+    setDoc(doc(db, "/Users/" + currentUserId + "/Sessions", date.toString()), {
       GAD7Score: responses.slice(5, 12),
       decision: decision,
       averageHeartRate: 0,
       averageO2level: 0,
-      date: Date(),
+      date: date.getTime(),
     });
     props.handleOnPress("Done with GAD7", responses.slice(5, 12));
   }

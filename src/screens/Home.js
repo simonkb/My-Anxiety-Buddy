@@ -41,7 +41,7 @@ function BottomButtons() {
           headerShown: false,
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Community"
         component={community}
         options={{
@@ -58,7 +58,7 @@ function BottomButtons() {
           ),
           headerShown: false,
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Profile"
         component={Profile}

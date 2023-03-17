@@ -11,10 +11,8 @@ import bg1 from "../../../assets/bg1.jpeg";
 import bg2 from "../../../assets/bg2.jpg";
 import bg3 from "../../../assets/bg3.jpg";
 import { setGlobalState, useGlobalState } from "../../states/state.js";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-const TreatmentHome = () => {
+const TreatmentHome = (route, navigation) => {
   //Updating background
   let defaultBg = useGlobalState("defaultBackgroundImage");
   let currentBg;
@@ -34,20 +32,17 @@ const TreatmentHome = () => {
     navigator.navigate("Journals");
   };
   const onBreathingPressed = () => {
-    setGlobalState("chat", "breathing");
-    navigator.navigate("Home", {
+    navigator.navigate("Main", {
       screen: "Your Buddy",
       params: { chatType: "breathing" },
     });
   };
   const onBrainExercisePressed = () => {
-    setGlobalState("chat", "brain");
-    navigator.navigate("Home", {
+    navigator.navigate("Main", {
       screen: "Your Buddy",
       params: { chatType: "brain" },
     });
   };
-
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -66,6 +61,7 @@ const TreatmentHome = () => {
             marginVertical: 20,
             paddingTop: 10,
             top: 10,
+            marginTop: "30%",
           }}
         >
           <Text
