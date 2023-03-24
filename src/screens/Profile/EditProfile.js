@@ -42,9 +42,9 @@ const EditProfile = () => {
     username: "",
     firstName: "",
     lastName: "",
-    email: "",
-    phone: "",
-    birthDate: "",
+    email_address: "",
+    phone_number: "",
+    birthDate: "00/00/00",
     location: "",
     bio: "",
   });
@@ -167,14 +167,14 @@ const EditProfile = () => {
                 style={styles.textInputStyle}
                 placeholder="Email"
                 value={userData.email_address}
-                onChangeText={(text) => onChange("email", text)}
+                onChangeText={(text) => onChange("email_address", text)}
                 editable={false}
               />
               <TextInput
                 style={styles.textInputStyle}
                 placeholder="Phone"
                 value={userData.phone_number}
-                onChangeText={(text) => onChange("phone", text)}
+                onChangeText={(text) => onChange("phone_number", text)}
               />
               <View
                 style={{
@@ -205,6 +205,7 @@ const EditProfile = () => {
                   {show && (
                     <DateTimePicker
                       value={new Date(userData.birthDate)}
+                      date={new Date(userData.birthDate)}
                       mode={mode}
                       is24Hour={true}
                       display="default"

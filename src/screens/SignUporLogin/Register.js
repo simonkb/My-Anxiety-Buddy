@@ -69,7 +69,6 @@ const Register = () => {
           .then(async (userCredential) => {
             // Signed in
             const user = userCredential.user;
-
             sendEmailVerification(auth.currentUser)
               .then(() => {
                 Alert.alert(

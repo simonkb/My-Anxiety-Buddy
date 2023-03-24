@@ -68,7 +68,8 @@ const MainStack = () => {
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="lungs" color={color} size={size} />
           ),
-          headerShown: false,
+          headerShown: true,
+          headerLeft: null,
         }}
       />
       <Tab.Screen

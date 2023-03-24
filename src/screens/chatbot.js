@@ -27,6 +27,7 @@ import * as Speech from "expo-speech";
 import Loading from "../loading";
 import { useContext } from "react";
 import { GlobalStateContext } from "../states/GlobalState";
+import ReadSmartWatch from "./smartWatch";
 const Chat = (props) => {
   const { globalState, setGlobalStateNew } = useContext(GlobalStateContext);
 
@@ -168,7 +169,10 @@ const ReadOutLoudButton = () => {
     // }
     if (globalState.speakEnabled) {
       setGlobalStateNew({ ...globalState, speakEnabled: false });
+      // globalState.Speech.pause();
     } else {
+      //globalState.Speech.resume();
+
       setGlobalStateNew({ ...globalState, speakEnabled: true });
     }
   };
@@ -1019,10 +1023,19 @@ const Chatbot = ({ route, navigation }) => {
           <ScrollView
             style={{
               flex: 1,
+              height: "100%",
             }}
           >
             <DisplayChat> </DisplayChat>
           </ScrollView>
+        </View>
+        <View
+          style={{
+            position: "absolute",
+            bottom: 100,
+          }}
+        >
+          <ReadSmartWatch></ReadSmartWatch>
         </View>
 
         <View

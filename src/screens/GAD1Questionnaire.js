@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Button } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import * as Speech from "expo-speech";
 import { auth, db } from "../config/firebaseConfig";
 import {
-  collection,
   doc,
   setDoc,
   query,
@@ -29,14 +27,14 @@ const GAD7Questionnaire = (props) => {
       //
       try {
         if (globalState.speakEnabled)
-          await Speech.speak(text, { language: "en-US" });
+          globalState.Speech.speak(text, { language: "en-US" });
       } catch (error) {
         console.error(error);
       }
     };
-    useEffect(() => {
-      handleReadOutLoudPress(props.message);
-    });
+    // useEffect(() => {
+    handleReadOutLoudPress(props.message);
+    // });
     return (
       <View
         style={

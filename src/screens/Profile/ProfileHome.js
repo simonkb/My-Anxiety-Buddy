@@ -27,7 +27,7 @@ import {
 } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import Icon from "react-native-vector-icons/FontAwesome";
-import BarGraph from "./BarGraph2";
+import BarGraph from "./BarGraph";
 const ProfileHome = ({ navigation }) => {
   let defaultBg = useGlobalState("defaultBackgroundImage");
   let currentBg;

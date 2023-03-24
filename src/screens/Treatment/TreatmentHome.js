@@ -53,7 +53,6 @@ const TreatmentHome = (route, navigation) => {
         <View
           style={{
             width: "90%",
-            //height: "22%",
             backgroundColor: "rgba(217, 217, 217, 0.53)",
             borderRadius: 15,
             left: "5%",
@@ -61,7 +60,6 @@ const TreatmentHome = (route, navigation) => {
             marginVertical: 20,
             paddingTop: 10,
             top: 10,
-            marginTop: "30%",
           }}
         >
           <Text
