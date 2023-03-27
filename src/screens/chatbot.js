@@ -1035,7 +1035,7 @@ const Chatbot = ({ route, navigation }) => {
             bottom: 100,
           }}
         >
-          <ReadSmartWatch></ReadSmartWatch>
+          {/* <ReadSmartWatch></ReadSmartWatch> */}
         </View>
 
         <View

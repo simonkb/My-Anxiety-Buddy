@@ -33,7 +33,8 @@
         "android.permission.BLUETOOTH_CONNECT",
         "android.permission.BLUETOOTH_SCAN",
         "android.permission.BLUETOOTH_ADVERTISE"
-      ]
+      ],
+      "package": "com.simonkd.My"
     },
     "web": {
       "favicon": "./assets/icon.png"
