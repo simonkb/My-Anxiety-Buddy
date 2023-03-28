@@ -25,7 +25,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath('com.android.tools.build:gradle:7.1.1')
+        classpath('com.android.tools.build:gradle:7.0.4')
         classpath('com.facebook.react:react-native-gradle-plugin')
         classpath('de.undercouch:gradle-download-task:5.0.1')
         // NOTE: Do not place your application dependencies here; they belong
@@ -70,3 +70,7 @@ configurations.all {
     force 'com.facebook.react:react-native:0.69.6'
   }
 }
+//compileJava {
+//    sourceCompatibility = 19
+//    targetCompatibility = 19
+//}
