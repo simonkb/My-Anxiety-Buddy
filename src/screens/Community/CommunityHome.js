@@ -26,7 +26,7 @@ const CommunityHome = ({ navigation }) => {
     currentBg = bg1;
   }
   //
-  //This is to try
+  //This is to try changing nothing
   const navigator = useNavigation();
   const onUsersPressed = () => {
     navigator.navigate("CommunityUsers");
