@@ -62,8 +62,8 @@ const Register = () => {
   };
   const onSignUpPressed = () => {
     //Validate, confirm password and save details.
-    if (password != null) {
-      if ((password.length >= 6) & (password === passwordConfirm)) {
+    if (password != "" && password.length >= 6) {
+      if (password === passwordConfirm) {
         //const auth = getAuth();
         createUserWithEmailAndPassword(auth, email, password)
           .then(async (userCredential) => {
@@ -84,11 +84,9 @@ const Register = () => {
               username: username,
               email_address: email,
               phone_number: phoneNumber,
-              birthDate: "1/1/2000",
             }).catch((error) => {
               Alert.alert(error.errorCode, error.message);
             });
-
             navigator.navigate("Login");
             // if (user.emailVerified) {
             //   const usersRef = collection(db, "Users");
@@ -148,8 +146,10 @@ const Register = () => {
         //   }
         // });
       } else {
-        Alert.alert("error", "Password doesn't match");
+        Alert.alert("error", "Password doesn't match.");
       }
+    } else {
+      Alert.alert("error", "Password length should at least 6 characters");
     }
   };
   return (

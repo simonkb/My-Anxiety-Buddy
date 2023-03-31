@@ -24,6 +24,7 @@ import { setGlobalState, useGlobalState } from "../../states/state.js";
 import { db, auth } from "../../config/firebaseConfig";
 import { collection, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { sendEmailVerification } from "firebase/auth";
 
 const EditProfile = () => {
   //Updating background
@@ -51,7 +52,7 @@ const EditProfile = () => {
 
   const fetchUserData = async () => {
     const user = auth.currentUser;
-    if (user !== null && user.emailVerified) {
+    if (user !== null) {
       const uid = user.uid;
       try {
         onSnapshot(doc(db, "Users", uid), (doc) => {
@@ -75,15 +76,25 @@ const EditProfile = () => {
     const user = auth.currentUser;
     const usersRef = collection(db, "Users");
     if (user) {
-      await updateDoc(doc(usersRef, user.uid), userData)
-        .then(() => {
-          Alert.alert("Success", "Changes made successfully");
-          setIsLoading(false);
-          navigator.navigate("Settings");
-        })
-        .catch((error) => {
-          console.error("Error updating document: ", error);
+      if (user.emailVerified) {
+        userData.email_address = user.email;
+        await updateDoc(doc(usersRef, user.uid), userData)
+          .then(() => {
+            Alert.alert("Success", "Changes made successfully");
+            setIsLoading(false);
+            navigator.navigate("Settings");
+          })
+          .catch((error) => {
+            console.error("Error updating document: ", error);
+          });
+      } else {
+        sendEmailVerification(auth.currentUser).then(() => {
+          Alert.alert(
+            "Error",
+            "Please verify your email. We have sent you the link for verification. Please check your inbox, junk or trash mail box as well. "
+          );
         });
+      }
     }
   };
 

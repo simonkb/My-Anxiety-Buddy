@@ -162,13 +162,18 @@ const AuthenticationStack = () => {
 };
 const Navigation = () => {
   const [user, setUser] = React.useState(null);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+
   onAuthStateChanged(auth, (user) => {
     setUser(user);
+    if (user) {
+      setIsLoggedIn(user.emailVerified);
+    }
   });
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {user ? (
+        {isLoggedIn && user ? (
           <Stack.Screen
             name="Main"
             component={MainStack}
