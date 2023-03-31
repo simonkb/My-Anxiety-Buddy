@@ -68,7 +68,7 @@ const MainStack = () => {
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="lungs" color={color} size={size} />
           ),
-          headerShown: true,
+          headerShown: false,
           headerLeft: null,
         }}
       />
@@ -91,7 +91,7 @@ const TreatmentStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        options={{ headerShown: false, gestureEnabled: false }}
+        options={{ headerShown: true, gestureEnabled: false }}
         name="Treatment Home"
         component={TreatmentHome}
       />

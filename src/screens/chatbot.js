@@ -28,6 +28,8 @@ import Loading from "../loading";
 import { useContext } from "react";
 import { GlobalStateContext } from "../states/GlobalState";
 import ReadSmartWatch from "./smartWatch";
+import ReadAppleWatch from "./smartwatch2";
+import AppleWatchSensorScreen from "./smartwatch3";
 const Chat = (props) => {
   const { globalState, setGlobalStateNew } = useContext(GlobalStateContext);
 
@@ -1035,7 +1037,9 @@ const Chatbot = ({ route, navigation }) => {
             bottom: 100,
           }}
         >
-          <ReadSmartWatch></ReadSmartWatch>
+          {/* <ReadSmartWatch></ReadSmartWatch> */}
+          {/* <ReadAppleWatch></ReadAppleWatch> */}
+          {/* <AppleWatchSensorScreen /> */}
         </View>
 
         <View
