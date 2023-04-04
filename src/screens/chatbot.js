@@ -15,7 +15,7 @@ import {
   Platform,
   ActivityIndicator,
 } from "react-native";
-import bg1 from "../../assets/bg1.jpeg";
+import bg1 from "../../assets/bg1.png";
 import bg2 from "../../assets/bg2.jpg";
 import bg3 from "../../assets/bg3.jpg";
 import { useGlobalState, setGlobalState } from "../states/state.js";
@@ -30,15 +30,14 @@ import { GlobalStateContext } from "../states/GlobalState";
 import ReadSmartWatch from "./smartWatch";
 import ReadAppleWatch from "./smartwatch2";
 import AppleWatchSensorScreen from "./smartwatch3";
+import FaceEmoji from "./Treatment/FaceEmoji";
+
 const Chat = (props) => {
   const { globalState, setGlobalStateNew } = useContext(GlobalStateContext);
-
   // Function to handle the "Read Text Out Loud" button press
   const handleReadOutLoudPress = async (text) => {
     // Start the TTS engine and pass the text as a parameter
     // Initialize the TTS engine
-    //
-
     try {
       // alert('Permission to use speech not granted');
       if (globalState.speakEnabled)
@@ -277,103 +276,103 @@ const Chatbot = ({ route, navigation }) => {
           useNativeDriver: false,
         }),
       ]).start();
-      const DisplayBreathingAnime = () => {
-        Animated.timing(scaleChat, {
-          toValue: 0,
-          duration: 10,
-          useNativeDriver: false,
-        }).start();
-        Animated.timing(scaleButton, {
-          toValue: 0,
-          duration: 10,
-          useNativeDriver: false,
-        }).start();
-        Animated.timing(scaleButton2, {
-          toValue: 0,
-          duration: 5,
-          useNativeDriver: false,
-        }).start();
-        Animated.sequence([
-          Animated.loop(
-            Animated.parallel([
-              Animated.sequence([
-                Animated.timing(fadeAnim4, {
-                  toValue: 1,
-                  duration: 1000,
-                  useNativeDriver: false,
-                }),
+      // const DisplayBreathingAnime = () => {
+      //   Animated.timing(scaleChat, {
+      //     toValue: 0,
+      //     duration: 10,
+      //     useNativeDriver: false,
+      //   }).start();
+      //   Animated.timing(scaleButton, {
+      //     toValue: 0,
+      //     duration: 10,
+      //     useNativeDriver: false,
+      //   }).start();
+      //   Animated.timing(scaleButton2, {
+      //     toValue: 0,
+      //     duration: 5,
+      //     useNativeDriver: false,
+      //   }).start();
+      //   Animated.sequence([
+      //     Animated.loop(
+      //       Animated.parallel([
+      //         Animated.sequence([
+      //           Animated.timing(fadeAnim4, {
+      //             toValue: 1,
+      //             duration: 1000,
+      //             useNativeDriver: false,
+      //           }),
 
-                Animated.timing(scaleAnim, {
-                  toValue: 7,
-                  duration: 4000,
-                  useNativeDriver: false,
-                }),
-                Animated.timing(scaleAnim, {
-                  toValue: 7,
-                  duration: 7000,
-                  useNativeDriver: false,
-                }),
-                Animated.timing(scaleAnim, {
-                  toValue: 1,
-                  duration: 8000,
-                  useNativeDriver: false,
-                }),
-              ]),
-              Animated.sequence([
-                Animated.timing(scaleReady, {
-                  toValue: 0,
-                  duration: 990,
-                  useNativeDriver: false,
-                }),
+      //           Animated.timing(scaleAnim, {
+      //             toValue: 7,
+      //             duration: 4000,
+      //             useNativeDriver: false,
+      //           }),
+      //           Animated.timing(scaleAnim, {
+      //             toValue: 7,
+      //             duration: 7000,
+      //             useNativeDriver: false,
+      //           }),
+      //           Animated.timing(scaleAnim, {
+      //             toValue: 1,
+      //             duration: 8000,
+      //             useNativeDriver: false,
+      //           }),
+      //         ]),
+      //         Animated.sequence([
+      //           Animated.timing(scaleReady, {
+      //             toValue: 0,
+      //             duration: 990,
+      //             useNativeDriver: false,
+      //           }),
 
-                Animated.timing(scaleInhale, {
-                  toValue: 8,
-                  duration: 3995,
-                  useNativeDriver: false,
-                }),
-                Animated.timing(scaleInhale, {
-                  toValue: 0,
-                  duration: 5,
-                  useNativeDriver: false,
-                }),
-                Animated.timing(scaleHold, {
-                  toValue: 8,
-                  duration: 1,
-                  useNativeDriver: false,
-                }),
-                Animated.timing(scaleHold, {
-                  toValue: 8,
-                  duration: 6998,
-                  useNativeDriver: false,
-                }),
-                Animated.timing(scaleHold, {
-                  toValue: 0,
-                  duration: 1,
-                  useNativeDriver: false,
-                }),
-                Animated.timing(scaleExhale, {
-                  toValue: 8,
-                  duration: 5,
-                  useNativeDriver: false,
-                }),
-                Animated.timing(scaleExhale, {
-                  toValue: 0,
-                  duration: 7995,
-                  useNativeDriver: false,
-                }),
-              ]),
-            ]),
-            {
-              iterations: 2,
-            }
-          ),
-          Animated.timing(scaleButton2, {
-            toValue: 1,
-            duration: 5,
-            useNativeDriver: false,
-          }),
-        ]).start();
-      };
+      //           Animated.timing(scaleInhale, {
+      //             toValue: 8,
+      //             duration: 3995,
+      //             useNativeDriver: false,
+      //           }),
+      //           Animated.timing(scaleInhale, {
+      //             toValue: 0,
+      //             duration: 5,
+      //             useNativeDriver: false,
+      //           }),
+      //           Animated.timing(scaleHold, {
+      //             toValue: 8,
+      //             duration: 1,
+      //             useNativeDriver: false,
+      //           }),
+      //           Animated.timing(scaleHold, {
+      //             toValue: 8,
+      //             duration: 6998,
+      //             useNativeDriver: false,
+      //           }),
+      //           Animated.timing(scaleHold, {
+      //             toValue: 0,
+      //             duration: 1,
+      //             useNativeDriver: false,
+      //           }),
+      //           Animated.timing(scaleExhale, {
+      //             toValue: 8,
+      //             duration: 5,
+      //             useNativeDriver: false,
+      //           }),
+      //           Animated.timing(scaleExhale, {
+      //             toValue: 0,
+      //             duration: 7995,
+      //             useNativeDriver: false,
+      //           }),
+      //         ]),
+      //       ]),
+      //       {
+      //         iterations: 2,
+      //       }
+      //     ),
+      //     Animated.timing(scaleButton2, {
+      //       toValue: 1,
+      //       duration: 5,
+      //       useNativeDriver: false,
+      //     }),
+      //   ]).start();
+      // };
 
       Animated.sequence([
         Animated.timing(fadeAnim5, {
@@ -439,7 +438,8 @@ const Chatbot = ({ route, navigation }) => {
               },
             ]}
           >
-            <View
+            <FaceEmoji></FaceEmoji>
+            {/* <View
               style={{
                 alignSelf: "center",
                 position: "relative",
@@ -452,9 +452,10 @@ const Chatbot = ({ route, navigation }) => {
                 size={50}
                 name={"lungs"}
               ></MaterialCommunityIcons>
-            </View>
+            </View> */}
           </Animated.View>
-          <Animated.View
+
+          {/* <Animated.View
             style={[
               {
                 transform: [
@@ -593,7 +594,7 @@ const Chatbot = ({ route, navigation }) => {
                 <Button title="Done" onPress={AfterBreathing}></Button>
               </Animated.View>
             </View>
-          </Animated.View>
+          </Animated.View> */}
         </>
       );
     } else if (route.params.chatType === "default") {
@@ -1033,13 +1034,18 @@ const Chatbot = ({ route, navigation }) => {
         </View>
         <View
           style={{
-            position: "absolute",
-            bottom: 100,
+            //position: "absolute",
+            bottom: 200,
+            flexDirection: "row",
           }}
         >
           {/* <ReadSmartWatch></ReadSmartWatch> */}
           {/* <ReadAppleWatch></ReadAppleWatch> */}
           {/* <AppleWatchSensorScreen /> */}
+          {/* <FaceEmoji></FaceEmoji> */}
+          {/* <CylinderAnimation></CylinderAnimation> */}
+          {/* <FacialMovement /> */}
+          {/* <BreathingGuide></BreathingGuide> */}
         </View>
 
         <View
