@@ -10,9 +10,9 @@ import {
 import { Audio } from "expo-av";
 const FaceEmoji = () => {
   const soundObject = new Audio.Sound();
-  const loadSound = async () => {
-    await soundObject.loadAsync(require("../../../assets/breathing.wav"));
-  };
+  //const loadSound = async () => {
+  soundObject.loadAsync(require("../../../assets/breathing2.mp3"));
+  // };
 
   const breathAnim = useRef(new Animated.Value(0)).current;
   const inhaleScale = breathAnim.interpolate({
@@ -125,13 +125,15 @@ const FaceEmoji = () => {
 
   const toggleAnimation = async () => {
     if (isAnimating) {
+      if (soundObject._loaded) {
+        await soundObject.stopAsync();
+      }
       stopAnimation();
-      await soundObject.pauseAsync();
-      await soundObject.unloadAsync();
     } else {
-      loadSound();
+      if (soundObject._loaded) {
+        await soundObject.playAsync();
+      }
       startAnimation();
-      await soundObject.playAsync();
     }
   };
 

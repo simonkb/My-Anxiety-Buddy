@@ -84,6 +84,7 @@ const Register = () => {
               username: username,
               email_address: email,
               phone_number: phoneNumber,
+              birthDate: 0,
             }).catch((error) => {
               Alert.alert(error.errorCode, error.message);
             });

@@ -45,7 +45,7 @@ const EditProfile = () => {
     lastName: "",
     email_address: "",
     phone_number: "",
-    birthDate: "00/00/00",
+    birthDate: new Date().getTime(),
     location: "",
     bio: "",
   });
@@ -78,6 +78,7 @@ const EditProfile = () => {
     if (user) {
       if (user.emailVerified) {
         userData.email_address = user.email;
+        //userData.birthDate = userData.birthDate.getTime();
         await updateDoc(doc(usersRef, user.uid), userData)
           .then(() => {
             Alert.alert("Success", "Changes made successfully");
@@ -223,7 +224,7 @@ const EditProfile = () => {
                       onChange={(event, selectedDate) => {
                         const currentDate = selectedDate;
                         setShow(Platform.OS === "ios");
-                        onChange("birthDate", currentDate);
+                        onChange("birthDate", currentDate.getTime());
                       }}
                     />
                   )}

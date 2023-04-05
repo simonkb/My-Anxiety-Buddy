@@ -41,12 +41,14 @@ const JournalChat = () => {
     "What are you grateful for today?",
     "What did you learn today?",
     "What was your biggest challenge today?",
+    "Feel free to write about anything else. (optional)",
   ]);
   const [journalResponses, setJournalResponses] = useState([]);
 
   const [response1, setResponse1] = useState("");
   const [response2, setResponse2] = useState("");
   const [response3, setResponse3] = useState("");
+  const [response4, setResponse4] = useState("");
 
   const handleResponseSubmit = () => {
     if ((response1 === "") | (response2 === "") | (response3 === "")) {
@@ -54,19 +56,20 @@ const JournalChat = () => {
     } else {
       const responseObj = {
         questions: journalList,
-        responses: [response1, response2, response3],
+        responses: [response1, response2, response3, response4],
         date: new Date().getTime(),
       };
       const currentUserId = auth.currentUser.uid;
       setDoc(doc(db, "/Users/" + currentUserId + "/Journals", Date()), {
         questions: journalList,
-        responses: [response1, response2, response3],
+        responses: [response1, response2, response3, response4],
         date: new Date().getTime(),
       });
       setJournalResponses([responseObj, ...journalResponses]);
       setResponse1("");
       setResponse2("");
       setResponse3("");
+      setResponse4("");
     }
   };
   useEffect(() => {
@@ -102,14 +105,18 @@ const JournalChat = () => {
                       ? response1
                       : index === 1
                       ? response2
-                      : response3
+                      : index === 2
+                      ? response3
+                      : response4
                   }
                   onChangeText={
                     index === 0
                       ? setResponse1
                       : index === 1
                       ? setResponse2
-                      : setResponse3
+                      : index === 2
+                      ? setResponse3
+                      : setResponse4
                   }
                 />
               </View>
@@ -146,6 +153,11 @@ const JournalChat = () => {
 
                 <Text style={styles.responseText}>
                   {responseObj.responses[2]}
+                </Text>
+                <Text>{responseObj.questions[3]}</Text>
+
+                <Text style={styles.responseText}>
+                  {responseObj.responses[3]}
                 </Text>
               </View>
             </TouchableOpacity>

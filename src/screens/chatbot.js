@@ -15,7 +15,7 @@ import {
   Platform,
   ActivityIndicator,
 } from "react-native";
-import bg1 from "../../assets/bg1.png";
+import bg1 from "../../assets/bg1.jpeg";
 import bg2 from "../../assets/bg2.jpg";
 import bg3 from "../../assets/bg3.jpg";
 import { useGlobalState, setGlobalState } from "../states/state.js";
@@ -31,6 +31,7 @@ import ReadSmartWatch from "./smartWatch";
 import ReadAppleWatch from "./smartwatch2";
 import AppleWatchSensorScreen from "./smartwatch3";
 import FaceEmoji from "./Treatment/FaceEmoji";
+//import HealthData from "./Treatment/Healthdata";
 
 const Chat = (props) => {
   const { globalState, setGlobalStateNew } = useContext(GlobalStateContext);
@@ -1025,28 +1026,36 @@ const Chatbot = ({ route, navigation }) => {
         >
           <ScrollView
             style={{
-              flex: 1,
-              height: "100%",
+              flexGrow: 1,
+              padding: 10,
             }}
           >
             <DisplayChat> </DisplayChat>
+            {/* <HealthData /> */}
+            {Platform.OS === "android" && (
+              <View
+                style={{
+                  height: 500,
+                  position: "relative",
+                }}
+              ></View>
+            )}
           </ScrollView>
         </View>
-        <View
+        {/* <View
           style={{
-            //position: "absolute",
             bottom: 200,
             flexDirection: "row",
           }}
         >
-          {/* <ReadSmartWatch></ReadSmartWatch> */}
-          {/* <ReadAppleWatch></ReadAppleWatch> */}
-          {/* <AppleWatchSensorScreen /> */}
-          {/* <FaceEmoji></FaceEmoji> */}
-          {/* <CylinderAnimation></CylinderAnimation> */}
-          {/* <FacialMovement /> */}
-          {/* <BreathingGuide></BreathingGuide> */}
-        </View>
+          <ReadSmartWatch></ReadSmartWatch> 
+          <ReadAppleWatch></ReadAppleWatch>
+          <AppleWatchSensorScreen />
+          <FaceEmoji></FaceEmoji>
+          <CylinderAnimation></CylinderAnimation>
+          <FacialMovement />
+          <BreathingGuide></BreathingGuide>
+        </View> */}
 
         <View
           style={{
