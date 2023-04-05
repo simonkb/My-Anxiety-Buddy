@@ -9,11 +9,7 @@ import {
 } from "react-native";
 import { Audio } from "expo-av";
 const FaceEmoji = () => {
-  const soundObject = new Audio.Sound();
-  //const loadSound = async () => {
-  soundObject.loadAsync(require("../../../assets/breathing2.mp3"));
-  // };
-
+  const [soundObject, setSoundObject] = useState(new Audio.Sound());
   const breathAnim = useRef(new Animated.Value(0)).current;
   const inhaleScale = breathAnim.interpolate({
     inputRange: [0.25, 0.5, 0.75],
@@ -25,8 +21,9 @@ const FaceEmoji = () => {
   });
   const anim = useRef(new Animated.Value(0)).current;
   const [isAnimating, setIsAnimating] = useState(false);
-  const startAnimation = () => {
-    setIsAnimating(true);
+  const startAnimation = async () => {
+    // await loadSound();
+    //setIsAnimating(true);
     Animated.loop(
       Animated.parallel([
         Animated.sequence([
@@ -109,8 +106,9 @@ const FaceEmoji = () => {
       ])
     ).start();
   };
-  const stopAnimation = () => {
-    setIsAnimating(false);
+  const stopAnimation = async () => {
+    // await unLoadSound();
+    //setIsAnimating(false);
     anim.stopAnimation();
     breathAnim.stopAnimation();
     scaleExhale.stopAnimation();
@@ -122,17 +120,35 @@ const FaceEmoji = () => {
     scaleHold.setValue(0);
     scaleInhale.setValue(0);
   };
+  const [soundLoaded, setSoundLoaded] = useState(false);
+
+  const loadSound = async () => {
+    if (!soundLoaded) {
+      await soundObject.loadAsync(require("../../../assets/breathing.mp3"));
+      await soundObject.setIsLoopingAsync(true);
+      setSoundLoaded(true);
+    }
+    await soundObject.playAsync();
+  };
+
+  const unLoadSound = async () => {
+    if (!soundLoaded) {
+      await soundObject.loadAsync(require("../../../assets/breathing.mp3"));
+      setSoundLoaded(true);
+    }
+    await soundObject.pauseAsync();
+    await soundObject.unloadAsync();
+    setSoundLoaded(false);
+  };
 
   const toggleAnimation = async () => {
     if (isAnimating) {
-      if (soundObject._loaded) {
-        await soundObject.stopAsync();
-      }
+      await unLoadSound();
+      setIsAnimating(false);
       stopAnimation();
     } else {
-      if (soundObject._loaded) {
-        await soundObject.playAsync();
-      }
+      await loadSound();
+      setIsAnimating(true);
       startAnimation();
     }
   };

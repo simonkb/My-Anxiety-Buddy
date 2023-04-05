@@ -33,7 +33,8 @@
         "android.permission.BLUETOOTH_CONNECT",
         "android.permission.BLUETOOTH_SCAN",
         "android.permission.BLUETOOTH_ADVERTISE"
-      ]
+      ],
+      "package": "com.simonkd.My"
     },
     "web": {
       "favicon": "./assets/icon.png"
@@ -50,6 +51,11 @@
           ]
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "92882374-abfd-4b3d-84bb-08c5f04b16d3"
+      }
+    }
   }
 }
