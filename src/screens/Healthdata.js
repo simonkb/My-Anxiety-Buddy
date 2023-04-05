@@ -269,3 +269,90 @@ const HealthData = () => {
 };
 
 export default HealthData;
+
+// what will happen to my project if i change my react native version from 0.69.1 to 0.63.3 how can i do that? the following is my package.json file
+// {
+// "name": "my",
+// "version": "1.0.0",
+// "scripts": {
+// "start": "expo start --dev-client",
+// "android": "expo run:android",
+// "ios": "expo run:ios",
+// "web": "expo start --web"
+// },
+// "dependencies": {
+// "@react-native-async-storage/async-storage": "github:react-native-async-storage/async-storage",
+// "@react-native-community/datetimepicker": "6.2.0",
+// "@react-navigation/bottom-tabs": "^6.4.0",
+// "@react-navigation/native": "^6.0.12",
+// "@react-navigation/native-stack": "^6.8.0",
+// "@react-navigation/stack": "^6.2.3",
+// "@types/react": "~18.0.0",
+// "@types/react-native": "~0.69.1",
+// "expo": "~46.0.9",
+// "expo-bluetooth": "^0.0.0",
+// "expo-speech": "~10.3.0",
+// "expo-splash-screen": "~0.16.2",
+// "expo-status-bar": "~1.4.0",
+// "expo-updates": "~0.14.7",
+// "firebase": "^9.13.0",
+// "google-sign-in": "^3.0.3",
+// "react": "18.0.0",
+// "react-dom": "18.0.0",
+// "react-hooks-global-state": "^2.0.0",
+// "react-native": "0.69.6",
+// "react-native-ble-manager": "^9.0.0",
+// "react-native-ble-plx": "^2.0.3",
+// "react-native-bluetooth-classic": "^1.60.0-rc.25",
+// "react-native-chart-kit": "^6.12.0",
+// "react-native-gesture-handler": "~2.5.0",
+// "react-native-google-fit": "^0.19.1",
+// "react-native-health": "^1.14.0",
+// "react-native-healthkit": "^0.0.1",
+// "react-native-push-notification": "^8.1.1",
+// "react-native-reanimated": "^3.0.2",
+// "react-native-safe-area-context": "4.3.1",
+// "react-native-screens": "~3.15.0",
+// "react-native-svg": "^9.13.3",
+// "react-native-tts": "^4.1.0",
+// "react-native-web": "~0.18.7",
+// "react-native-web-bluetooth": "^0.0.0-alpha.1",
+// "react-navigation": "^4.4.4",
+// "react-navigation-stack": "^2.10.4",
+// "typescript": "^4.6.3",
+// "victory-native": "^36.6.8",
+// "webpack": "^4.46.0",
+// "with-rn-bluetooth-classic": "^1.0.5"
+// },
+// "devDependencies": {
+// "@babel/core": "^7.12.9",
+// "@expo/webpack-config": "^0.16.27",
+// "webpack-cli": "^4.10.0",
+// "webpack-dev-middleware": "^5.3.3",
+// "webpack-dev-server": "^3.11.3",
+// "webpack-hot-middleware": "^2.25.2"
+// },
+// "private": true
+// }Downgrading your React Native version from 0.69.1 to 0.63.3 may cause compatibility issues with some of the packages in your project. Before downgrading, make sure to check the compatibility of your dependencies with the target React Native version.
+
+// To downgrade React Native, follow these steps:
+
+// 1. Update the "react-native" version in your "dependencies" section in the package.json file:
+
+// ```json
+// "react-native": "0.63.3",
+// ```
+
+// 2. Update the "@types/react-native" version in your "dependencies" section in the package.json file:
+
+// ```json
+// "@types/react-native": "~0.63.3",
+// ```
+
+// 3. Delete the "node_modules" folder and any lock files (package-lock.json or yarn.lock) in your project directory.
+
+// 4. Run `npm install` or `yarn` to install the updated dependencies.
+
+// 5. Test your app thoroughly to identify any compatibility issues or breaking changes due to the downgrade. Be prepared to update your code or find alternative packages if needed.
+
+// Remember to backup your project or use a version control system like Git before making these changes, so you can easily revert if necessary.

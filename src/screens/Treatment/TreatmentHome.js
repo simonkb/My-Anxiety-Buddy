@@ -11,6 +11,7 @@ import bg1 from "../../../assets/bg1.jpeg";
 import bg2 from "../../../assets/bg2.jpg";
 import bg3 from "../../../assets/bg3.jpg";
 import { setGlobalState, useGlobalState } from "../../states/state.js";
+import OverlayComponent from "../OverlayComponent";
 
 const TreatmentHome = (route, navigation) => {
   //Updating background
@@ -43,6 +44,13 @@ const TreatmentHome = (route, navigation) => {
       params: { chatType: "brain" },
     });
   };
+
+  const [overlayVisible, setOverlayVisible] = useState(false);
+
+  const onBreathingPressed1 = () => {
+    setOverlayVisible(true);
+  };
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -87,6 +95,7 @@ const TreatmentHome = (route, navigation) => {
               </Text>
             </View>
           </TouchableOpacity>
+          
         </View>
 
         <View
@@ -187,6 +196,13 @@ const TreatmentHome = (route, navigation) => {
             </View>
           </TouchableOpacity> */}
         </View>
+
+        {overlayVisible && (
+          <OverlayComponent
+            isVisible={overlayVisible}
+            onClose={() => setOverlayVisible(false)}
+          />
+        )}
       </ImageBackground>
     </View>
   );
