@@ -32,6 +32,7 @@ import ReadAppleWatch from "./smartwatch2";
 import AppleWatchSensorScreen from "./smartwatch3";
 import FaceEmoji from "./Treatment/FaceEmoji";
 //import HealthData from "./Treatment/Healthdata";
+import HealthDataComponent from "./Treatment/HealthDataCompent";
 
 const Chat = (props) => {
   const { globalState, setGlobalStateNew } = useContext(GlobalStateContext);
@@ -1056,6 +1057,14 @@ const Chatbot = ({ route, navigation }) => {
           <FacialMovement />
           <BreathingGuide></BreathingGuide>
         </View> */}
+        <View
+          style={{
+            left: 50,
+            bottom: 50,
+          }}
+        >
+          <HealthDataComponent></HealthDataComponent>
+        </View>
 
         <View
           style={{

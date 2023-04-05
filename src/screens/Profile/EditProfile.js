@@ -83,7 +83,7 @@ const EditProfile = () => {
           .then(() => {
             Alert.alert("Success", "Changes made successfully");
             setIsLoading(false);
-            navigator.navigate("Settings");
+            navigator.navigate("Settings", { username: userData.username });
           })
           .catch((error) => {
             console.error("Error updating document: ", error);
@@ -100,7 +100,7 @@ const EditProfile = () => {
   };
 
   const onCancelPressed = () => {
-    navigator.navigate("Settings");
+    navigator.navigate("Settings", { username: userData.username });
   };
 
   const onChange = (key, value) => {

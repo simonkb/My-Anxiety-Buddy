@@ -19,8 +19,9 @@ import bg1 from "../../../assets/bg1.jpeg";
 import bg2 from "../../../assets/bg2.jpg";
 import bg3 from "../../../assets/bg3.jpg";
 import { setGlobalState, useGlobalState } from "../../states/state.js";
+import { useRoute } from "@react-navigation/native";
 
-const Settings = () => {
+const Settings = (navigation) => {
   let [value, setValue] = useState("all");
   let defaultBg = useGlobalState("defaultBackgroundImage");
   let currentBg;
@@ -187,6 +188,8 @@ const Settings = () => {
       );
     }
   };
+  const route = useRoute();
+  const { username } = route.params;
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -216,11 +219,12 @@ const Settings = () => {
             fontSize: 26,
           }}
         >
-          Username
+          {username}
         </Text>
         <TouchableOpacity style={styles.button} onPress={onEditProfilePressed}>
           <Text style={styles.buttonText}>Edit profile</Text>
         </TouchableOpacity>
+
         <ScrollView
           style={{
             width: "100%",

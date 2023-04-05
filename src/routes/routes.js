@@ -118,6 +118,7 @@ const ProfileStack = () => {
       />
       <Stack.Screen
         options={{ headerShown: true, gestureEnabled: false }}
+        initialParams={{ username: "-" }}
         name="Settings"
         component={Settings}
       />

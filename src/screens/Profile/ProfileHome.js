@@ -28,7 +28,9 @@ import {
 import { onAuthStateChanged } from "firebase/auth";
 import Icon from "react-native-vector-icons/FontAwesome";
 import BarGraph from "./BarGraph";
-const ProfileHome = ({ navigation }) => {
+import { useRoute } from "@react-navigation/native";
+
+const ProfileHome = ({ route, navigation }) => {
   let defaultBg = useGlobalState("defaultBackgroundImage");
   let currentBg;
   if (defaultBg[0] === "bgOrange") {
@@ -40,7 +42,7 @@ const ProfileHome = ({ navigation }) => {
   }
   const navigator = useNavigation();
   const onSettingsPressed = () => {
-    navigator.navigate("Settings");
+    navigator.navigate("Settings", { username: currentUser });
   };
   const [isCollapsed, setIsCollapsed] = useState(true);
   const CollapsibleBar = ({ title, children }) => {
@@ -93,6 +95,7 @@ const ProfileHome = ({ navigation }) => {
   //     );
   //   }
   // };
+
   const [currentUser, setUser] = useState("Loading...");
   const [bio, setBio] = useState("Loading...");
   onAuthStateChanged(auth, (user) => {
