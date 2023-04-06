@@ -52,7 +52,7 @@ const ProfileHome = ({ navigation }) => {
           borderRadius: 5,
           marginBottom: 10,
           overflow: "hidden",
-          width: "91%",
+          width: "90%",
         }}
       >
         <TouchableOpacity
