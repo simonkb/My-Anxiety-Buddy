@@ -60,7 +60,7 @@ const TreatmentHome = (route, navigation) => {
           <View
             style={{
               width: "90%",
-              backgroundColor: "rgba(217, 217, 217, 0.53)",
+              backgroundColor: "rgba(255, 255, 255, 0.53)",
               borderRadius: 15,
               left: "5%",
               right: "5%",
@@ -100,7 +100,7 @@ const TreatmentHome = (route, navigation) => {
                 setTypeOfOverlay("BreathingGuide");
               }}
             >
-              <View style={styles.shortTermRow1}>
+              <View style={styles.iButton}>
                 <Text
                   style={{
                     fontWeight: "bold",
@@ -120,7 +120,7 @@ const TreatmentHome = (route, navigation) => {
             style={{
               width: "90%",
               //height: "70%",
-              backgroundColor: "rgba(217, 217, 217, 0.53)",
+              backgroundColor: "rgba(255, 255, 255, 0.53)",
               borderRadius: 15,
               left: "5%",
               right: "5%",
@@ -159,7 +159,7 @@ const TreatmentHome = (route, navigation) => {
                 setTypeOfOverlay("BrainExercise");
               }}
             >
-              <View style={styles.shortTermRow2}>
+              <View style={styles.iButton}>
                 <Text
                   style={{
                     fontWeight: "bold",
@@ -194,7 +194,7 @@ const TreatmentHome = (route, navigation) => {
                 setTypeOfOverlay("ShortReadings");
               }}
             >
-              <View style={styles.shortTermRow3}>
+              <View style={styles.iButton}>
                 <Text
                   style={{
                     fontWeight: "bold",
@@ -229,7 +229,7 @@ const TreatmentHome = (route, navigation) => {
                 setTypeOfOverlay("Journaling");
               }}
             >
-              <View style={styles.shortTermRow4}>
+              <View style={styles.iButton}>
                 <Text
                   style={{
                     fontWeight: "bold",
@@ -239,7 +239,7 @@ const TreatmentHome = (route, navigation) => {
                     padding: 4,
                   }}
                 >
-                  !
+                  i
                 </Text>
               </View>
             </TouchableOpacity>
@@ -313,10 +313,10 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     alignItems: "center",
     margin: "0%",
-    top: "-156%",
+    top: "-175%",
     start: -23,
   },
-  shortTermRow1: {
+  iButton: {
     width: 35,
     height: 30,
     backgroundColor: "#ffffff",
@@ -324,29 +324,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     alignItems: "center",
     margin: 0,
-    top: "-156%",
-    start: -23,
-  },
-  shortTermRow3: {
-    width: 35,
-    height: 30,
-    backgroundColor: "#ffffff",
-    borderRadius: 15,
-    alignSelf: "flex-end",
-    alignItems: "center",
-    margin: 0,
-    top: "-156%",
-    start: -23,
-  },
-  shortTermRow4: {
-    width: 35,
-    height: 30,
-    backgroundColor: "#ffffff",
-    borderRadius: 15,
-    alignSelf: "flex-end",
-    alignItems: "center",
-    margin: 0,
-    top: "-156%",
+    top: "-175%",
     start: -23,
   },
 });

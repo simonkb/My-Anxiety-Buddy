@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import {
+  Block,
   ImageBackground,
   StyleSheet,
   View,
@@ -148,9 +149,24 @@ const ProfileHome = ({ navigation }) => {
         style={styles.bgImage}
       >
         <SafeAreaView style={{ left: 18 }}>
-          <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
+          <View
+            style={{
+              height: "30%",
+              borderRadius: "10%",
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              margin: "3%",
+              borderBottomWidth: 10,
+              right: 18,
+              marginTop: "7%",
+              backgroundColor: "white",
+              borderBottomColor: "white",
+              backgroundColor: "rgba(255, 255, 255, 0.53)",
+              paddingStart: "3%",
+            }}
+          >
             <View>
-              <MaterialCommunityIcons name="account" color={"gray"} size={30}>
+              <MaterialCommunityIcons name="account" color={"gray"} size={40}>
                 <Text
                   name="profileUsername"
                   style={{ color: "black", fontSize: 18 }}
@@ -161,12 +177,20 @@ const ProfileHome = ({ navigation }) => {
 
               <Text
                 name="profileBio"
-                style={{ width: "60%", paddingTop: 5, fontSize: 12 }}
+                style={{
+                  width: "100%",
+                  paddingTop: 5,
+                  fontSize: 16,
+                  paddingStart: "20%",
+                  paddingTop: "1%",
+                }}
               >
+                {" "}
                 {bio}
               </Text>
             </View>
-            <View
+
+            <View // setting
               style={{
                 padding: 5,
                 right: 20,
@@ -185,19 +209,7 @@ const ProfileHome = ({ navigation }) => {
               </TouchableOpacity>
             </View>
           </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              margin: 0,
-              borderBottomWidth: 10,
-              right: 18,
-              marginTop: 10,
-              backgroundColor: "white",
-              borderBottomColor: "white",
-            }}
-          >
-            {/* <View style={styles.topBarViews}>
+          {/* <View style={styles.topBarViews}>
               <TouchableOpacity
                 id="yourPosts"
                 onPress={() => setValue((value = "posts"))}
@@ -226,7 +238,6 @@ const ProfileHome = ({ navigation }) => {
                 <Text>3</Text>
               </TouchableOpacity>
             </View> */}
-          </View>
           <ScrollView>
             <Text style={styles.title}>Your Activity Analytics</Text>
             <CollapsibleBar title="Your GAD7 Analytics">

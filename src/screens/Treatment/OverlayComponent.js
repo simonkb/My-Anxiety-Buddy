@@ -56,7 +56,7 @@ const OverlayComponent = ({ isVisible, onClose, type }) => {
         opacity: 0.95,
         borderRadius: 15,
         padding: 10,
-        height: "80%",
+        height: "100%",
       }}
     >
       <Text
@@ -71,7 +71,7 @@ const OverlayComponent = ({ isVisible, onClose, type }) => {
         style={{
           backgroundColor: "blue",
           borderRadius: 5,
-          marginTop: 20,
+          marginTop: 300,
           padding: 10,
           width: 60,
           alignSelf: "center",
