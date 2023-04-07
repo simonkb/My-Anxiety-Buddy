@@ -1,5 +1,6 @@
 {
   "expo": {
+
     "name": "Anti-Anxiety",
     "slug": "Anti-Anxiety",
     "version": "1.0.0",
@@ -19,43 +20,35 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.simonkd.My"
+      "bundleIdentifier": "com.simonkd.My",
+      "bitcode": false
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "permissions": [
-        "android.permission.BLUETOOTH",
-        "android.permission.BLUETOOTH_ADMIN",
-        "android.permission.ACCESS_FINE_LOCATION",
-        "android.permission.BLUETOOTH_CONNECT",
-        "android.permission.BLUETOOTH_SCAN",
-        "android.permission.BLUETOOTH_ADVERTISE"
-      ],
       "package": "com.simonkd.My"
     },
     "web": {
       "favicon": "./assets/icon.png"
     },
-    "plugins": [
-      [
-        "with-rn-bluetooth-classic",
-        {
-          "peripheralUsageDescription": "Allow myDevice to check bluetooth peripheral info",
-          "alwaysUsageDescription": "Allow myDevice to always use bluetooth info",
-          "protocols": [
-            "com.myCompany.p1",
-            "com.myCompany.p2"
-          ]
-        }
-      ]
-    ],
     "extra": {
       "eas": {
         "projectId": "92882374-abfd-4b3d-84bb-08c5f04b16d3"
       }
-    }
+    },
+    
+    "plugins": [
+      [
+      "react-native-health",
+      {
+        "isClinicalDataEnabled": true,
+        "healthSharePermission": "Custom health share permission",
+        "healthUpdatePermission": "Custom health update permission",
+        "healthClinicalDescription": "Custom health share permission for clinical data"
+      }
+    ]
+    ]
   }
 }

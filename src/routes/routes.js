@@ -76,7 +76,6 @@ const MainStack = () => {
         name="Profile"
         component={ProfileStack}
         options={{
-          tabBarBadge: 5,
           tabBarLabel: "Profile",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />

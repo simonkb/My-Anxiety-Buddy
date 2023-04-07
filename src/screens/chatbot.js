@@ -4,16 +4,13 @@ import {
   StyleSheet,
   View,
   Image,
-  SafeAreaView,
   ScrollView,
   Text,
   TouchableOpacity,
   Animated,
   Easing,
   Button,
-  Alert,
   Platform,
-  ActivityIndicator,
 } from "react-native";
 import bg1 from "../../assets/bg1.jpeg";
 import bg2 from "../../assets/bg2.jpg";
@@ -21,20 +18,14 @@ import bg3 from "../../assets/bg3.jpg";
 import { useGlobalState, setGlobalState } from "../states/state.js";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import GAD7Questionnaire from "./GAD1Questionnaire";
-import { db, auth } from "../config/firebaseConfig";
+import { db } from "../config/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import * as Speech from "expo-speech";
 import Loading from "../loading";
 import { useContext } from "react";
 import { GlobalStateContext } from "../states/GlobalState";
-import ReadSmartWatch from "./smartWatch";
-import ReadAppleWatch from "./smartwatch2";
-import AppleWatchSensorScreen from "./smartwatch3";
-//import FaceEmoji from "./Treatment/FaceEmoji";
-//import HealthData from "./Treatment/Healthdata";
-import HealthDataComponent from "./Treatment/HealthDataCompent";
-//import Trial from "./Treatment/trial";
 import { Audio } from "expo-av";
+import ReadData from "./HealthKit";
 
 const Chat = (props) => {
   const { globalState, setGlobalStateNew } = useContext(GlobalStateContext);
@@ -280,104 +271,6 @@ const Chatbot = ({ route, navigation }) => {
           useNativeDriver: false,
         }),
       ]).start();
-      // const DisplayBreathingAnime = () => {
-      //   Animated.timing(scaleChat, {
-      //     toValue: 0,
-      //     duration: 10,
-      //     useNativeDriver: false,
-      //   }).start();
-      //   Animated.timing(scaleButton, {
-      //     toValue: 0,
-      //     duration: 10,
-      //     useNativeDriver: false,
-      //   }).start();
-      //   Animated.timing(scaleButton2, {
-      //     toValue: 0,
-      //     duration: 5,
-      //     useNativeDriver: false,
-      //   }).start();
-      //   Animated.sequence([
-      //     Animated.loop(
-      //       Animated.parallel([
-      //         Animated.sequence([
-      //           Animated.timing(fadeAnim4, {
-      //             toValue: 1,
-      //             duration: 1000,
-      //             useNativeDriver: false,
-      //           }),
-
-      //           Animated.timing(scaleAnim, {
-      //             toValue: 7,
-      //             duration: 4000,
-      //             useNativeDriver: false,
-      //           }),
-      //           Animated.timing(scaleAnim, {
-      //             toValue: 7,
-      //             duration: 7000,
-      //             useNativeDriver: false,
-      //           }),
-      //           Animated.timing(scaleAnim, {
-      //             toValue: 1,
-      //             duration: 8000,
-      //             useNativeDriver: false,
-      //           }),
-      //         ]),
-      //         Animated.sequence([
-      //           Animated.timing(scaleReady, {
-      //             toValue: 0,
-      //             duration: 990,
-      //             useNativeDriver: false,
-      //           }),
-
-      //           Animated.timing(scaleInhale, {
-      //             toValue: 8,
-      //             duration: 3995,
-      //             useNativeDriver: false,
-      //           }),
-      //           Animated.timing(scaleInhale, {
-      //             toValue: 0,
-      //             duration: 5,
-      //             useNativeDriver: false,
-      //           }),
-      //           Animated.timing(scaleHold, {
-      //             toValue: 8,
-      //             duration: 1,
-      //             useNativeDriver: false,
-      //           }),
-      //           Animated.timing(scaleHold, {
-      //             toValue: 8,
-      //             duration: 6998,
-      //             useNativeDriver: false,
-      //           }),
-      //           Animated.timing(scaleHold, {
-      //             toValue: 0,
-      //             duration: 1,
-      //             useNativeDriver: false,
-      //           }),
-      //           Animated.timing(scaleExhale, {
-      //             toValue: 8,
-      //             duration: 5,
-      //             useNativeDriver: false,
-      //           }),
-      //           Animated.timing(scaleExhale, {
-      //             toValue: 0,
-      //             duration: 7995,
-      //             useNativeDriver: false,
-      //           }),
-      //         ]),
-      //       ]),
-      //       {
-      //         iterations: 2,
-      //       }
-      //     ),
-      //     Animated.timing(scaleButton2, {
-      //       toValue: 1,
-      //       duration: 5,
-      //       useNativeDriver: false,
-      //     }),
-      //   ]).start();
-      // };
-
       Animated.sequence([
         Animated.timing(fadeAnim5, {
           toValue: 1,
@@ -1410,28 +1303,14 @@ const Chatbot = ({ route, navigation }) => {
             )}
           </ScrollView>
         </View>
-        {/* <View
-          style={{
-            bottom: 200,
-            flexDirection: "row",
-          }}
-        >
-          <ReadSmartWatch></ReadSmartWatch> 
-          <ReadAppleWatch></ReadAppleWatch>
-          <AppleWatchSensorScreen />
-          <FaceEmoji></FaceEmoji>
-          <CylinderAnimation></CylinderAnimation>
-          <FacialMovement />
-          <BreathingGuide></BreathingGuide>
-        </View> */}
+
         <View
           style={{
-            left: 50,
-            bottom: 50,
+            left: 20,
+            bottom: 20,
           }}
         >
-          <HealthDataComponent></HealthDataComponent>
-          {/* <Trial></Trial> */}
+          {Platform.OS === "ios" && <ReadData></ReadData>}
         </View>
 
         <View

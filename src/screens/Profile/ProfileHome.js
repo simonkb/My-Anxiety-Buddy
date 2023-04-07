@@ -242,12 +242,12 @@ const ProfileHome = ({ route, navigation }) => {
               </View>
             </CollapsibleBar>
 
-            <CollapsibleBar title="Your Journal Analytics">
+            {/* <CollapsibleBar title="Your Journal Analytics">
               <Text>
                 This is the content for the Your Journal Analytics collapsible
                 bar
               </Text>
-            </CollapsibleBar>
+            </CollapsibleBar> */}
             {/* <Display></Display> */}
           </ScrollView>
         </SafeAreaView>
