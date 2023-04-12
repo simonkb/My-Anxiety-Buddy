@@ -89,63 +89,12 @@ const Register = () => {
               Alert.alert(error.errorCode, error.message);
             });
             navigator.navigate("Login");
-            // if (user.emailVerified) {
-            //   const usersRef = collection(db, "Users");
-            //   await setDoc(doc(usersRef, user.uid), {
-            //     username: username,
-            //     email_address: email,
-            //     phone_number: phoneNumber,
-            //     birthDate: "00/00/00",
-            //   })
-            //     .then(() => {
-            //       navigator.navigate("Login");
-            //     })
-            //     .catch((error) => {
-            //       Alert.alert(error.errorCode, error.message);
-            //     });
-            // }
-
-            // const newCollectionRef = doc(usersRef, user.uid).collection(
-            //   "Sessions"
-            // );
-            // await setDoc(doc(newCollectionRef, "na"), {
-            //   default: "default",
-            // });
-            // await newCollectionRef.add({
-            //   data-field-1: "value-1",
-            //   data-field-2: "value-2",
-            // })
           })
           .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             Alert.alert(errorCode, errorMessage);
           });
-
-        // onAuthStateChanged(auth, async (user) => {
-        //   if (user.emailVerified) {
-        //     const usersRef = collection(db, "Users");
-        //     usersRef
-        //       .doc(user.uid)
-        //       .set({
-        //         username: username,
-        //         email_address: email,
-        //         phone_number: phoneNumber,
-        //         birthDate: "00/00/00",
-        //       })
-        //       .then(() => {
-        //         console.log("User data has been added to the Users collection");
-        //         setIsLoading(false);
-        //       })
-        //       .catch((error) => {
-        //         console.error(error);
-        //       });
-        //   } else {
-        //     console.log(
-        //       "User email is not verified. Wait for the email verification."
-        //     );
-        //   }
-        // });
       } else {
         Alert.alert("error", "Password doesn't match.");
       }

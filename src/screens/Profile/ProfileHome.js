@@ -71,31 +71,6 @@ const ProfileHome = ({ route, navigation }) => {
       </View>
     );
   };
-
-  // let [value, setValue] = useState("posts");
-
-  // const Display = () => {
-  //   if (value === "followers") {
-  //     return (
-  //       <View>
-  //         <Text>All your followers will be listed here </Text>
-  //       </View>
-  //     );
-  //   } else if (value === "saved") {
-  //     return (
-  //       <View>
-  //         <Text>Your saved posts will appear here</Text>
-  //       </View>
-  //     );
-  //   } else {
-  //     return (
-  //       <View>
-  //         <Text>Your Posts will appear here</Text>
-  //       </View>
-  //     );
-  //   }
-  // };
-
   const [currentUser, setUser] = useState("Loading...");
   const [bio, setBio] = useState("Loading...");
   onAuthStateChanged(auth, (user) => {
@@ -199,37 +174,7 @@ const ProfileHome = ({ route, navigation }) => {
               backgroundColor: "white",
               borderBottomColor: "white",
             }}
-          >
-            {/* <View style={styles.topBarViews}>
-              <TouchableOpacity
-                id="yourPosts"
-                onPress={() => setValue((value = "posts"))}
-              >
-                <Text>Posts</Text>
-                <Text>3</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.topBarViews}>
-              <TouchableOpacity
-                id="yourFollowers"
-                onPress={() => setValue((value = "followers"))}
-              >
-                <Text>Followers</Text>
-                <Text>3</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.topBarViews}>
-              <TouchableOpacity
-                id="yourSaved"
-                onPress={() => setValue((value = "saved"))}
-              >
-                <Text>Saved</Text>
-                <Text>3</Text>
-              </TouchableOpacity>
-            </View> */}
-          </View>
+          ></View>
           <ScrollView>
             <Text style={styles.title}>Your Activity Analytics</Text>
             <CollapsibleBar title="Your GAD7 Analytics">
@@ -241,14 +186,6 @@ const ProfileHome = ({ route, navigation }) => {
                 )}
               </View>
             </CollapsibleBar>
-
-            {/* <CollapsibleBar title="Your Journal Analytics">
-              <Text>
-                This is the content for the Your Journal Analytics collapsible
-                bar
-              </Text>
-            </CollapsibleBar> */}
-            {/* <Display></Display> */}
           </ScrollView>
         </SafeAreaView>
       </ImageBackground>

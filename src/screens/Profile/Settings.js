@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import { signOut } from "firebase/auth";
 import { auth } from "../../config/firebaseConfig";
-
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
