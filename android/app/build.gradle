@@ -339,6 +339,11 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+    // for google-fit
+    implementation 'com.google.android.gms:play-services-fitness:20.0.0'
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
+    implementation "com.google.android.gms:play-services-base:+"
+
 }
 
 if (isNewArchitectureEnabled()) {

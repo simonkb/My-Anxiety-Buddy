@@ -26,6 +26,7 @@ import { useContext } from "react";
 import { GlobalStateContext } from "../states/GlobalState";
 import { Audio } from "expo-av";
 import ReadData from "./HealthKit";
+import ReadDataAndroid from "./GoogleTsx";
 
 const Chat = (props) => {
   const { globalState, setGlobalStateNew } = useContext(GlobalStateContext);
@@ -1292,7 +1293,6 @@ const Chatbot = ({ route, navigation }) => {
             }}
           >
             <DisplayChat> </DisplayChat>
-            {/* <HealthData /> */}
             {Platform.OS === "android" && (
               <View
                 style={{
@@ -1311,6 +1311,7 @@ const Chatbot = ({ route, navigation }) => {
           }}
         >
           {Platform.OS === "ios" && <ReadData></ReadData>}
+          {Platform.OS === "android" && <ReadDataAndroid></ReadDataAndroid>}
         </View>
 
         <View
