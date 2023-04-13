@@ -23,7 +23,6 @@ import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
 } from "firebase/auth";
-import { updateProfile, onAuthStateChanged } from "firebase/auth";
 import { collection, doc, setDoc } from "firebase/firestore";
 
 const Register = () => {
@@ -60,46 +59,108 @@ const Register = () => {
           Alert.alert(error.code, error.message);
         });
   };
+  const onLoginPressed = () => {
+    navigator.navigate("Login");
+  };
+
+  var tester =
+    /^[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
+  const isValidEmail = (email) => {
+    if (!email) return false;
+
+    var emailParts = email.split("@");
+
+    if (emailParts.length !== 2) return false;
+
+    var account = emailParts[0];
+    var address = emailParts[1];
+
+    if (account.length > 64) return false;
+    else if (address.length > 255) return false;
+
+    var domainParts = address.split(".");
+
+    if (
+      domainParts.some(function (part) {
+        return part.length > 63;
+      })
+    )
+      return false;
+
+    return tester.test(email);
+  };
+
+  const validateInput = () => {
+    // Validate the email address
+    if (!email && !password && !passwordConfirm && !username) {
+      alert("Please fill out all required fields");
+      return false;
+    }
+    if (!isValidEmail(email)) {
+      alert("Please enter a valid email address.");
+      return false;
+    }
+
+    // Validate the password
+    if (!password || password.length < 6) {
+      alert("Please enter a password with at least 6 characters.");
+      return false;
+    }
+
+    // Validate the confirmed password
+    if (password !== passwordConfirm) {
+      alert("Passwords do not match.");
+      return false;
+    }
+
+    // Validate the phone number (optional)
+    if (phoneNumber && !/^\d{10}$/.test(phoneNumber)) {
+      alert("Please enter a 10-digit phone number.");
+      return false;
+    }
+
+    // Validate the username
+    if (!username) {
+      alert("Please enter your username.");
+      return false;
+    }
+
+    // All input is valid
+    return true;
+  };
+
   const onSignUpPressed = () => {
-    //Validate, confirm password and save details.
-    if (password != "" && password.length >= 6) {
-      if (password === passwordConfirm) {
-        //const auth = getAuth();
-        createUserWithEmailAndPassword(auth, email, password)
-          .then(async (userCredential) => {
-            // Signed in
-            const user = userCredential.user;
-            sendEmailVerification(auth.currentUser)
-              .then(() => {
-                Alert.alert(
-                  "Verify",
-                  "Verification email sent, please check your email."
-                );
-              })
-              .catch((error) => {
-                Alert.alert(error.code, error.message);
-              });
-            const usersRef = collection(db, "Users");
-            await setDoc(doc(usersRef, user.uid), {
-              username: username,
-              email_address: email,
-              phone_number: phoneNumber,
-              birthDate: 0,
-            }).catch((error) => {
-              Alert.alert(error.errorCode, error.message);
+    if (validateInput()) {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(async (userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          sendEmailVerification(auth.currentUser)
+            .then(() => {
+              Alert.alert(
+                "Verify",
+                "Verification email sent, please check your email."
+              );
+            })
+            .catch((error) => {
+              Alert.alert(error.code, error.message);
             });
-            navigator.navigate("Login");
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            Alert.alert(errorCode, errorMessage);
+          const usersRef = collection(db, "Users");
+          await setDoc(doc(usersRef, user.uid), {
+            username: username,
+            email_address: email,
+            phone_number: phoneNumber,
+            birthDate: 0,
+          }).catch((error) => {
+            Alert.alert(error.errorCode, error.message);
           });
-      } else {
-        Alert.alert("error", "Password doesn't match.");
-      }
-    } else {
-      Alert.alert("error", "Password length should at least 6 characters");
+          navigator.navigate("Login");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          Alert.alert(errorCode, errorMessage);
+        });
     }
   };
   return (
@@ -116,8 +177,16 @@ const Register = () => {
             <ActivityIndicator size="large" />
           </View>
         )} */}
-        <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
-          <ScrollView>
+        <KeyboardAvoidingView behavior="height">
+          <ScrollView
+            contentContainerStyle={{
+              flex: 1,
+              width: "100%",
+              height: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <Text style={styles.title}>Anti-anxiety</Text>
             <View style={styles.signUpRectangle}>
               <TextInput
@@ -159,7 +228,7 @@ const Register = () => {
                 style={styles.input}
                 onChangeText={onChangeText}
                 value={username}
-                placeholder="Username (optional)"
+                placeholder="Username"
                 autoCorrect={false}
               />
             </View>
@@ -172,6 +241,12 @@ const Register = () => {
                 onPress={resend()}
               ></Button>
             )}
+            <TouchableOpacity onPress={onLoginPressed}>
+              <Text style={styles.signUpText}>
+                Already have an account?
+                <Text style={{ color: "#2962FF" }}> Login</Text>
+              </Text>
+            </TouchableOpacity>
           </ScrollView>
         </KeyboardAvoidingView>
       </ImageBackground>
@@ -181,53 +256,54 @@ const Register = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
   },
   bgImage: {
-    flex: 1,
-    justifyContent: "center",
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
   },
   signUpRectangle: {
-    justifyContent: "center",
-    alignSelf: "center",
-    width: "80%",
-    height: "55%",
-    borderRadius: 10,
-    backgroundColor: "rgba(255, 255, 255, 255)",
-    opacity: 0.9,
+    minWidth: "90%",
+    maxWidth: "95%",
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    padding: 20,
+    alignItems: "center",
   },
   title: {
     textAlign: "center",
     color: "rgba(85,82,82,1)",
     fontSize: 32,
-    //fontFamily: "Arial",
     letterSpacing: -0.18,
-    margin: 40,
+    marginBottom: 20,
   },
   button: {
-    width: 165,
-    height: 45,
-    alignSelf: "center",
-    backgroundColor: "rgba(142,94,181,1)",
-    borderRadius: 15,
-    margin: 60,
-    padding: 8,
+    backgroundColor: "#2962FF",
+    borderRadius: 10,
+    padding: 10,
+    marginTop: 20,
   },
   buttonText: {
-    color: "white",
-    alignSelf: "center",
-    fontSize: 18,
+    color: "#fff",
+    textAlign: "center",
+    fontSize: 20,
   },
   input: {
-    height: "12%",
-    margin: "3%",
+    minWidth: "90%",
+    maxWidth: "95%",
+    height: 40,
+    marginBottom: 20,
     borderWidth: 1,
-    paddingLeft: 10,
+    borderColor: "#ccc",
     borderRadius: 10,
-    borderColor: "darkgrey",
-    backgroundColor: "white",
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  signUpText: {
+    color: "#fff",
+    marginTop: 20,
+    textAlign: "center",
     fontSize: 18,
-    borderWidth: 0.5,
   },
 });
 export default Register;

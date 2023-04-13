@@ -54,7 +54,7 @@ const ReadDataAndroid = () => {
 
     //setRespiratoryRate(await GoogleFit.getRespiratoryRateSamples(opt));
     setBloodOxygen(await GoogleFit.getOxygenSaturationSamples(opt));
-    console.log(bloodOxygen);
+    //console.log(bloodOxygen);
   }
 
   const [avgHR, setAvgHR] = useState<number>(0);
