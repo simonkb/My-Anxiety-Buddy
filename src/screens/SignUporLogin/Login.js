@@ -41,40 +41,94 @@ const Login = () => {
   const onSignUpPressed = () => {
     navigator.navigate("Register");
   };
-  const onLoginPressed = () => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        if (user)
-          if (user.emailVerified === false) {
-            sendEmailVerification(auth.currentUser).then(() => {
-              Alert.alert(
-                "error",
-                "Please verify your email. A new verification email has been sent."
-              );
-            });
-          } else {
-            onAuthStateChanged(auth, async (user) => {
-              if (user !== null) {
-                const docRef = doc(db, "Users", user.uid);
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) {
-                  setGlobalState("currentUser", user);
-                  setGlobalState("isLoggedIn", true);
-                }
-              }
-            });
-            navigator.navigate("Main", {
-              screen: "Your Buddy",
-              params: { chatType: "default" },
-            });
-          }
+  var tester =
+    /^[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
+  const isValidEmail = (email) => {
+    if (!email) return false;
+
+    var emailParts = email.split("@");
+
+    if (emailParts.length !== 2) return false;
+
+    var account = emailParts[0];
+    var address = emailParts[1];
+
+    if (account.length > 64) return false;
+    else if (address.length > 255) return false;
+
+    var domainParts = address.split(".");
+
+    if (
+      domainParts.some(function (part) {
+        return part.length > 63;
       })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        Alert.alert(errorCode, errorMessage);
-      });
+    )
+      return false;
+
+    return tester.test(email);
+  };
+
+  const validateInput = () => {
+    // Validate the email address
+    if (!email && !password) {
+      alert("Please enter your email and password");
+      return false;
+    }
+    if (!isValidEmail(email)) {
+      alert("Please enter a valid email address.");
+      return false;
+    }
+    if (!password) {
+      alert("Please enter your password.");
+      return false;
+    }
+    return true;
+  };
+
+  const onLoginPressed = () => {
+    if (validateInput())
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          if (user)
+            if (user.emailVerified === false) {
+              sendEmailVerification(auth.currentUser).then(() => {
+                Alert.alert(
+                  "error",
+                  "Please verify your email. A new verification email has been sent."
+                );
+              });
+            } else {
+              onAuthStateChanged(auth, async (user) => {
+                if (user !== null) {
+                  const docRef = doc(db, "Users", user.uid);
+                  const docSnap = await getDoc(docRef);
+                  if (docSnap.exists()) {
+                    setGlobalState("currentUser", user);
+                    setGlobalState("isLoggedIn", true);
+                  }
+                }
+              });
+              navigator.navigate("Main", {
+                screen: "Your Buddy",
+                params: { chatType: "default" },
+              });
+            }
+        })
+        .catch((error) => {
+          if (error.code === "auth/wrong-password") {
+            alert("Incorrect password. Please try again.");
+          } else if (error.code === "auth/missing-email") {
+            alert("Please enter your email address");
+          } else if (error.code === "auth/user-not-found") {
+            alert(
+              "No user found with that email. Please check your email address and try again."
+            );
+          } else {
+            alert("An error occurred. Please try again later.");
+            alert(error);
+          }
+        });
   };
   const onForgetPassPressed = () => {
     navigator.navigate("Forget Password");

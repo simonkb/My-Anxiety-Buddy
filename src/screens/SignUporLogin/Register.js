@@ -157,9 +157,21 @@ const Register = () => {
           navigator.navigate("Login");
         })
         .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          Alert.alert(errorCode, errorMessage);
+          if (error.code === "auth/invalid-email") {
+            alert("Please enter a valid email address.");
+          } else if (error.code === "auth/weak-password") {
+            alert(
+              "Please choose a stronger password with at least 8 characters, including uppercase and lowercase letters, numbers, and symbols."
+            );
+          } else if (error.code === "auth/email-already-in-use") {
+            alert(
+              "This email address is already in use. Please try signing in or use a different email address."
+            );
+          } else {
+            alert(
+              "There was a problem signing up. Please check your internet connection and try again."
+            );
+          }
         });
     }
   };
