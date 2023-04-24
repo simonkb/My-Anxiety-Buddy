@@ -28,8 +28,8 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { db } from "../../config/firebaseConfig";
-
 import * as Speech from "expo-speech";
+import MarkdownDisplay from "react-native-markdown-display";
 
 const Readings = () => {
   //Updating background
@@ -47,6 +47,7 @@ const Readings = () => {
 
   var i = 0;
   const [isReading, setIsReading] = useState(false);
+
   const handleReadOutLoudPress = (text) => {
     // Start the TTS engine and pass the text as a parameter
     // Initialize the TTS engine
@@ -64,6 +65,7 @@ const Readings = () => {
     //   Speech.stop();
     // }
   };
+
   const Display = () => {
     if (value === "quotes") {
       const [allQuotes, setQuotes] = useState("");
@@ -314,6 +316,7 @@ const Readings = () => {
             expanded: false,
             viewsCount: doc.data().viewsCount,
           };
+          //console.log(doc.data().body);
           list.push(temp);
         });
         setState({ items: list });
@@ -396,8 +399,8 @@ const Readings = () => {
                   </MaterialCommunityIcons>
                 </TouchableOpacity>
                 {item.expanded && (
-                  <View>
-                    <TouchableOpacity
+                  <View style={{ padding: 20 }}>
+                    {/* <TouchableOpacity
                       style={{ marginBottom: 20, marginTop: 20 }}
                       onPress={() => {
                         handleReadOutLoudPress(item.content);
@@ -414,7 +417,7 @@ const Readings = () => {
                           position: "absolute",
                         }}
                       ></MaterialCommunityIcons>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     {/* 
                     {isReading ? (
                       <TouchableOpacity
@@ -432,13 +435,21 @@ const Readings = () => {
                       </TouchableOpacity>
                     )} */}
 
-                    <Text
+                    {/* <Text
                       style={{
                         padding: 15,
                       }}
                     >
                       {item.content}
-                    </Text>
+                    </Text> */}
+                    {/* <MarkdownDisplay>
+                      {
+                        "# My Markdown Title \n\nThis is some **bold** and _italic_ text.\n\n- First list item\n- Second list item\n\nThis line will be on a new line, but part of the same paragraph.\n\nThis line will be on a new line and a new paragraph."
+                      }
+                    </MarkdownDisplay> */}
+                    <MarkdownDisplay mergeStyle={true}>
+                      {item.content}
+                    </MarkdownDisplay>
                   </View>
                 )}
               </View>

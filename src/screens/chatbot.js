@@ -8,7 +8,6 @@ import {
   Text,
   TouchableOpacity,
   Animated,
-  Easing,
   Button,
   Platform,
 } from "react-native";
@@ -24,18 +23,13 @@ import * as Speech from "expo-speech";
 import Loading from "../loading";
 import { useContext } from "react";
 import { GlobalStateContext } from "../states/GlobalState";
-import { Audio } from "expo-av";
 import ReadData from "./HealthKit";
 import ReadDataAndroid from "./GoogleTsx";
-
+import VideoPlayer from "./videoPlayer";
 const Chat = (props) => {
   const { globalState, setGlobalStateNew } = useContext(GlobalStateContext);
-  // Function to handle the "Read Text Out Loud" button press
   const handleReadOutLoudPress = async (text) => {
-    // Start the TTS engine and pass the text as a parameter
-    // Initialize the TTS engine
     try {
-      // alert('Permission to use speech not granted');
       if (globalState.speakEnabled)
         await Speech.speak(text, { language: "en-US" });
     } catch (error) {
@@ -48,98 +42,61 @@ const Chat = (props) => {
 
   return (
     <View
-      style={
-        props.type === "toUser"
-          ? {
-              flexDirection: "row",
-              position: "relative",
-              padding: 10,
-              width: "100%",
-              marginVertical: 30,
-              alignSelf: "baseline",
-              flex: 1,
-            }
-          : {
-              left: 5,
-              flexDirection: "row",
-              position: "relative",
-              padding: 10,
-              marginTop: 20,
-              flex: 1,
-            }
-      }
+      style={{
+        flexDirection: "row",
+        alignItems: "flex-end",
+        marginBottom: 10,
+        marginLeft: props.type === "toUser" ? 0 : 5,
+        marginRight: props.type === "toBot" ? 0 : 5,
+        alignSelf: props.type === "toUser" ? "flex-start" : "flex-end",
+      }}
     >
       {props.type === "toUser" && (
-        <View
-          style={{
-            flex: 1,
-          }}
-        >
-          <View
-            style={{
-              position: "absolute",
-              right: "14%",
-              width: "80%",
-              alignSelf: "baseline",
-              backgroundColor: "rgba(0, 0, 0, 0.4)",
-              borderRadius: 10,
-              opacity: 0.8,
-            }}
-          >
-            <Text style={{ color: "#FFFFFF", padding: 10 }}>
-              {props.message}
-            </Text>
-          </View>
-          <View style={{ position: "absolute", right: "5%" }}>
-            <MaterialCommunityIcons
-              name="account"
-              color={"gray"}
-              size={30}
-            ></MaterialCommunityIcons>
-          </View>
-        </View>
+        <MaterialCommunityIcons
+          name="account"
+          color={"gray"}
+          size={30}
+          style={{ marginRight: 5 }}
+        />
       )}
-      {props.type === "toBot" && (
-        <View
-          style={{
-            flex: 1,
-          }}
-        >
-          <View style={{ position: "absolute" }}>
-            <MaterialCommunityIcons
-              name="account"
-              color={"gray"}
-              size={30}
-            ></MaterialCommunityIcons>
-          </View>
-          <View
-            style={{
-              position: "absolute",
-              left: 40,
-              width: "80%",
-              alignSelf: "baseline",
-              backgroundColor: "rgba(255, 255, 255, 0.7)",
-              borderRadius: 5,
-              padding: 5,
-            }}
-          >
-            {props.responses.map((option) => (
-              <TouchableOpacity
-                key={option}
-                style={{
-                  backgroundColor: "rgba(0, 0, 0, 0.4)",
-                  opacity: 0.7,
-                  padding: 5,
-                  borderRadius: 5,
-                  marginVertical: 2,
-                }}
-                onPress={() => props.handleOnPress(props.message, option)}
+      <View
+        style={{
+          backgroundColor:
+            props.type === "toUser" ? "#f1f0f0" : "rgba(255, 255, 255, 0.7)",
+          padding: 10,
+          borderRadius: 10,
+          maxWidth: "80%",
+        }}
+      >
+        <Text style={{ fontSize: 20 }}>{props.message}</Text>
+        {props.type === "toBot" &&
+          props.responses.map((option) => (
+            <TouchableOpacity
+              key={option}
+              style={{
+                backgroundColor: "rgba(0, 0, 0, 0.2)",
+                opacity: 0.9,
+                padding: 5,
+                borderRadius: 5,
+                marginVertical: 2,
+              }}
+              onPress={() => props.handleOnPress(props.message, option)}
+            >
+              <Text
+                style={{ fontSize: 18, color: "black", fontWeight: "bold" }}
               >
-                <Text>{option}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
+                {option}
+              </Text>
+            </TouchableOpacity>
+          ))}
+      </View>
+      {props.type === "toBot" && (
+        <MaterialCommunityIcons
+          name="account"
+          color={"gray"}
+          size={30}
+          style={{ marginLeft: 5 }}
+        />
       )}
     </View>
   );
@@ -231,27 +188,10 @@ const Chatbot = ({ route, navigation }) => {
   const DisplayChat = () => {
     if (route.params.chatType === "breathing") {
       const fadeAnim = useRef(new Animated.Value(0)).current;
-      const fadeAnim2 = useRef(new Animated.Value(0)).current;
       const fadeAnim3 = useRef(new Animated.Value(0)).current;
-      const fadeAnim4 = useRef(new Animated.Value(0)).current;
-      const fadeAnim5 = useRef(new Animated.Value(0)).current;
       const scaleAnim = useRef(new Animated.Value(1)).current;
-      const scaleChat = useRef(new Animated.Value(1)).current;
-      const scaleReady = useRef(new Animated.Value(0)).current;
-
-      const scaleInhale = useRef(new Animated.Value(0)).current;
-      const scaleHold = useRef(new Animated.Value(0)).current;
-      const scaleExhale = useRef(new Animated.Value(0)).current;
-      const scaleButton = useRef(new Animated.Value(0)).current;
-      const scaleButton2 = useRef(new Animated.Value(0)).current;
-
       Animated.sequence([
         Animated.timing(fadeAnim, {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: false,
-        }),
-        Animated.timing(fadeAnim2, {
           toValue: 1,
           duration: 1000,
           useNativeDriver: false,
@@ -261,405 +201,18 @@ const Chatbot = ({ route, navigation }) => {
           duration: 1000,
           useNativeDriver: false,
         }),
-        Animated.timing(scaleReady, {
-          toValue: 1,
-          duration: 2,
-          useNativeDriver: false,
-        }),
-        Animated.timing(scaleButton, {
-          toValue: 1,
-          duration: 2,
-          useNativeDriver: false,
-        }),
       ]).start();
-      Animated.sequence([
-        Animated.timing(fadeAnim5, {
-          toValue: 1,
-          duration: 100,
-          useNativeDriver: false,
-        }),
-      ]).start();
-
-      const FaceEmoji = () => {
-        const [soundObject, setSoundObject] = useState(null);
-
-        useEffect(() => {
-          async function playSound() {
-            const { sound } = await Audio.Sound.createAsync(
-              require("../../assets/breathing.mp3"),
-              { shouldPlay: false }
-            );
-            setSoundLoaded(true);
-            sound.setIsLoopingAsync(true);
-            setSoundObject(sound);
-          }
-
-          playSound();
-
-          return () => {
-            if (soundObject) {
-              soundObject.pauseAsync();
-              soundObject.unloadAsync();
-            }
-          };
-        }, []);
-
-        const breathAnim = useRef(new Animated.Value(0)).current;
-        const inhaleScale = breathAnim.interpolate({
-          inputRange: [0.25, 0.5, 0.75],
-          outputRange: [1, 1.1, 1.2],
-        });
-        const exhaleScale = breathAnim.interpolate({
-          inputRange: [-1, -0.75, -0.5],
-          outputRange: [0.8, 0.9, 1],
-        });
-        const anim = useRef(new Animated.Value(0)).current;
-        const [isAnimating, setIsAnimating] = useState(false);
-        const startAnimation = async () => {
-          // await loadSound();
-          //setIsAnimating(true);
-          Animated.loop(
-            Animated.parallel([
-              Animated.sequence([
-                Animated.timing(breathAnim, {
-                  toValue: 1,
-                  duration: 4000,
-                  easing: Easing.linear,
-                  useNativeDriver: true,
-                }),
-                Animated.timing(breathAnim, {
-                  toValue: 1,
-                  duration: 7000,
-                  easing: Easing.linear,
-                  useNativeDriver: true,
-                }),
-                Animated.timing(breathAnim, {
-                  toValue: 0,
-                  duration: 8000,
-                  easing: Easing.linear,
-                  useNativeDriver: true,
-                }),
-              ]),
-              Animated.sequence([
-                Animated.timing(anim, {
-                  toValue: 1,
-                  duration: 4000,
-                  easing: Easing.linear,
-                  useNativeDriver: false,
-                }),
-                Animated.timing(anim, {
-                  toValue: 1,
-                  duration: 7000,
-                  easing: Easing.linear,
-                  useNativeDriver: false,
-                }),
-                Animated.timing(anim, {
-                  toValue: 0,
-                  duration: 8000,
-                  easing: Easing.linear,
-                  useNativeDriver: false,
-                }),
-              ]),
-              Animated.sequence([
-                Animated.timing(scaleInhale, {
-                  toValue: 2,
-                  duration: 3995,
-                  useNativeDriver: false,
-                }),
-                Animated.timing(scaleInhale, {
-                  toValue: 0,
-                  duration: 5,
-                  useNativeDriver: false,
-                }),
-                Animated.timing(scaleHold, {
-                  toValue: 1,
-                  duration: 1,
-                  useNativeDriver: false,
-                }),
-                Animated.timing(scaleHold, {
-                  toValue: 2,
-                  duration: 6998,
-                  useNativeDriver: false,
-                }),
-                Animated.timing(scaleHold, {
-                  toValue: 0,
-                  duration: 1,
-                  useNativeDriver: false,
-                }),
-                Animated.timing(scaleExhale, {
-                  toValue: 2,
-                  duration: 5,
-                  useNativeDriver: false,
-                }),
-                Animated.timing(scaleExhale, {
-                  toValue: 0,
-                  duration: 7995,
-                  useNativeDriver: false,
-                }),
-              ]),
-            ])
-          ).start();
-        };
-        const stopAnimation = async () => {
-          // await unLoadSound();
-          //setIsAnimating(false);
-          anim.stopAnimation();
-          breathAnim.stopAnimation();
-          scaleExhale.stopAnimation();
-          scaleHold.stopAnimation();
-          scaleInhale.stopAnimation();
-          anim.setValue(0);
-          breathAnim.setValue(0);
-          scaleExhale.setValue(0);
-          scaleHold.setValue(0);
-          scaleInhale.setValue(0);
-        };
-        const [soundLoaded, setSoundLoaded] = useState(false);
-
-        const loadSound = async () => {
-          if (!soundLoaded) {
-            await soundObject.loadAsync(require("../../assets/breathing.mp3"));
-            await soundObject.setIsLoopingAsync(true);
-            setSoundLoaded(true);
-          }
-          await soundObject.playAsync();
-        };
-
-        const unLoadSound = async () => {
-          if (!soundLoaded) {
-            await soundObject.loadAsync(require("../../assets/breathing.mp3"));
-            setSoundLoaded(true);
-          }
-          await soundObject.pauseAsync();
-          await soundObject.unloadAsync();
-          setSoundLoaded(false);
-        };
-
-        const toggleAnimation = async () => {
-          if (isAnimating) {
-            await unLoadSound();
-            setIsAnimating(false);
-            stopAnimation();
-          } else {
-            await loadSound();
-            setIsAnimating(true);
-            startAnimation();
-          }
-        };
-
-        const height = anim.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, 200],
-        });
-        const scaleInhale = useRef(new Animated.Value(0)).current;
-        const scaleHold = useRef(new Animated.Value(0)).current;
-        const scaleExhale = useRef(new Animated.Value(0)).current;
-
-        return (
-          <View style={styles2.container}>
-            <View style={styles2.centeredView}>
-              <Animated.View
-                style={{
-                  width: 100,
-                  height: 100,
-                  borderRadius: 50,
-                  backgroundColor: "yellow",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  transform: [{ scaleX: exhaleScale }, { scaleY: exhaleScale }],
-                }}
-              >
-                <View
-                  style={{
-                    width: 60,
-                    height: 60,
-                    borderRadius: 35,
-                    backgroundColor: "black",
-                    position: "absolute",
-                    top: 25,
-                    left: 20,
-                  }}
-                />
-                <View
-                  style={{
-                    width: 10,
-                    height: 10,
-                    borderRadius: 5,
-                    backgroundColor: "white",
-                    position: "absolute",
-                    top: 40,
-                    left: 35,
-                  }}
-                />
-                <View
-                  style={{
-                    width: 10,
-                    height: 10,
-                    borderRadius: 5,
-                    backgroundColor: "white",
-                    position: "absolute",
-                    top: 40,
-                    left: 55,
-                  }}
-                />
-                <View
-                  style={{
-                    width: 20,
-                    height: 5,
-                    borderRadius: 5,
-                    backgroundColor: "white",
-                    position: "absolute",
-                    top: 60,
-                    left: 42,
-                  }}
-                />
-                <Animated.View
-                  style={{
-                    width: 100,
-                    height: 60,
-                    borderRadius: 15,
-                    backgroundColor: "black",
-                    position: "absolute",
-                    alignContent: "center",
-                    justifyContent: "center",
-                    top: 110,
-                    transform: [
-                      { scaleX: inhaleScale },
-                      { scaleY: inhaleScale },
-                    ],
-                  }}
-                >
-                  <Animated.View
-                    style={[
-                      {
-                        transform: [
-                          {
-                            scale: scaleInhale,
-                          },
-                        ],
-                      },
-                    ]}
-                  >
-                    <View
-                      style={{
-                        alignSelf: "center",
-                        position: "relative",
-                        display: "flex",
-                        marginTop: 0,
-                      }}
-                    >
-                      <Text style={{ color: "white" }}>Inhale</Text>
-                    </View>
-                  </Animated.View>
-                  <Animated.View
-                    style={[
-                      {
-                        transform: [
-                          {
-                            scale: scaleHold,
-                          },
-                        ],
-                      },
-                    ]}
-                  >
-                    <View
-                      style={{
-                        alignSelf: "center",
-                        position: "relative",
-                        display: "flex",
-                        marginTop: 0,
-                      }}
-                    >
-                      <Text style={{ color: "white" }}>Hold</Text>
-                    </View>
-                  </Animated.View>
-                  <Animated.View
-                    style={[
-                      {
-                        transform: [
-                          {
-                            scale: scaleExhale,
-                          },
-                        ],
-                      },
-                    ]}
-                  >
-                    <View
-                      style={{
-                        alignSelf: "center",
-                        position: "relative",
-                        display: "flex",
-                        marginTop: 0,
-                      }}
-                    >
-                      <Text style={{ color: "white" }}>Exhale</Text>
-                    </View>
-                  </Animated.View>
-                </Animated.View>
-              </Animated.View>
-            </View>
-            <View style={{ alignItems: "center", top: 60 }}>
-              <View
-                style={{
-                  width: 30,
-                  height: 200,
-                  //borderRadius: 25,
-                  backgroundColor: "gray",
-                  borderTopEndRadius: 25,
-                  borderTopStartRadius: 25,
-                  borderBottomWidth: 3,
-                }}
-              />
-              <Animated.View
-                style={{
-                  width: 25,
-                  height: height,
-                  // borderRadius: 25,
-                  // top: 40,
-                  borderTopEndRadius: 25,
-                  borderTopStartRadius: 25,
-                  borderBottomWidth: 3,
-
-                  backgroundColor: "green",
-                  position: "absolute",
-                  bottom: 0,
-                }}
-              />
-            </View>
-            <TouchableOpacity style={styles2.button} onPress={toggleAnimation}>
-              <Text style={styles2.buttonText}>
-                {isAnimating ? "Stop" : "Start"}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        );
-      };
-      const styles2 = StyleSheet.create({
-        container: {
-          flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
-          flexDirection: "row",
-        },
-        centeredView: {
-          width: 100,
-          height: 100,
-          marginHorizontal: 70,
-        },
-        button: {
-          padding: 10,
-          backgroundColor: "blue",
-          borderRadius: 5,
-          margin: 10,
-          top: 140,
-        },
-        buttonText: {
-          color: "white",
-        },
-      });
-
       return (
-        <>
+        <View
+          style={{
+            flex: 1,
+            marginVertical: 20,
+            flexDirection: "column",
+            width: "100%",
+            height: "100%",
+            flexGrow: 1,
+          }}
+        >
           <Animated.View
             style={[
               {
@@ -674,35 +227,6 @@ const Chatbot = ({ route, navigation }) => {
               }
             />
           </Animated.View>
-
-          <Animated.View
-            style={[
-              {
-                opacity: fadeAnim2,
-              },
-            ]}
-          >
-            <Chat
-              type={"toUser"}
-              message={"Let me guide you to perform 4 - 7- 8 breathing!"}
-            />
-          </Animated.View>
-          <Animated.View
-            style={[
-              {
-                transform: [
-                  {
-                    scale: scaleChat,
-                  },
-                ],
-
-                opacity: fadeAnim3,
-              },
-            ]}
-          >
-            <Chat type={"toUser"} message={"Sit down in relaxed position"} />
-            <Chat type={"toUser"} message={"Are you ready?"} />
-          </Animated.View>
           <Animated.View
             style={[
               {
@@ -715,155 +239,19 @@ const Chatbot = ({ route, navigation }) => {
               },
             ]}
           >
-            <FaceEmoji></FaceEmoji>
+            <Chat
+              type={"toUser"}
+              message={
+                "Sit down in relaxed position and click on start whenever you are ready."
+              }
+            />
+            <VideoPlayer></VideoPlayer>
           </Animated.View>
-
-          {/* <Animated.View
-            style={[
-              {
-                transform: [
-                  {
-                    scale: scaleReady,
-                  },
-                ],
-              },
-            ]}
-          >
-            <View
-              style={{
-                alignSelf: "center",
-                position: "relative",
-                display: "flex",
-                marginTop: 0,
-              }}
-            >
-              <Text>Ready</Text>
-            </View>
-          </Animated.View>
-          <Animated.View
-            style={[
-              {
-                transform: [
-                  {
-                    scale: scaleInhale,
-                  },
-                ],
-              },
-            ]}
-          >
-            <View
-              style={{
-                alignSelf: "center",
-                position: "relative",
-                display: "flex",
-                marginTop: 0,
-              }}
-            >
-              <Text>Inhale</Text>
-            </View>
-          </Animated.View>
-          <Animated.View
-            style={[
-              {
-                transform: [
-                  {
-                    scale: scaleHold,
-                  },
-                ],
-              },
-            ]}
-          >
-            <View
-              style={{
-                alignSelf: "center",
-                position: "relative",
-                display: "flex",
-                marginTop: 0,
-              }}
-            >
-              <Text>Hold</Text>
-            </View>
-          </Animated.View>
-          <Animated.View
-            style={[
-              {
-                transform: [
-                  {
-                    scale: scaleExhale,
-                  },
-                ],
-              },
-            ]}
-          >
-            <View
-              style={{
-                alignSelf: "center",
-                position: "relative",
-                display: "flex",
-                marginTop: 0,
-              }}
-            >
-              <Text>Exhale</Text>
-            </View>
-          </Animated.View>
-          <Animated.View
-            style={[
-              {
-                opacity: fadeAnim5,
-              },
-            ]}
-          >
-            <View
-              style={{
-                alignSelf: "center",
-                position: "relative",
-                display: "flex",
-                marginTop: 30,
-              }}
-            >
-              <Animated.View
-                style={[
-                  {
-                    transform: [
-                      {
-                        scale: scaleButton,
-                      },
-                    ],
-                    opacity: fadeAnim5,
-                  },
-                ]}
-              >
-                <Button
-                  title="Start Breathing"
-                  onPress={DisplayBreathingAnime}
-                ></Button>
-              </Animated.View>
-              <Animated.View
-                style={[
-                  {
-                    transform: [
-                      {
-                        scale: scaleButton2,
-                      },
-                    ],
-                    opacity: fadeAnim5,
-                  },
-                ]}
-              >
-                <Button
-                  title="Click me if you want to do it again"
-                  onPress={DisplayBreathingAnime}
-                ></Button>
-                <Button title="Done" onPress={AfterBreathing}></Button>
-              </Animated.View>
-            </View>
-          </Animated.View> */}
-        </>
+        </View>
       );
     } else if (route.params.chatType === "default") {
-      //Keep track of the last message so that you can continue to the new one
       return (
-        <>
+        <View style={{ top: 40 }}>
           <Chat
             type={"toUser"}
             message={"Welcome to Anti-Anxiety app home section!"}
@@ -879,7 +267,7 @@ const Chatbot = ({ route, navigation }) => {
             ]}
             handleOnPress={handleOnpress}
           />
-        </>
+        </View>
       );
     } else if (route.params.chatType === "afterBreathing") {
       return (
@@ -902,7 +290,7 @@ const Chatbot = ({ route, navigation }) => {
           />
           <Chat
             type={"toBot"}
-            message={"How do you feel after doing the breathing exercise?"}
+            //message={"How do you feel after doing the breathing exercise?"}
             responses={[
               "I feel better now, it helped me relax",
               "It helped me relax, but I'm still anxious",
@@ -930,222 +318,88 @@ const Chatbot = ({ route, navigation }) => {
             console.log(error);
           });
       }
-
-      // const brainExercises = [
-      //   {
-      //     message: "Welcome to the Brain Exercise section",
-      //     responses: ["Thank you"],
-      //     feedbacks: ["You're welcome"],
-      //     answer: 0,
-      //   },
-      //   {
-      //     message:
-      //       "Let's start training your adaptive memory. This helps to avoid anxiety in long term.",
-      //     responses: [
-      //       "Good, I would love doing that.",
-      //       "Sorry, I can't do that today",
-      //     ],
-      //     feedbacks: [
-      //       "Respond to the following questions, I will give you feedbacks for every answer",
-      //       "Okay, you may do it later",
-      //     ],
-      //     answer: 0,
-      //   },
-      //   {
-      //     message:
-      //       "What is the best thing to do when you are feeling overwhelmed?",
-      //     responses: [
-      //       "Sleeping",
-      //       "Jump to finding a solution",
-      //       "Ignoring the situation",
-      //       "Take a deep breath",
-      //     ],
-      //     feedbacks: [
-      //       "sleeping",
-      //       "jump",
-      //       "ignore",
-      //       "Good Job! Deep Breathing enables more air flow to your lungs and help calming your nerves so you can think clearly for a better solution!",
-      //     ],
-      //     answer: 3,
-      //   },
-      //   {
-      //     message:
-      //       "If you are having a hardtime finishing your daily tasks what should you do?",
-      //     responses: [
-      //       "Delay the tasks until last minute ",
-      //       "Do not start until I have the energy to do it",
-      //       "Start with the hardest task to finish early",
-      //       "Plan ahead and start with the small tasks",
-      //     ],
-      //     feedbacks: [
-      //       "sleeping",
-      //       "jump",
-      //       "ignore",
-      //       "Good Job! Planning and breaking larger tasks into a smaller ones  helps improving your productivity and gives you a sense of achivement.",
-      //     ],
-      //     answer: 3,
-      //   },
-      //   {
-      //     message:
-      //       "If you lost track on your routine, what is the best thing to do?",
-      //     responses: [
-      //       "Blaming my self",
-      //       "Take more days off to rest",
-      //       "Focus on what I can work with today then get back on track",
-      //       "I knew this will happen",
-      //     ],
-      //     feedbacks: [
-      //       "sleeping",
-      //       "jump",
-      //       "Good Job! Prioritize what is needed to be done today. There is time, you will be able to catch up with what you have missed.",
-      //       "last one",
-      //     ],
-      //     answer: 2,
-      //   },
-      //   {
-      //     message:
-      //       "What should you do when there is no time to finish your work?",
-      //     responses: [
-      //       "Organize my work place and take a power nap when needed",
-      //       "Delay it, either ways I’m not going to be abe to finish it on time",
-      //       "Sacrifice my sleep to finish the work",
-      //       "Check my watch constantly to make sure I’m not wasting time ",
-      //     ],
-
-      //     feedbacks: [
-      //       "Good Job! Organizing your work place will help you clear your mind and get you in the mood to work. Remember your body sometimes needs to rest, a  power nap will help you to increase your focus and restore your energy.",
-      //       "2",
-      //       "3",
-      //       "4",
-      //     ],
-      //     answer: 0,
-      //   },
-
-      //   {
-      //     message: "What should you do when you feel stressed?",
-      //     responses: [
-      //       " I’m probably stressed because I did not achieve a lot this week",
-      //       "Take a time out and talk to a friend ",
-      //       "I knew this will happen ",
-      //       "Go eat something to fill the void ",
-      //     ],
-      //     feedbacks: [
-      //       "1",
-      //       "Good Job! Talking to a friend, Doing fun activities like meditation or exercise will help reduce anxiety and stress.",
-      //       "3",
-      //       "4",
-      //     ],
-      //     answer: 1,
-      //   },
-      // ];
-
-      // const addQuestionsToFirestore = async () => {
-      //   const usersRef = collection(db, "exercises");
-
-      //   await setDoc(doc(usersRef, "brainExercises"), {
-      //     questions: brainExercises,
-      //   })
-      //     .then(() => {
-      //       console.log("Document added updated!");
-      //     })
-      //     .catch((error) => {
-      //       console.error("Error updating document: ", error);
-      //     });
-      // };
       const ChatBrain = (props) => {
         return (
           <View
             style={
-              props.type === "toUser"
+              props.type === "toBot"
                 ? {
                     flexDirection: "row",
-                    position: "relative",
+                    alignItems: "flex-end",
                     padding: 10,
-                    width: "100%",
-                    marginVertical: 30,
-                    alignSelf: "baseline",
+                    marginBottom: 10,
+                    alignSelf: "flex-end",
                   }
                 : {
-                    left: 5,
                     flexDirection: "row",
-                    position: "relative",
+                    alignItems: "flex-end",
                     padding: 10,
-                    marginTop: 30,
+                    marginBottom: 10,
                   }
             }
           >
             {props.type === "toUser" && (
-              <>
-                <View
-                  style={{
-                    position: "absolute",
-                    right: "14%",
-                    width: "80%",
-                    alignSelf: "baseline",
-                    backgroundColor: "rgba(0, 0, 0, 0.4)",
-                    borderRadius: 10,
-                    opacity: 0.8,
-                  }}
-                >
-                  <Text style={{ color: "#FFFFFF", padding: 10 }}>
-                    {props.message}
-                  </Text>
-                </View>
-                <View style={{ position: "absolute", right: "5%" }}>
-                  <MaterialCommunityIcons
-                    name="account"
-                    color={"gray"}
-                    size={30}
-                  ></MaterialCommunityIcons>
-                </View>
-              </>
+              <MaterialCommunityIcons
+                name="account"
+                color={"gray"}
+                size={30}
+                style={{ marginRight: 5 }}
+              />
             )}
-            {props.type === "toBot" && (
-              <View style={{ flex: 1, marginBottom: 170 }}>
-                <View style={{ position: "absolute" }}>
-                  <MaterialCommunityIcons
-                    name="account"
-                    color={"gray"}
-                    size={30}
-                  ></MaterialCommunityIcons>
-                </View>
-                <View
-                  style={{
-                    position: "absolute",
-                    left: 40,
-                    width: "80%",
-                    alignSelf: "baseline",
-                    backgroundColor: "rgba(255, 255, 255, 0.7)",
-                    borderRadius: 5,
-                    padding: 5,
-                  }}
-                >
-                  {props.responses.map((option) => (
-                    <TouchableOpacity
-                      key={option}
+            <View
+              style={{
+                backgroundColor:
+                  props.type === "toUser"
+                    ? "#f1f0f0"
+                    : "rgba(255, 255, 255, 0.7)",
+                padding: 10,
+                borderRadius: 10,
+                maxWidth: "80%",
+              }}
+            >
+              <Text style={{ fontSize: 20 }}>{props.message}</Text>
+              {props.type === "toBot" &&
+                props.responses.map((option) => (
+                  <TouchableOpacity
+                    key={option}
+                    style={{
+                      backgroundColor: "rgba(0, 0, 0, 0.2)",
+                      opacity: 0.9,
+                      padding: 5,
+                      borderRadius: 5,
+                      marginVertical: 2,
+                    }}
+                    onPress={() =>
+                      props.handleSelection(
+                        props.responses.indexOf(option),
+                        props.answer
+                      )
+                    }
+                  >
+                    <Text
                       style={{
-                        backgroundColor: "rgba(0, 0, 0, 0.4)",
-                        opacity: 0.8,
-                        padding: 5,
-                        borderRadius: 5,
-                        marginVertical: 8,
+                        fontSize: 18,
+                        color: "black",
+                        fontWeight: "bold",
                       }}
-                      onPress={() =>
-                        props.handleSelection(
-                          props.responses.indexOf(option),
-                          props.answer
-                        )
-                      }
                     >
-                      <Text>{option}</Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </View>
+                      {option}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+            </View>
+            {props.type === "toBot" && (
+              <MaterialCommunityIcons
+                name="account"
+                color={"gray"}
+                size={30}
+                style={{ marginRight: 5 }}
+              />
             )}
           </View>
         );
       };
+
       const handleReadOutLoudPress = async (text) => {
         // Start the TTS engine and pass the text as a parameter
         // Initialize the TTS engine
@@ -1194,7 +448,6 @@ const Chatbot = ({ route, navigation }) => {
             <View
               style={{
                 flexDirection: "column",
-                justifyContent: "space-between",
               }}
             >
               <View>
@@ -1221,7 +474,7 @@ const Chatbot = ({ route, navigation }) => {
                   />
                 </View>
               )}
-              <View style={{ marginTop: 60 }}>
+              <View style={{ alignItems: "center" }}>
                 {selectedResponse === brainExercises[currentIndex].answer ? (
                   <Button title="Next" onPress={handleNextPress} />
                 ) : null}
@@ -1250,9 +503,6 @@ const Chatbot = ({ route, navigation }) => {
                 />
                 <ChatBrain
                   type={"toBot"}
-                  message={
-                    "How do you feel after doing the breathing exercise?"
-                  }
                   responses={[
                     "I feel better now, it helped me learn so many things",
                     "It's is so complicated",
@@ -1280,19 +530,20 @@ const Chatbot = ({ route, navigation }) => {
         <View
           style={{
             flex: 1,
-            width: "97%",
-            left: "1.5%",
-            right: "1.5%",
+            width: "100%",
             height: "100%",
+            marginVertical: 10,
+            flexGrow: 1,
           }}
         >
           <ScrollView
             style={{
               flexGrow: 1,
-              padding: 10,
+              flex: 1,
             }}
           >
             <DisplayChat> </DisplayChat>
+
             {Platform.OS === "android" && (
               <View
                 style={{
@@ -1303,16 +554,18 @@ const Chatbot = ({ route, navigation }) => {
             )}
           </ScrollView>
         </View>
+        {route.params.chatType === "default" && (
+          <View
+            style={{
+              left: 20,
+              bottom: 20,
+            }}
+          >
+            {Platform.OS === "ios" && <ReadData></ReadData>}
 
-        <View
-          style={{
-            left: 20,
-            bottom: 20,
-          }}
-        >
-          {Platform.OS === "ios" && <ReadData></ReadData>}
-          {Platform.OS === "android" && <ReadDataAndroid></ReadDataAndroid>}
-        </View>
+            {Platform.OS === "android" && <ReadDataAndroid></ReadDataAndroid>}
+          </View>
+        )}
 
         <View
           style={{
