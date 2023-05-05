@@ -30,6 +30,7 @@ import {
 import { db } from "../../config/firebaseConfig";
 import * as Speech from "expo-speech";
 import MarkdownDisplay from "react-native-markdown-display";
+import ReadingContent from "./ReadingContent";
 
 const Readings = () => {
   //Updating background
@@ -312,11 +313,10 @@ const Readings = () => {
           var temp = {
             id: doc.id,
             title: doc.data().title,
-            content: doc.data().body,
+            content: doc.data().content,
             expanded: false,
             viewsCount: doc.data().viewsCount,
           };
-          //console.log(doc.data().body);
           list.push(temp);
         });
         setState({ items: list });
@@ -398,6 +398,7 @@ const Readings = () => {
                     <Text style={{ fontSize: 14 }}>{item.viewsCount}</Text>
                   </MaterialCommunityIcons>
                 </TouchableOpacity>
+
                 {item.expanded && (
                   <View style={{ padding: 20 }}>
                     {/* <TouchableOpacity
@@ -447,9 +448,12 @@ const Readings = () => {
                         "# My Markdown Title \n\nThis is some **bold** and _italic_ text.\n\n- First list item\n- Second list item\n\nThis line will be on a new line, but part of the same paragraph.\n\nThis line will be on a new line and a new paragraph."
                       }
                     </MarkdownDisplay> */}
-                    <MarkdownDisplay mergeStyle={true}>
+                    {/* <MarkdownDisplay mergeStyle={true}>
                       {item.content}
-                    </MarkdownDisplay>
+                    </MarkdownDisplay> */}
+                    <ReadingContent
+                      listOfObjects={item.content}
+                    ></ReadingContent>
                   </View>
                 )}
               </View>

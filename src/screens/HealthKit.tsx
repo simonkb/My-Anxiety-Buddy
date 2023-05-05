@@ -87,7 +87,7 @@ const ReadData: React.FC = () => {
         setAvgHR(Math.ceil(sum / count));
       }
     } else {
-      console.log("Not authorized");
+      alert("Access to health data denied. ");
     }
   };
   const [hrRange, setHrRange] = useState<String>("");

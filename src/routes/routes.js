@@ -69,7 +69,7 @@ const TreatmentStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        options={{ headerShown: true, gestureEnabled: false }}
+        options={{ headerShown: true, gestureEnabled: true }}
         name="Treatment Home"
         component={TreatmentHome}
       />
