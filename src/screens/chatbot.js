@@ -107,42 +107,23 @@ const ReadOutLoudButton = () => {
   const { globalState, setGlobalStateNew } = useContext(GlobalStateContext);
 
   const handleToggle = () => {
-    // if (isReading) {
-    //   Speech.pause();
-    // } else {
-    //   Speech.resume();
-    // }
-    // setIsReading(!isReading);
-    // if (isReading) {
-    //   Speech.stop();
-    // }
-    // Speech.speak("");
-    // setIsReading(!isReading);
-    // if (useGlobalState("speakEnabled")[0]) {
-    //   setGlobalState("speakEnabled", true);
-    // }
     if (globalState.speakEnabled) {
       setGlobalStateNew({ ...globalState, speakEnabled: false });
-      // globalState.Speech.pause();
     } else {
-      //globalState.Speech.resume();
-
       setGlobalStateNew({ ...globalState, speakEnabled: true });
     }
   };
-
   const icon = globalState.speakEnabled
     ? require("../../assets/speak.png")
     : require("../../assets/pause.png");
-
   return (
     <TouchableOpacity onPress={handleToggle} style={styles.buttonSpeaker}>
       <Image source={icon} style={styles.icon} />
     </TouchableOpacity>
   );
 };
+
 const Chatbot = ({ route, navigation }) => {
-  //Updating background
   let defaultBg = useGlobalState("defaultBackgroundImage");
   let currentBg;
   if (defaultBg[0] === "bgOrange") {
@@ -290,7 +271,6 @@ const Chatbot = ({ route, navigation }) => {
           />
           <Chat
             type={"toBot"}
-            //message={"How do you feel after doing the breathing exercise?"}
             responses={[
               "I feel better now, it helped me relax",
               "It helped me relax, but I'm still anxious",
@@ -561,7 +541,7 @@ const Chatbot = ({ route, navigation }) => {
               bottom: 20,
             }}
           >
-            {Platform.OS === "ios" && <ReadData></ReadData>}
+            {Platform.OS === "ios" && !Platform.isPad && <ReadData></ReadData>}
 
             {Platform.OS === "android" && <ReadDataAndroid></ReadDataAndroid>}
           </View>

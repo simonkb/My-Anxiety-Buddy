@@ -4,7 +4,14 @@ import AppleHealthKit, {
 } from "react-native-health";
 import { useState, useEffect } from "react";
 import React from "react";
-import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
+import {
+  Text,
+  TouchableOpacity,
+  View,
+  StyleSheet,
+  Platform,
+  Alert,
+} from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const ReadData: React.FC = () => {
@@ -30,47 +37,43 @@ const ReadData: React.FC = () => {
       startDate: threeMinutesAgo.toISOString(),
       endDate: new Date().toISOString(),
     };
-    let hr = [];
-    let rr = [];
-    let o2 = [];
+    // let hr = [];
+    // let rr = [];
+    // let o2 = [];
     AppleHealthKit.getHeartRateSamples(
       options,
       (callbackError: string, heartRateResults: HealthValue[]) => {
         /* Heart rate samples are now collected from HealthKit */
-        console.log(heartRateResults, "HR");
+        //console.log(heartRateResults, "HR");
         setHeartRate(heartRateResults);
-        hr = heartRateResults;
+        // hr = heartRateResults;
       }
     );
     AppleHealthKit.getRespiratoryRateSamples(
       options,
       (callbackError: string, respiratoryRateResults: HealthValue[]) => {
         /* Respiratory rate samples are now collected from HealthKit */
-        // console.log(respiratoryRateResults);
         setRespiratoryRate(respiratoryRateResults);
-        rr = respiratoryRateResults;
+        //rr = respiratoryRateResults;
       }
     );
     AppleHealthKit.getOxygenSaturationSamples(
       options,
       (callbackError: string, oxygenSaturationResults: HealthValue[]) => {
         /* Blood oxygen level samples are now collected from HealthKit */
-        //console.log(oxygenSaturationResults);
         setOxygenSaturation(oxygenSaturationResults);
-        o2 = oxygenSaturationResults;
+        //o2 = oxygenSaturationResults;
       }
     );
   };
-
   AppleHealthKit.initHealthKit(permissions, (error: string) => {
     /* Called after we receive a response from the system */
     if (error) {
-      console.log("[ERROR] Cannot grant permissions!");
+      Alert.alert("Error", "Access to health data denied. " + error);
     } else {
       setAuthorized(true);
     }
   });
-
   const avgHeartRate = () => {
     let sum = 0;
     let count = 0;
@@ -87,7 +90,16 @@ const ReadData: React.FC = () => {
         setAvgHR(Math.ceil(sum / count));
       }
     } else {
-      alert("Access to health data denied. ");
+      alert("Access to health data denied.");
+      AppleHealthKit.initHealthKit(permissions, (error: string) => {
+        /* Called after we receive a response from the system */
+        if (error) {
+          Alert.alert("Error", "Cannot grant permissions!. " + error);
+        } else {
+          setAuthorized(true);
+          Alert.alert("Access to health data granted.");
+        }
+      });
     }
   };
   const [hrRange, setHrRange] = useState<String>("");
@@ -95,19 +107,26 @@ const ReadData: React.FC = () => {
     if (authorized) {
       if (heartRate.length > 0) {
         const heartRateValues = heartRate.map((sample) => sample.value);
-        const minHR = Math.min(...heartRateValues);
-        const maxHR = Math.max(...heartRateValues);
+        const minHR = Math.ceil(Math.min(...heartRateValues));
+        const maxHR = Math.ceil(Math.max(...heartRateValues));
 
         setHrRange(`${minHR} - ${maxHR}`);
       } else {
         setHrRange("-");
       }
     } else {
-      console.log("Not authorized");
+      AppleHealthKit.initHealthKit(permissions, (error: string) => {
+        /* Called after we receive a response from the system */
+        if (error) {
+          Alert.alert(error + " Cannot grant permissions!");
+        } else {
+          setAuthorized(true);
+          Alert.alert("Access to health data granted.");
+        }
+      });
     }
   };
   const [showHeart, setShowHeart] = useState<boolean>(true);
-
   const toggleShowHeart = () => {
     if (showHeart) {
       avgHeartRate();
@@ -132,7 +151,6 @@ const ReadData: React.FC = () => {
       width: showHeart ? 60 : 200,
       height: showHeart ? 60 : 150,
     },
-
     vitalsContainer: {
       flexDirection: "column",
       justifyContent: "space-between",

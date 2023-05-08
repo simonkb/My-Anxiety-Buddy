@@ -29,7 +29,6 @@ import {
 } from "firebase/firestore";
 import { db } from "../../config/firebaseConfig";
 import * as Speech from "expo-speech";
-import MarkdownDisplay from "react-native-markdown-display";
 import ReadingContent from "./ReadingContent";
 
 const Readings = () => {
