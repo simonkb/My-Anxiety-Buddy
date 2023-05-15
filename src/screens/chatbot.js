@@ -11,6 +11,7 @@ import {
   Button,
   Platform,
 } from "react-native";
+
 import bg1 from "../../assets/bg1.jpeg";
 import bg2 from "../../assets/bg2.jpg";
 import bg3 from "../../assets/bg3.jpg";
@@ -523,7 +524,6 @@ const Chatbot = ({ route, navigation }) => {
             }}
           >
             <DisplayChat> </DisplayChat>
-
             {Platform.OS === "android" && (
               <View
                 style={{
@@ -561,7 +561,7 @@ const Chatbot = ({ route, navigation }) => {
             style={{
               position: "absolute",
               left: 20,
-              bottom: 20,
+              bottom: 5,
             }}
           >
             <Button

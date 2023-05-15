@@ -52,6 +52,17 @@ const MainStack = () => {
         }}
       />
       <Tab.Screen
+        name="Journaling"
+        component={JournalChat}
+        options={{
+          tabBarLabel: "Journaling",
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name='book-edit' color={color} size={size} />
+          ),
+          headerShown: true,
+        }}
+      />
+      <Tab.Screen
         name="Profile"
         component={ProfileStack}
         options={{

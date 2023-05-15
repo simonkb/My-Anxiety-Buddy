@@ -4,7 +4,6 @@ import {
   ImageBackground,
   StyleSheet,
   View,
-  Button,
   Text,
   TouchableOpacity,
   ScrollView,
@@ -26,10 +25,9 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
-import Icon from "react-native-vector-icons/FontAwesome";
 import BarGraph from "./BarGraph";
-import { useRoute } from "@react-navigation/native";
-
+import CollapsibleBar from "./CollapsableBar";
+import ReflectionView from "../ReflectionView";
 const ProfileHome = ({ route, navigation }) => {
   let defaultBg = useGlobalState("defaultBackgroundImage");
   let currentBg;
@@ -43,33 +41,6 @@ const ProfileHome = ({ route, navigation }) => {
   const navigator = useNavigation();
   const onSettingsPressed = () => {
     navigator.navigate("Settings", { username: currentUser });
-  };
-  const [isCollapsed, setIsCollapsed] = useState(true);
-  const CollapsibleBar = ({ title, children }) => {
-    return (
-      <View
-        style={{
-          backgroundColor: "#f8f8f8",
-          borderRadius: 5,
-          marginBottom: 10,
-          overflow: "hidden",
-          width: "90%",
-        }}
-      >
-        <TouchableOpacity
-          style={styles.header}
-          onPress={() => setIsCollapsed(!isCollapsed)}
-        >
-          <Text style={{ fontWeight: "600" }}>{title}</Text>
-          <Icon
-            name={isCollapsed ? "chevron-down" : "chevron-up"}
-            size={20}
-            color="#555"
-          />
-        </TouchableOpacity>
-        {isCollapsed ? null : children}
-      </View>
-    );
   };
   const [currentUser, setUser] = useState("Loading...");
   const [bio, setBio] = useState("Loading...");
@@ -89,35 +60,156 @@ const ProfileHome = ({ route, navigation }) => {
     }
   });
   const [anxietyData, setData] = useState([]);
+  const COLORS = {
+    1: "green",
+    2: "#A9DE11",
+    3: "#DED511",
+    4: "red",
+  };
+  // useEffect(() => {
+  //   const currentUserId = auth.currentUser.uid;
+  //   const journalsRef = collection(db, "Users", currentUserId, "Sessions");
+  //   const q = query(journalsRef, orderBy("date", "asc"));
+  //   getDocs(q)
+  //     .then((querySnapshot) => {
+  //       const data = querySnapshot.docs.map((doc) => doc.data());
+  //       const values = [];
+  //       for (let d in data) {
+  //         values.push({
+  //           date: new Date(data[d].date).toString().substring(0, 10),
+  //           level:
+  //             data[d].decision === "Severe Anxiety"
+  //               ? 4
+  //               : data[d].decision === "Mild Anxiety"
+  //               ? 2
+  //               : data[d].decision === "Moderate Anxiety"
+  //               ? 3
+  //               : 1,
+  //         });
+  //       }
+  //       setData(values);
+  //     })
+  //     .catch((error) => {
+  //       console.log("Error getting documents: ", error);
+  //     });
+  //   if (anxietyData.length > 0) {
+  //     setColor(COLORS[anxietyData[anxietyData.length - 1].level]);
+  //   }
+  // }, []);
+  // const [reflections, setReflctions] = useState([]);
+  // useEffect(() => {
+  //   const currentUserId = auth.currentUser.uid;
+  //   const journalsRef = collection(db, "Users", currentUserId, "Reflections");
+  //   const q = query(journalsRef, orderBy("date", "asc"));
+  //   getDocs(q)
+  //     .then((querySnapshot) => {
+  //       const data = querySnapshot.docs.map((doc) => doc.data());
+  //       setReflctions(data);
+  //     })
+  //     .catch((error) => {
+  //       console.log("Error getting documents: ", error);
+  //     });
+  // }, []);
 
   useEffect(() => {
     const currentUserId = auth.currentUser.uid;
     const journalsRef = collection(db, "Users", currentUserId, "Sessions");
     const q = query(journalsRef, orderBy("date", "asc"));
-    getDocs(q)
-      .then((querySnapshot) => {
-        const data = querySnapshot.docs.map((doc) => doc.data());
-        const values = [];
-        for (let d in data) {
-          values.push({
-            date: new Date(data[d].date).toString().substring(0, 10),
-            level:
-              data[d].decision === "Severe Anxiety"
-                ? 4
-                : data[d].decision === "Mild Anxiety"
-                ? 2
-                : data[d].decision === "Moderate Anxiety"
-                ? 3
-                : 1,
-          });
-        }
-        setData(values);
-      })
-      .catch((error) => {
-        console.log("Error getting documents: ", error);
-      });
-  }, [isCollapsed]);
 
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const data = querySnapshot.docs.map((doc) => doc.data());
+      const values = [];
+      for (let d in data) {
+        values.push({
+          date: new Date(data[d].date).toString().substring(0, 10),
+          level:
+            data[d].decision === "Severe Anxiety"
+              ? 4
+              : data[d].decision === "Mild Anxiety"
+              ? 2
+              : data[d].decision === "Moderate Anxiety"
+              ? 3
+              : 1,
+        });
+      }
+      setData(values);
+
+      if (values.length > 0) {
+        setColor(COLORS[values[values.length - 1].level]);
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  const [reflections, setReflections] = useState([]);
+
+  useEffect(() => {
+    const currentUserId = auth.currentUser.uid;
+    const reflectionsRef = collection(
+      db,
+      "Users",
+      currentUserId,
+      "Reflections"
+    );
+    const q = query(reflectionsRef, orderBy("date", "asc"));
+
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const data = querySnapshot.docs.map((doc) => doc.data());
+      setReflections(data);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  const [color, setColor] = useState("green");
+  const styles2 = StyleSheet.create({
+    container: {
+      paddingHorizontal: 20,
+      paddingVertical: 30,
+      backgroundColor: "#f8f8f8",
+      width: "90%",
+      borderBottomColor: color,
+      borderBottomWidth: 10,
+      borderRadius: 15,
+    },
+    profileInfo: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+    },
+    profileText: {
+      flex: 1,
+    },
+    username: {
+      color: "black",
+      fontSize: 20,
+      fontWeight: "bold",
+    },
+    bio: {
+      paddingTop: 5,
+      fontSize: 14,
+      color: "gray",
+      marginRight: 5,
+    },
+    settingsButton: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingHorizontal: 10,
+      paddingVertical: 5,
+      borderRadius: 5,
+      backgroundColor: "#EAEAEA",
+    },
+    settingsText: {
+      fontSize: 15,
+      color: "black",
+      marginLeft: 5,
+    },
+  });
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -126,55 +218,22 @@ const ProfileHome = ({ route, navigation }) => {
         style={styles.bgImage}
       >
         <SafeAreaView style={{ left: 18 }}>
-          <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
-            <View>
-              <MaterialCommunityIcons name="account" color={"gray"} size={30}>
-                <Text
-                  name="profileUsername"
-                  style={{ color: "black", fontSize: 18 }}
-                >
-                  {currentUser}
-                </Text>
-              </MaterialCommunityIcons>
-
-              <Text
-                name="profileBio"
-                style={{ width: "60%", paddingTop: 5, fontSize: 12 }}
+          <View style={styles2.container}>
+            <View style={styles2.profileInfo}>
+              <View style={styles2.profileText}>
+                <Text style={styles2.username}>{currentUser}</Text>
+                <Text style={styles2.bio}>{bio}</Text>
+              </View>
+              <TouchableOpacity
+                style={styles2.settingsButton}
+                onPress={onSettingsPressed}
               >
-                {bio}
-              </Text>
-            </View>
-            <View
-              style={{
-                padding: 5,
-                right: 20,
-                position: "absolute",
-                paddingLeft: 20,
-              }}
-            >
-              <TouchableOpacity onPress={onSettingsPressed}>
-                <MaterialCommunityIcons name="tools" color={"grey"} size={20}>
-                  <Text
-                    style={{ fontSize: 15, color: "black", paddingLeft: 20 }}
-                  >
-                    Settings
-                  </Text>
-                </MaterialCommunityIcons>
+                <MaterialCommunityIcons name="tools" color="gray" size={20} />
+                <Text style={styles2.settingsText}>Settings</Text>
               </TouchableOpacity>
             </View>
           </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              margin: 0,
-              borderBottomWidth: 10,
-              right: 18,
-              marginTop: 10,
-              backgroundColor: "white",
-              borderBottomColor: "white",
-            }}
-          ></View>
+
           <ScrollView>
             <Text style={styles.title}>Your Activity Analytics</Text>
             <CollapsibleBar title="Your GAD7 Analytics">
@@ -185,6 +244,9 @@ const ProfileHome = ({ route, navigation }) => {
                   <Text>Loading</Text>
                 )}
               </View>
+            </CollapsibleBar>
+            <CollapsibleBar title="Your Reflections">
+              <ReflectionView reflections={reflections}></ReflectionView>
             </CollapsibleBar>
           </ScrollView>
         </SafeAreaView>
