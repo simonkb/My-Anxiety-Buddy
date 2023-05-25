@@ -13,7 +13,7 @@ import { doc, setDoc } from "firebase/firestore";
 const ReflectionComponent = ({ activity, onClose }) => {
   const [questions, setQuestions] = useState([
     {
-      text: "How did you feel before starting the " + activity + " exercise?",
+      text: "How did you feel before starting the " + activity +"?",
       response: "",
     },
     {
@@ -63,7 +63,6 @@ const ReflectionComponent = ({ activity, onClose }) => {
     ).catch((error) => {
       console.log(error);
     });
-    console.log(reflection);
     // reset the questions
     setQuestions(questions.map((q) => ({ text: q.text, response: "" })));
 
@@ -76,7 +75,6 @@ const ReflectionComponent = ({ activity, onClose }) => {
     <TouchableOpacity
       activeOpacity={1}
       style={styles.overlay}
-      onPress={onClose}
     >
       <View style={styles.container}>
         <Text style={styles.title}>Reflect on your {activity}</Text>

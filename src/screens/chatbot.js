@@ -27,6 +27,11 @@ import { GlobalStateContext } from "../states/GlobalState";
 import ReadData from "./HealthKit";
 import ReadDataAndroid from "./GoogleTsx";
 import VideoPlayer from "./videoPlayer";
+import ReflectionComponent from "./ReflectionComponent";
+
+import { Dimensions } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+
 const Chat = (props) => {
   const { globalState, setGlobalStateNew } = useContext(GlobalStateContext);
   const handleReadOutLoudPress = async (text) => {
@@ -167,6 +172,251 @@ const Chatbot = ({ route, navigation }) => {
     }
   };
 
+  const quotes = [
+    "Don't let anxiety define you; you define anxiety.",
+    "Every small step you take towards managing anxiety is a victory.",
+    "You're stronger than you think. Believe in yourself.",
+    "Inhale courage, exhale fear.",
+    "Remember, progress is progress, no matter how small.",
+    "You have the power to overcome anxiety and embrace peace.",
+    "Take a deep breath. You've got this!",
+    "Challenge your anxious thoughts. You're in control.",
+    "Keep going, even when anxiety tells you to stop.",
+  ];
+
+  const HomePage = () => {
+    const scrollViewRef = React.useRef(null);
+    const [currentIndex, setCurrentIndex] = React.useState(0);
+
+    // const handleNextQuote = () => {
+    //   if (currentIndex < quotes.length - 1) {
+    //     setCurrentIndex(currentIndex + 1);
+    //     scrollViewRef.current.scrollTo({
+    //       x: (currentIndex + 1) * Dimensions.get("window").width,
+    //       animated: true,
+    //     });
+    //   }
+    // };
+
+    // const handlePrevQuote = () => {
+    //   if (currentIndex > 0) {
+    //     setCurrentIndex(currentIndex - 1);
+    //     scrollViewRef.current.scrollTo({
+    //       x: (currentIndex - 1) * Dimensions.get("window").width,
+    //       animated: true,
+    //     });
+    //   }
+    // };
+    const [index, setIndex] = useState(
+      Math.floor(Math.random() * quotes.length)
+    );
+
+    let x = Math.floor(Math.random() * quotes.length);
+
+    return (
+      <View style={stylesNew.container}>
+        {/* Logo and App Name */}
+        <View style={stylesNew.logoContainer}>
+          <Image
+            source={require("../../assets/icon.png")}
+            style={stylesNew.logo}
+          />
+          <Text style={stylesNew.appName}>AnxietyBuddy</Text>
+        </View>
+
+        {/* Daily Quotes Section */}
+        <View style={stylesNew.quotesContainer}>
+          {/* <ScrollView
+            ref={scrollViewRef}
+            horizontal
+            contentContainerStyle={stylesNew.scrollContainer}
+            showsHorizontalScrollIndicator={true}
+            pagingEnabled
+            onScroll={(event) => {
+              const offsetX = event.nativeEvent.contentOffset.x;
+              const index = Math.round(
+                offsetX / Dimensions.get("window").width
+              );
+              setCurrentIndex(index);
+            }}
+            scrollEventThrottle={16} // Adjust the value as needed
+          >
+            {quotes.map((quote, index) => (
+              <View key={index} style={stylesNew.quoteContainer}>
+                <Text style={stylesNew.quoteText}>{quote}</Text>
+              </View>
+            ))}
+          </ScrollView> */}
+          <TouchableOpacity
+            style={stylesNew.quoteContainer}
+            onPress={() => {
+              setIndex(Math.floor(Math.random() * quotes.length));
+              console.log(index);
+            }}
+          >
+            <Text style={stylesNew.quoteText}>{quotes[index]}</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Core Sections Icons */}
+        <View
+          style={{
+            backgroundColor: "gray",
+            opacity: 0.8,
+            justifyContent: "center",
+            borderRadius: 15,
+          }}
+        >
+          <View style={stylesNew.iconsContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.setParams({
+                  chatType: "GAD7",
+                });
+              }}
+              style={stylesNew.iconContainer}
+            >
+              <Ionicons
+                name="ios-analytics"
+                size={50}
+                color="green"
+                style={stylesNew.icon}
+              ></Ionicons>
+              <Text>Anxiety{"\n"}Evaluator</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={stylesNew.iconContainer}
+              onPress={() => {
+                navigation.setParams({
+                  chatType: "breathing",
+                });
+              }}
+            >
+              <Ionicons
+                name="ios-heart"
+                size={50}
+                color="green"
+                style={stylesNew.icon}
+              />
+              <Text>Breathing{"\n"}Guide</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={stylesNew.iconsContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.setParams({
+                  chatType: "brain",
+                });
+              }}
+              style={stylesNew.iconContainer}
+            >
+              {/* Breathing Guide */}
+              <MaterialCommunityIcons
+                name="brain"
+                size={50}
+                color="green"
+                style={stylesNew.icon}
+              />
+              {/* Reading */}
+              <Text>Cognitive{"\n"}Training</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={stylesNew.iconContainer}
+              onPress={() => {
+                navigation.navigate("Journaling");
+              }}
+            >
+              <Ionicons
+                name="ios-journal"
+                size={50}
+                color="green"
+                style={stylesNew.icon}
+              />
+              {/* Journaling */}
+              <Text>Daily{"\n"}Journaling</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+  const stylesNew = StyleSheet.create({
+    container: {
+      flex: 1,
+      //backgroundColor: "#fff",
+      paddingVertical: 20,
+      paddingHorizontal: 10,
+    },
+    logoContainer: {
+      alignItems: "center",
+    },
+    logo: {
+      width: 80,
+      height: 80,
+      resizeMode: "contain",
+      borderRadius: 100,
+    },
+    appName: {
+      fontSize: 36,
+      fontWeight: "bold",
+      marginTop: 10,
+    },
+    quotesContainer: {
+      flex: 1,
+      position: "relative",
+      marginVertical: 40,
+    },
+    scrollContainer: {
+      alignItems: "flex-start",
+    },
+    quoteContainer: {
+      width: "95%",
+      backgroundColor: "#f5f5f5",
+      borderRadius: 8,
+      paddingHorizontal: 20,
+      paddingVertical: 10,
+      marginHorizontal: 5,
+      elevation: 2,
+      minHeight: 100,
+      justifyContent: "center",
+    },
+    quoteText: {
+      fontSize: 26,
+      fontStyle: "italic",
+    },
+    prevButton: {
+      position: "absolute",
+      top: "50%",
+      left: 10,
+      transform: [{ translateY: -15 }],
+    },
+    nextButton: {
+      position: "absolute",
+      top: "50%",
+      right: 10,
+      transform: [{ translateY: -15 }],
+    },
+    iconsContainer: {
+      flexDirection: "row",
+      justifyContent: "space-evenly",
+      marginVertical: 20,
+    },
+    icon: {
+      backgroundColor: "#f5f5f5",
+      borderRadius: 15,
+      padding: 15,
+      elevation: 2,
+    },
+    iconContainer: {
+      alignItems: "center",
+      backgroundColor: "white",
+      padding: 10,
+      borderRadius: 15,
+    },
+  });
+
   const DisplayChat = () => {
     if (route.params.chatType === "breathing") {
       const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -188,6 +438,7 @@ const Chatbot = ({ route, navigation }) => {
         <View
           style={{
             flex: 1,
+            marginTop: 100,
             marginVertical: 20,
             flexDirection: "column",
             width: "100%",
@@ -205,7 +456,7 @@ const Chatbot = ({ route, navigation }) => {
             <Chat
               type={"toUser"}
               message={
-                "Welcome to Anti-Anxiety app calm breathing section. Let's practice breathing together!"
+                "Welcome to AnxietyBuddy app calm breathing section. Let's practice breathing together!"
               }
             />
           </Animated.View>
@@ -234,21 +485,7 @@ const Chatbot = ({ route, navigation }) => {
     } else if (route.params.chatType === "default") {
       return (
         <View style={{ top: 40 }}>
-          <Chat
-            type={"toUser"}
-            message={"Welcome to Anti-Anxiety app home section!"}
-          />
-          <Chat type={"toUser"} message={"Why are you here today?"} />
-          <Chat
-            type={"toBot"}
-            responses={[
-              "I am feeling anxious, I need some help",
-              "To use the breathing guide in your app",
-              "I want to read more about anxiety",
-              "I want to do my journal of today",
-            ]}
-            handleOnPress={handleOnpress}
-          />
+          <HomePage></HomePage>
         </View>
       );
     } else if (route.params.chatType === "afterBreathing") {
@@ -283,7 +520,6 @@ const Chatbot = ({ route, navigation }) => {
       );
     } else if (route.params.chatType === "brain") {
       const [brainExercises, setBrainExercises] = useState([]);
-
       async function read() {
         const docRef = doc(db, "exercises", "brainExercises");
 
@@ -414,20 +650,24 @@ const Chatbot = ({ route, navigation }) => {
       };
 
       useEffect(() => {
-        if (currentIndex < brainExercises.length)
+        if (currentIndex < brainExercises.length) {
           handleReadOutLoudPress(brainExercises[currentIndex].message);
+        } else if (
+          currentIndex === brainExercises.length &&
+          brainExercises.length !== 0
+        ) {
+          setDisplayReflection(true);
+        }
       }, [currentIndex]);
-      const handleAfterBrain = () => {
-        handleReadOutLoudPress(
-          "Good job, I will provide advanced training next time. Now you may check out our other services."
-        );
-      };
+      const handleAfterBrain = () => {};
 
       return (
         <>
           {currentIndex < brainExercises.length && (
             <View
               style={{
+                marginTop: 100,
+
                 flexDirection: "column",
               }}
             >
@@ -463,44 +703,13 @@ const Chatbot = ({ route, navigation }) => {
             </View>
           )}
           {brainExercises.length === 0 && <Loading />}
-          {currentIndex === brainExercises.length &&
-            brainExercises.length !== 0 && (
-              <>
-                <ChatBrain
-                  type={"toUser"}
-                  message={
-                    "Well done! You have completed your brain exercise for today."
-                  }
-                />
-                <ChatBrain
-                  type={"toUser"}
-                  message={
-                    'You can do more anytime by going to treatment section, and clicking on "Brain Exercise"'
-                  }
-                />
-                <ChatBrain
-                  type={"toUser"}
-                  message={"How do you feel after doing the brain exercise?"}
-                />
-                <ChatBrain
-                  type={"toBot"}
-                  responses={[
-                    "I feel better now, it helped me learn so many things",
-                    "It's is so complicated",
-                    "It is so simple and nice",
-                    "I don't like the exercise, do you have anything else?",
-                  ]}
-                  handleSelection={handleAfterBrain}
-                  answer={1}
-                />
-              </>
-            )}
         </>
       );
     } else if (route.params.chatType === "GAD7") {
       return <GAD7Questionnaire handleOnPress={handleOnpress} />;
     }
   };
+  const [displayReflection, setDisplayReflection] = useState(false);
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -541,21 +750,23 @@ const Chatbot = ({ route, navigation }) => {
               bottom: 20,
             }}
           >
-            {Platform.OS === "ios" && !Platform.isPad && <ReadData></ReadData>}
+            {/* {Platform.OS === "ios" && !Platform.isPad && <ReadData></ReadData>} */}
 
             {Platform.OS === "android" && <ReadDataAndroid></ReadDataAndroid>}
           </View>
         )}
+        {route.params.chatType !== "default" && (
+          <View
+            style={{
+              position: "absolute",
+              right: 20,
+              bottom: 20,
+            }}
+          >
+            <ReadOutLoudButton></ReadOutLoudButton>
+          </View>
+        )}
 
-        <View
-          style={{
-            position: "absolute",
-            right: 20,
-            bottom: 20,
-          }}
-        >
-          <ReadOutLoudButton></ReadOutLoudButton>
-        </View>
         {route.params.chatType !== "default" && (
           <View
             style={{
@@ -573,6 +784,17 @@ const Chatbot = ({ route, navigation }) => {
               }}
             ></Button>
           </View>
+        )}
+        {displayReflection && (
+          <ReflectionComponent
+            activity={"brain exercise"}
+            onClose={() => {
+              setDisplayReflection(false);
+              navigation.setParams({
+                chatType: "default",
+              });
+            }}
+          ></ReflectionComponent>
         )}
       </ImageBackground>
     </View>

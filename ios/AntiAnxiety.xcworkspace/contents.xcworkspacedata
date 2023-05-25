@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:AntiAnxiety.xcodeproj">
+      location = "group:/Users/simondarota/Ejected_4/My-Anxiety-Buddy/ios/AnxietyBuddy.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, Dimensions } from "react-native";
+import { View, Text, TouchableOpacity, Dimensions, Alert } from "react-native";
 import { Video } from "expo-av";
 import LevelPicker from "./levelPicker";
 import Loading from "../loading";
@@ -69,6 +69,17 @@ export default function VideoPlayer({ videoFilename }) {
       setLoopCount(loopCount + 0.5);
     }
   };
+  if (loopCount === 10) {
+    Alert.alert(
+      "Success",
+      "Good job, you have completed 10 cycles of breathing."
+    );
+    videoRef.pauseAsync();
+    setIsPlaying(false);
+    setVideoWidth("100%");
+    setDisplayReflection(true);
+    setLoopCount(0);
+  }
   return (
     <View
       style={{

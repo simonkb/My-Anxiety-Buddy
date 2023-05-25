@@ -181,6 +181,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderBottomColor: "black",
     borderBottomWidth: 2,
+    backgroundColor:'white'
   },
   inputLabel: {
     fontSize: 18,
@@ -196,6 +197,7 @@ const styles = StyleSheet.create({
   responsesContainer: {
     flexGrow: 1,
     padding: 20,
+   
   },
   response: {
     borderWidth: 1,

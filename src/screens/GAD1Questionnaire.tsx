@@ -17,89 +17,90 @@ import AppleHealthKit, {
   HealthValue,
   HealthKitPermissions,
 } from "react-native-health";
-import Speech from "expo-speech";
-const GAD7Questionnaire = (props) => {
+import * as Speech from "expo-speech";
+
+const Chat = (props) => {
   const { globalState, setGlobalStateNew } = useContext(GlobalStateContext);
-  const Chat = (props) => {
-    //const { globalState, setGlobalStateNew } = useContext(GlobalStateContext);
-    const handleReadOutLoudPress = async (text) => {
-      try {
-        if (globalState.speakEnabled)
-          await Speech.speak(text, { language: "en-US" });
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  const handleReadOutLoudPress = async (text) => {
+    try {
+      if (globalState.speakEnabled)
+        await Speech.speak(text, { language: "en-US" });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    useEffect(() => {
-      handleReadOutLoudPress(props.message);
-    }, []);
+  useEffect(() => {
+    handleReadOutLoudPress(props.message);
+  }, [props.message]);
 
-    return (
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "flex-end",
+        marginBottom: 10,
+        marginLeft: props.type === "toUser" ? 0 : 5,
+        marginRight: props.type === "toBot" ? 0 : 5,
+        alignSelf: props.type === "toUser" ? "flex-start" : "flex-end",
+      }}
+    >
+      {props.type === "toUser" && (
+        <MaterialCommunityIcons
+          name="account"
+          color={"gray"}
+          size={30}
+          style={{ marginRight: 5 }}
+        />
+      )}
       <View
         style={{
-          flexDirection: "row",
-          alignItems: "flex-end",
-          marginBottom: 10,
-          marginLeft: props.type === "toUser" ? 0 : 5,
-          marginRight: props.type === "toBot" ? 0 : 5,
-          alignSelf: props.type === "toUser" ? "flex-start" : "flex-end",
+          marginRight: props.type === "toUser" ? 10 : 0,
+          marginLeft: props.type === "toUser" ? 0 : 10,
+          maxWidth: "90%",
         }}
       >
-        {props.type === "toUser" && (
-          <MaterialCommunityIcons
-            name="account"
-            color={"gray"}
-            size={30}
-            style={{ marginRight: 5 }}
-          />
-        )}
         <View
           style={{
-            marginRight: props.type === "toUser" ? 10 : 0,
-            marginLeft: props.type === "toUser" ? 0 : 10,
-            maxWidth: "90%",
+            backgroundColor:
+              props.type === "toUser" ? "#f1f0f0" : "rgba(255, 255, 255, 0.7)",
+            padding: 10,
+            borderRadius: 10,
           }}
         >
-          <View
-            style={{
-              backgroundColor:
-                props.type === "toUser"
-                  ? "#f1f0f0"
-                  : "rgba(255, 255, 255, 0.7)",
-              padding: 10,
-              borderRadius: 10,
-            }}
-          >
-            <Text style={{ fontSize: 20 }}>{props.message}</Text>
-            {props.type === "toBot" &&
-              props.responses.map((option, index) => (
-                <TouchableOpacity
-                  key={option}
-                  style={{
-                    backgroundColor: "rgba(0, 0, 0, 0.2)",
-                    opacity: 0.9,
-                    padding: 5,
-                    borderRadius: 5,
-                    marginVertical: 2,
-                  }}
-                  onPress={() => props.handleSelection(index)}
+          <Text style={{ fontSize: 20 }}>{props.message}</Text>
+          {props.type === "toBot" &&
+            props.responses.map((option, index) => (
+              <TouchableOpacity
+                key={option}
+                style={{
+                  backgroundColor: "rgba(0, 0, 0, 0.2)",
+                  opacity: 0.9,
+                  padding: 5,
+                  borderRadius: 5,
+                  marginVertical: 2,
+                }}
+                onPress={() => props.handleSelection(index)}
+              >
+                <Text
+                  style={{ fontSize: 18, color: "black", fontWeight: "bold" }}
                 >
-                  <Text
-                    style={{ fontSize: 18, color: "black", fontWeight: "bold" }}
-                  >
-                    {option}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-          </View>
+                  {option}
+                </Text>
+              </TouchableOpacity>
+            ))}
         </View>
-        {props.type === "toBot" && (
-          <MaterialCommunityIcons name="account" color={"gray"} size={30} />
-        )}
       </View>
-    );
-  };
+      {props.type === "toBot" && (
+        <MaterialCommunityIcons name="account" color={"gray"} size={30} />
+      )}
+    </View>
+  );
+};
+
+const GAD7Questionnaire = (props) => {
+  const { globalState, setGlobalStateNew } = useContext(GlobalStateContext);
+
   const [questions, setQuestions] = useState([]);
   async function read() {
     const docRef = doc(db, "exercises", "GAD7");
@@ -117,6 +118,7 @@ const GAD7Questionnaire = (props) => {
         console.log(error);
       });
   }
+
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [responses, setResponses] = useState([]);
   const handleSelection = async (response) => {
@@ -198,7 +200,7 @@ const GAD7Questionnaire = (props) => {
     };
 
     if (currentQuestion === questions.length && questions.length !== 0) {
-      let sum = responses.slice(5, 12).reduce((total, num) => total + num);
+      let sum = responses.reduce((total, num) => total + num);
       let decision = "";
       if (sum < 5) {
         decision = "Normal";
@@ -253,7 +255,7 @@ const GAD7Questionnaire = (props) => {
       setDoc(
         doc(db, "/Users/" + currentUserId + "/Sessions", date.toString()),
         {
-          GAD7Score: responses.slice(5, 12),
+          GAD7Score: responses,
           decision: decision,
           averageHeartRate: mean1,
           averageO2level: mean2,
@@ -261,7 +263,7 @@ const GAD7Questionnaire = (props) => {
           date: date.getTime(),
         }
       );
-      props.handleOnPress("Done with GAD7", responses.slice(5, 12));
+      props.handleOnPress("Done with GAD7", responses);
     }
   }, [currentQuestion]);
 
@@ -293,6 +295,7 @@ const GAD7Questionnaire = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 100,
   },
   question: {
     fontSize: 18,

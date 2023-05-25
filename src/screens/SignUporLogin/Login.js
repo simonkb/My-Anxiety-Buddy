@@ -146,7 +146,7 @@ const Login = () => {
             style={styles.icon}
           />
           <Text style={styles.title}>Welcome to</Text>
-          <Text style={styles.title}>Anti-anxiety</Text>
+          <Text style={styles.title}>AnxietyBuddy</Text>
         </View>
         <View style={styles.signInRectangle}>
           <TextInput
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   button: {
-    backgroundColor: "#2962FF",
+    backgroundColor: "green",
     borderRadius: 10,
     padding: 10,
     marginTop: 20,

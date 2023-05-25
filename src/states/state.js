@@ -1,7 +1,7 @@
 import { createGlobalState } from "react-hooks-global-state";
 const { setGlobalState, useGlobalState } = createGlobalState({
   defaultLanguage: "eng",
-  defaultBackgroundImage: "bgPink",
+  defaultBackgroundImage: "bgOrange",
   isLoggedIn: false,
   currentUser: null,
   chat: "default",

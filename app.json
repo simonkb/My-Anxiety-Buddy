@@ -1,8 +1,8 @@
 {
   "expo": {
 
-    "name": "Anti-Anxiety",
-    "slug": "Anti-Anxiety",
+    "name": "AnxietyBuddy",
+    "slug": "AnxietyBuddy",
     "version": "1.0.1",
     "orientation": "default",
     "icon": "./assets/icon.png",

@@ -15,6 +15,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ChatBot from "../screens/chatbot";
 import { NavigationContainer } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -24,18 +25,18 @@ const MainStack = () => {
     <Tab.Navigator
       initialRouteName="Your Buddy"
       screenOptions={{
-        tabBarActiveTintColor: "#e91e63",
+        tabBarActiveTintColor: "green",
       }}
     >
       <Tab.Screen
         name="Your Buddy"
         component={ChatBot}
         options={{
-          tabBarLabel: "Your Buddy",
+          tabBarLabel: "Home",
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="chat" color={color} size={size} />
+            <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
-          headerShown: true,
+          headerShown: false,
         }}
         initialParams={{ chatType: "default", otherParam: "nothing" }}
       />
@@ -43,9 +44,9 @@ const MainStack = () => {
         name="Treatment"
         component={TreatmentStack}
         options={{
-          tabBarLabel: "Treatment",
+          tabBarLabel: "Contents",
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="lungs" color={color} size={size} />
+            <Ionicons name="ios-book" size={size} color={color} />
           ),
           headerShown: false,
           headerLeft: null,
@@ -57,7 +58,7 @@ const MainStack = () => {
         options={{
           tabBarLabel: "Journaling",
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name='book-edit' color={color} size={size} />
+            <Ionicons name="ios-journal" size={size} color={color} />
           ),
           headerShown: true,
         }}
@@ -79,11 +80,11 @@ const MainStack = () => {
 const TreatmentStack = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen
+      {/* <Stack.Screen
         options={{ headerShown: true, gestureEnabled: true }}
         name="Treatment Home"
         component={TreatmentHome}
-      />
+      /> */}
       <Stack.Screen
         options={{ headerShown: true, gestureEnabled: true }}
         name="Readings"

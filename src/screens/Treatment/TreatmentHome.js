@@ -208,7 +208,8 @@ const TreatmentHome = (route, navigation) => {
                 </Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={onJournalingPressed}>
+
+            {/* <TouchableOpacity onPress={onJournalingPressed}>
               <View style={styles.shortTermRow}>
                 <Text
                   style={{
@@ -222,8 +223,8 @@ const TreatmentHome = (route, navigation) => {
                   Journaling
                 </Text>
               </View>
-            </TouchableOpacity>
-            <TouchableOpacity
+            </TouchableOpacity> */}
+            {/* <TouchableOpacity
               onPress={() => {
                 setOverlayVisible(true);
                 setTypeOfOverlay("Journaling");
@@ -242,7 +243,7 @@ const TreatmentHome = (route, navigation) => {
                   !
                 </Text>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             {/* <TouchableOpacity>
             <View style={styles.shortTermRow}>
               <Text
