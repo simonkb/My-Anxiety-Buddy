@@ -2,21 +2,18 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 const CollapsibleBar = ({ title, children }) => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
-
+  const [isCollapsed, setIsCollapsed] = useState(true);
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
-
   return (
     <View
       style={{
-        backgroundColor: "#f8f8f8",
+        backgroundColor: "rgba(217, 217, 217, 0.53)",
         borderRadius: 5,
         marginBottom: 10,
         overflow: "hidden",
         width: "90%",
-        opacity:0.8
       }}
     >
       <TouchableOpacity style={styles.header} onPress={toggleCollapse}>
@@ -45,9 +42,9 @@ const styles = StyleSheet.create({
     alignContent: "center",
   },
   title: {
-    color: "#333", // color of the title text
-    fontSize: 20, // size of the title text
-    fontWeight: "bold", // make the text bold
+    color: "#3333",
+    fontSize: 20,
+    fontWeight: "bold",
     marginVertical: 10,
   },
   header: {

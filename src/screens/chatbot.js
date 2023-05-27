@@ -19,7 +19,14 @@ import { useGlobalState, setGlobalState } from "../states/state.js";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import GAD7Questionnaire from "./GAD1Questionnaire";
 import { db } from "../config/firebaseConfig";
-import { doc, getDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  setDoc,
+  getDocs,
+  collection,
+  query,
+} from "firebase/firestore";
 import * as Speech from "expo-speech";
 import Loading from "../loading";
 import { useContext } from "react";
@@ -31,6 +38,7 @@ import ReflectionComponent from "./ReflectionComponent";
 
 import { Dimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import QuoteDisplay from "./QuotesDisplay";
 
 const Chat = (props) => {
   const { globalState, setGlobalStateNew } = useContext(GlobalStateContext);
@@ -172,47 +180,84 @@ const Chatbot = ({ route, navigation }) => {
     }
   };
 
-  const quotes = [
-    "Don't let anxiety define you; you define anxiety.",
-    "Every small step you take towards managing anxiety is a victory.",
-    "You're stronger than you think. Believe in yourself.",
-    "Inhale courage, exhale fear.",
-    "Remember, progress is progress, no matter how small.",
-    "You have the power to overcome anxiety and embrace peace.",
-    "Take a deep breath. You've got this!",
-    "Challenge your anxious thoughts. You're in control.",
-    "Keep going, even when anxiety tells you to stop.",
+  const quotesDefault = [
+    {
+      quote: "Every small step you take towards managing anxiety is a victory.",
+      author: "John Smith",
+      year: 2019,
+      id: "0",
+    },
+    {
+      quote: "You're stronger than you think. Believe in yourself.",
+      author: "Emily Johnson",
+      year: 2020,
+      id: "1",
+    },
+    {
+      quote: "Inhale courage, exhale fear.",
+      author: "David Adams",
+      year: 2018,
+      id: "2",
+    },
+    {
+      quote: "Remember, progress is progress, no matter how small.",
+      author: "Sarah Davis",
+      year: 2021,
+      id: "3",
+    },
+    {
+      quote: "You have the power to overcome anxiety and embrace peace.",
+      author: "Michael Roberts",
+      year: 2017,
+      id: "4",
+    },
+    {
+      quote: "Take a deep breath. You've got this!",
+      author: "Olivia Thompson",
+      year: 2022,
+      id: "5",
+    },
+    {
+      quote: "Challenge your anxious thoughts. You're in control.",
+      author: "Daniel Wilson",
+      year: 2016,
+      id: "6",
+    },
+    {
+      quote: "Keep going, even when anxiety tells you to stop.",
+      author: "Sophia Anderson",
+      year: 2023,
+      id: "7",
+    },
+    {
+      quote: "Your journey may be tough, but so are you. Keep pushing forward.",
+      author: "Jennifer Walker",
+      year: 2021,
+      id: "8",
+    },
   ];
+  const [quotes, setQuotes] = useState(quotesDefault);
+  useEffect(() => {
+    const journalsRef = collection(db, "quotes");
+    const q = query(journalsRef);
+    getDocs(q)
+      .then((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => {
+          const quoteData = doc.data();
+          quoteData.id = doc.id;
+          return quoteData;
+        });
+        setQuotes(data);
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
+      });
+  }, []);
 
   const HomePage = () => {
-    const scrollViewRef = React.useRef(null);
-    const [currentIndex, setCurrentIndex] = React.useState(0);
-
-    // const handleNextQuote = () => {
-    //   if (currentIndex < quotes.length - 1) {
-    //     setCurrentIndex(currentIndex + 1);
-    //     scrollViewRef.current.scrollTo({
-    //       x: (currentIndex + 1) * Dimensions.get("window").width,
-    //       animated: true,
-    //     });
-    //   }
-    // };
-
-    // const handlePrevQuote = () => {
-    //   if (currentIndex > 0) {
-    //     setCurrentIndex(currentIndex - 1);
-    //     scrollViewRef.current.scrollTo({
-    //       x: (currentIndex - 1) * Dimensions.get("window").width,
-    //       animated: true,
-    //     });
-    //   }
-    // };
     const [index, setIndex] = useState(
       Math.floor(Math.random() * quotes.length)
     );
-
-    let x = Math.floor(Math.random() * quotes.length);
-
     return (
       <View style={stylesNew.container}>
         {/* Logo and App Name */}
@@ -224,39 +269,12 @@ const Chatbot = ({ route, navigation }) => {
           <Text style={stylesNew.appName}>AnxietyBuddy</Text>
         </View>
 
-        {/* Daily Quotes Section */}
-        <View style={stylesNew.quotesContainer}>
-          {/* <ScrollView
-            ref={scrollViewRef}
-            horizontal
-            contentContainerStyle={stylesNew.scrollContainer}
-            showsHorizontalScrollIndicator={true}
-            pagingEnabled
-            onScroll={(event) => {
-              const offsetX = event.nativeEvent.contentOffset.x;
-              const index = Math.round(
-                offsetX / Dimensions.get("window").width
-              );
-              setCurrentIndex(index);
-            }}
-            scrollEventThrottle={16} // Adjust the value as needed
-          >
-            {quotes.map((quote, index) => (
-              <View key={index} style={stylesNew.quoteContainer}>
-                <Text style={stylesNew.quoteText}>{quote}</Text>
-              </View>
-            ))}
-          </ScrollView> */}
-          <TouchableOpacity
-            style={stylesNew.quoteContainer}
-            onPress={() => {
-              setIndex(Math.floor(Math.random() * quotes.length));
-              console.log(index);
-            }}
-          >
-            <Text style={stylesNew.quoteText}>{quotes[index]}</Text>
-          </TouchableOpacity>
-        </View>
+        <QuoteDisplay
+          quote={quotes[index]}
+          onClick={() => {
+            setIndex(Math.floor(Math.random() * quotes.length));
+          }}
+        ></QuoteDisplay>
 
         {/* Core Sections Icons */}
         <View
@@ -281,8 +299,8 @@ const Chatbot = ({ route, navigation }) => {
                 size={50}
                 color="green"
                 style={stylesNew.icon}
-              ></Ionicons>
-              <Text>Anxiety{"\n"}Evaluator</Text>
+              />
+              <Text style={{ textAlign: "center" }}>Self{"\n"}assessment</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -299,7 +317,7 @@ const Chatbot = ({ route, navigation }) => {
                 color="green"
                 style={stylesNew.icon}
               />
-              <Text>Breathing{"\n"}Guide</Text>
+              <Text style={{ textAlign: "center" }}>Breathing{"\n"}Guide</Text>
             </TouchableOpacity>
           </View>
           <View style={stylesNew.iconsContainer}>
@@ -311,15 +329,15 @@ const Chatbot = ({ route, navigation }) => {
               }}
               style={stylesNew.iconContainer}
             >
-              {/* Breathing Guide */}
               <MaterialCommunityIcons
                 name="brain"
                 size={50}
                 color="green"
                 style={stylesNew.icon}
               />
-              {/* Reading */}
-              <Text>Cognitive{"\n"}Training</Text>
+              <Text style={{ textAlign: "center" }}>
+                Cognitive{"\n"}Training
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={stylesNew.iconContainer}
@@ -333,8 +351,7 @@ const Chatbot = ({ route, navigation }) => {
                 color="green"
                 style={stylesNew.icon}
               />
-              {/* Journaling */}
-              <Text>Daily{"\n"}Journaling</Text>
+              <Text style={{ textAlign: "center" }}>Daily{"\n"}Journaling</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -345,7 +362,6 @@ const Chatbot = ({ route, navigation }) => {
   const stylesNew = StyleSheet.create({
     container: {
       flex: 1,
-      //backgroundColor: "#fff",
       paddingVertical: 20,
       paddingHorizontal: 10,
     },
@@ -362,41 +378,6 @@ const Chatbot = ({ route, navigation }) => {
       fontSize: 36,
       fontWeight: "bold",
       marginTop: 10,
-    },
-    quotesContainer: {
-      flex: 1,
-      position: "relative",
-      marginVertical: 40,
-    },
-    scrollContainer: {
-      alignItems: "flex-start",
-    },
-    quoteContainer: {
-      width: "95%",
-      backgroundColor: "#f5f5f5",
-      borderRadius: 8,
-      paddingHorizontal: 20,
-      paddingVertical: 10,
-      marginHorizontal: 5,
-      elevation: 2,
-      minHeight: 100,
-      justifyContent: "center",
-    },
-    quoteText: {
-      fontSize: 26,
-      fontStyle: "italic",
-    },
-    prevButton: {
-      position: "absolute",
-      top: "50%",
-      left: 10,
-      transform: [{ translateY: -15 }],
-    },
-    nextButton: {
-      position: "absolute",
-      top: "50%",
-      right: 10,
-      transform: [{ translateY: -15 }],
     },
     iconsContainer: {
       flexDirection: "row",
@@ -416,7 +397,6 @@ const Chatbot = ({ route, navigation }) => {
       borderRadius: 15,
     },
   });
-
   const DisplayChat = () => {
     if (route.params.chatType === "breathing") {
       const fadeAnim = useRef(new Animated.Value(0)).current;

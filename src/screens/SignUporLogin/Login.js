@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
 import {
   ImageBackground,
   StyleSheet,
@@ -19,9 +20,17 @@ import {
   sendEmailVerification,
   onAuthStateChanged,
 } from "firebase/auth";
-import { collection, doc, setDoc, getDoc } from "firebase/firestore";
 
 import { auth, db } from "../../config/firebaseConfig";
+import QuoteDisplay from "../QuotesDisplay";
+import {
+  doc,
+  getDoc,
+  setDoc,
+  getDocs,
+  collection,
+  query,
+} from "firebase/firestore";
 
 const Login = () => {
   //Updating background
@@ -133,6 +142,80 @@ const Login = () => {
   const onForgetPassPressed = () => {
     navigator.navigate("Forget Password");
   };
+  const quotesDefault = [
+    {
+      quote: "Every small step you take towards managing anxiety is a victory.",
+      author: "John Smith",
+      year: 2019,
+      id: "0",
+    },
+    {
+      quote: "You're stronger than you think. Believe in yourself.",
+      author: "Emily Johnson",
+      year: 2020,
+      id: "1",
+    },
+    {
+      quote: "Inhale courage, exhale fear.",
+      author: "David Adams",
+      year: 2018,
+      id: "2",
+    },
+    {
+      quote: "Remember, progress is progress, no matter how small.",
+      author: "Sarah Davis",
+      year: 2021,
+      id: "3",
+    },
+    {
+      quote: "You have the power to overcome anxiety and embrace peace.",
+      author: "Michael Roberts",
+      year: 2017,
+      id: "4",
+    },
+    {
+      quote: "Take a deep breath. You've got this!",
+      author: "Olivia Thompson",
+      year: 2022,
+      id: "5",
+    },
+    {
+      quote: "Challenge your anxious thoughts. You're in control.",
+      author: "Daniel Wilson",
+      year: 2016,
+      id: "6",
+    },
+    {
+      quote: "Keep going, even when anxiety tells you to stop.",
+      author: "Sophia Anderson",
+      year: 2023,
+      id: "7",
+    },
+    {
+      quote: "Your journey may be tough, but so are you. Keep pushing forward.",
+      author: "Jennifer Walker",
+      year: 2021,
+      id: "8",
+    },
+  ];
+  const [quotes, setQuotes] = useState(quotesDefault);
+  useEffect(() => {
+    const journalsRef = collection(db, "quotes");
+    const q = query(journalsRef);
+    getDocs(q)
+      .then((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => {
+          const quoteData = doc.data();
+          quoteData.id = doc.id;
+          return quoteData;
+        });
+        setQuotes(data);
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
+      });
+  }, []);
+  const [index, setIndex] = useState(Math.floor(Math.random() * quotes.length));
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -148,6 +231,12 @@ const Login = () => {
           <Text style={styles.title}>Welcome to</Text>
           <Text style={styles.title}>AnxietyBuddy</Text>
         </View>
+        <QuoteDisplay
+          quote={quotes[index]}
+          onClick={() => {
+            setIndex(Math.floor(Math.random() * quotes.length));
+          }}
+        ></QuoteDisplay>
         <View style={styles.signInRectangle}>
           <TextInput
             style={styles.input}
@@ -248,7 +337,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "column",
     alignItems: "center",
-    marginBottom: 50,
+   // marginBottom: 50,
   },
   icon: {
     width: 60,

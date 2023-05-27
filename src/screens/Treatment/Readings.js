@@ -9,7 +9,7 @@ import {
   Linking,
   Button,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -30,7 +30,7 @@ import {
 import { db } from "../../config/firebaseConfig";
 import * as Speech from "expo-speech";
 import ReadingContent from "./ReadingContent";
-
+import QuoteDisplay from "../QuotesDisplay";
 const Readings = () => {
   //Updating background
   let defaultBg = useGlobalState("defaultBackgroundImage");
@@ -60,46 +60,86 @@ const Readings = () => {
     } catch (error) {
       console.error(error);
     }
-    // } else {
-    //   setIsReading(false);
-    //   Speech.stop();
-    // }
   };
 
   const Display = () => {
     if (value === "quotes") {
-      const [allQuotes, setQuotes] = useState("");
-      async function read() {
-        let list = [];
-        const querySnapshot = await getDocs(
-          query(collection(db, "quotes"), orderBy("viewsCount", "desc"))
-        );
-        querySnapshot.forEach((doc) => {
-          var temp = {
-            quote: doc.data().quote,
-            viewsCount: doc.data().viewsCount,
-            id: doc.id,
-          };
-          list.push(temp);
-        });
-
-        return list;
-      }
-
-      read()
-        .then((data) => {
-          setQuotes(data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-      async function updateCount(id, vCount) {
-        const qoutesRef = collection(db, "quotes");
-
-        await updateDoc(doc(qoutesRef, id), {
-          viewsCount: vCount + 1,
-        });
-      }
+  
+      const quotesDefault = [
+        {
+          quote:
+            "Every small step you take towards managing anxiety is a victory.",
+          author: "John Smith",
+          year: 2019,
+          id: "0",
+        },
+        {
+          quote: "You're stronger than you think. Believe in yourself.",
+          author: "Emily Johnson",
+          year: 2020,
+          id: "1",
+        },
+        {
+          quote: "Inhale courage, exhale fear.",
+          author: "David Adams",
+          year: 2018,
+          id: "2",
+        },
+        {
+          quote: "Remember, progress is progress, no matter how small.",
+          author: "Sarah Davis",
+          year: 2021,
+          id: "3",
+        },
+        {
+          quote: "You have the power to overcome anxiety and embrace peace.",
+          author: "Michael Roberts",
+          year: 2017,
+          id: "4",
+        },
+        {
+          quote: "Take a deep breath. You've got this!",
+          author: "Olivia Thompson",
+          year: 2022,
+          id: "5",
+        },
+        {
+          quote: "Challenge your anxious thoughts. You're in control.",
+          author: "Daniel Wilson",
+          year: 2016,
+          id: "6",
+        },
+        {
+          quote: "Keep going, even when anxiety tells you to stop.",
+          author: "Sophia Anderson",
+          year: 2023,
+          id: "7",
+        },
+        {
+          quote:
+            "Your journey may be tough, but so are you. Keep pushing forward.",
+          author: "Jennifer Walker",
+          year: 2021,
+          id: "8",
+        },
+      ];
+      const [quotes, setQuotes] = useState(quotesDefault);
+      useEffect(() => {
+        const journalsRef = collection(db, "quotes");
+        const q = query(journalsRef);
+        getDocs(q)
+          .then((querySnapshot) => {
+            const data = querySnapshot.docs.map((doc) => {
+              const quoteData = doc.data();
+              quoteData.id = doc.id;
+              return quoteData;
+            });
+            setQuotes(data);
+          })
+          .catch((error) => {
+            console.log("Error getting documents: ", error);
+          });
+      }, []);
       return (
         <>
           <View
@@ -113,65 +153,11 @@ const Readings = () => {
               flex: 1,
             }}
           >
-            <View
-              style={{
-                width: "100%",
-                height: 40,
-                backgroundColor: "#A984C3",
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 18,
-                  color: "#FFFFFF",
-                  fontWeight: "400",
-                  padding: 10,
-                  width: "90%",
-                }}
-              >
-                Inspiring quotes
-              </Text>
-            </View>
             <FlatList
-              data={allQuotes}
+              data={quotes}
               renderItem={({ item }) => (
                 <View>
-                  <TouchableOpacity
-                    style={{
-                      width: "100%",
-                      backgroundColor: "rgba(255, 255, 255, 0.31)",
-                      flexDirection: "row",
-                      shadowColor: "rgba(0, 0, 0, 0.25)",
-                      borderBottomColor: "gray",
-                      borderBottomWidth: 2,
-                    }}
-                    onPress={() => updateCount(item.id, item.viewsCount)}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 18,
-                        color: "#000000",
-                        fontWeight: "400",
-                        padding: 10,
-                        width: "90%",
-                      }}
-                    >
-                      {item.quote}
-                    </Text>
-                    <MaterialCommunityIcons
-                      name="eye"
-                      color={"gray"}
-                      size={18}
-                      style={{
-                        padding: 10,
-                        paddingLeft: 30,
-                        right: 0,
-                        position: "absolute",
-                      }}
-                    >
-                      <Text style={{ fontSize: 14 }}> {item.viewsCount}</Text>
-                    </MaterialCommunityIcons>
-                  </TouchableOpacity>
+                  <QuoteDisplay quote={item}></QuoteDisplay>
                 </View>
               )}
             />
@@ -238,7 +224,7 @@ const Readings = () => {
               style={{
                 width: "100%",
                 height: 40,
-                backgroundColor: "#A984C3",
+                backgroundColor: "green",
               }}
             >
               <Text
@@ -249,7 +235,7 @@ const Readings = () => {
                   padding: 10,
                 }}
               >
-                Important links
+                Hotlines
               </Text>
             </View>
             <FlatList
@@ -297,7 +283,76 @@ const Readings = () => {
                   </TouchableOpacity>
                 </View>
               )}
+              contentContainerStyle={{ justifyContent: "space-evenly" }}
             />
+            <View
+              style={{
+                width: "100%",
+                height: 40,
+                backgroundColor: "green",
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: "#FFFFFF",
+                  fontWeight: "400",
+                  padding: 10,
+                }}
+              >
+                Other links
+              </Text>
+            </View>
+            {/* <View style={{
+              height:array.length*5, flex:1
+            }}> */}
+            <FlatList
+              data={array}
+              renderItem={({ item }) => (
+                <View>
+                  <TouchableOpacity
+                    style={{
+                      width: "100%",
+                      backgroundColor: "rgba(255, 255, 255, 0.31)",
+                      flexDirection: "row",
+                      shadowColor: "rgba(0, 0, 0, 0.25)",
+                      borderBottomColor: "gray",
+                      borderBottomWidth: 2,
+                    }}
+                    onPress={() =>
+                      openLinkInBrowser(item.link, item.id, item.viewsCount)
+                    }
+                  >
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        color: "#000000",
+                        fontWeight: "400",
+                        padding: 10,
+                        width: "90%",
+                      }}
+                    >
+                      {item.description}
+                    </Text>
+
+                    <MaterialCommunityIcons
+                      name="eye"
+                      color={"gray"}
+                      size={18}
+                      style={{
+                        padding: 10,
+                        paddingLeft: 30,
+                        right: 0,
+                        position: "absolute",
+                      }}
+                    >
+                      <Text style={{ fontSize: 14 }}>{item.viewsCount}</Text>
+                    </MaterialCommunityIcons>
+                  </TouchableOpacity>
+                </View>
+              )}
+            />
+            {/* </View> */}
           </View>
         </>
       );

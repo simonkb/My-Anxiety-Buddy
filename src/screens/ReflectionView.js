@@ -4,7 +4,6 @@ import { View, Text, StyleSheet } from "react-native";
 const ReflectionView = ({ reflections }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Reflections</Text>
       {reflections.map((reflection, index) => (
         <View key={index} style={styles.reflectionContainer}>
           <Text style={styles.dateText}>
@@ -27,14 +26,8 @@ const ReflectionView = ({ reflections }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f8f8f8",
-    padding: 20,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
+
   reflectionContainer: {
     marginBottom: 20,
     backgroundColor: "white",

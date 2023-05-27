@@ -16,7 +16,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ChatBot from "../screens/chatbot";
 import { NavigationContainer } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-
+import NotificationsPage from "../screens/NotificationsPage";
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -63,6 +63,19 @@ const MainStack = () => {
           headerShown: true,
         }}
       />
+        <Tab.Screen
+        name="Notifications"
+        component={NotificationsPage}
+        options={{
+          tabBarLabel: "Notifications",
+          tabBarBadge:3,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="notifications" size={size} color={color} />
+          ),
+          headerShown: false,
+        }}
+      />
+
       <Tab.Screen
         name="Profile"
         component={ProfileStack}

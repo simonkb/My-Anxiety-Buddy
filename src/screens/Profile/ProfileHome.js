@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
+  FlatList,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -28,6 +29,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import BarGraph from "./BarGraph";
 import CollapsibleBar from "./CollapsableBar";
 import ReflectionView from "../ReflectionView";
+import QuoteDisplay from "../QuotesDisplay";
 const ProfileHome = ({ route, navigation }) => {
   let defaultBg = useGlobalState("defaultBackgroundImage");
   let currentBg;
@@ -210,6 +212,28 @@ const ProfileHome = ({ route, navigation }) => {
       marginLeft: 5,
     },
   });
+
+  const [quotes, setQuotes] = useState([]);
+  useEffect(() => {
+    const CUser = auth.currentUser;
+    if (CUser) {
+      const journalsRef = collection(db, `Users/${CUser.uid}/savedQuotes`);
+      const q = query(journalsRef);
+      getDocs(q)
+        .then((querySnapshot) => {
+          const data = querySnapshot.docs.map((doc) => {
+            const quoteData = doc.data();
+            quoteData.id = doc.id;
+            return quoteData;
+          });
+          setQuotes(data);
+        })
+        .catch((error) => {
+          console.log("Error getting documents: ", error);
+        });
+    }
+  }, []);
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -236,7 +260,7 @@ const ProfileHome = ({ route, navigation }) => {
 
           <ScrollView>
             <Text style={styles.title}>Your Activity Analytics</Text>
-            <CollapsibleBar title="Your GAD7 Analytics">
+            <CollapsibleBar title="Your Self Assessment Analytics">
               <View style={styles.container}>
                 {anxietyData.length > 0 ? (
                   <BarGraph data={anxietyData} />
@@ -246,7 +270,25 @@ const ProfileHome = ({ route, navigation }) => {
               </View>
             </CollapsibleBar>
             <CollapsibleBar title="Your Reflections">
-              <ReflectionView reflections={reflections}></ReflectionView>
+              {reflections.length > 0 ? (
+                <ReflectionView reflections={reflections}></ReflectionView>
+              ) : (
+                <Text>Loading</Text>
+              )}
+            </CollapsibleBar>
+            <CollapsibleBar title="Saved Quotes">
+              {quotes.length > 0 ? (
+                <FlatList
+                  data={quotes}
+                  renderItem={({ item }) => (
+                    <View>
+                      <QuoteDisplay quote={item}></QuoteDisplay>
+                    </View>
+                  )}
+                />
+              ) : (
+                <Text>Loading</Text>
+              )}
             </CollapsibleBar>
           </ScrollView>
         </SafeAreaView>
