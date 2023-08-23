@@ -9,12 +9,18 @@ import {
   View,
   Image,
   Alert,
+  KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import bg1 from "../../../assets/bg1.jpeg";
-import bg2 from "../../../assets/bg2.jpg";
-import bg3 from "../../../assets/bg3.jpg";
-import { useGlobalState, setGlobalState } from "../../states/state";
+
+import {
+  useGlobalState,
+  setGlobalState,
+  bg1,
+  bg2,
+  bg3,
+} from "../../states/state";
 import {
   signInWithEmailAndPassword,
   sendEmailVerification,
@@ -103,8 +109,8 @@ const Login = () => {
             if (user.emailVerified === false) {
               sendEmailVerification(auth.currentUser).then(() => {
                 Alert.alert(
-                  "error",
-                  "Please verify your email. A new verification email has been sent."
+                  "Please Verify your email",
+                  "A link to verfiy your email has been sent to your email address."
                 );
               });
             } else {
@@ -224,12 +230,12 @@ const Login = () => {
         style={styles.bgImage}
       >
         <View style={styles.header}>
+          <Text style={styles.title}>Welcome to AnxietyBuddy</Text>
+
           <Image
-            source={require("../../../assets/icon.png")}
+            source={require("../../../assets/icon_copy.png")}
             style={styles.icon}
           />
-          <Text style={styles.title}>Welcome to</Text>
-          <Text style={styles.title}>AnxietyBuddy</Text>
         </View>
         <QuoteDisplay
           quote={quotes[index]}
@@ -291,9 +297,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: "bold",
-    color: "rgba(85,82,82,1)",
+    color: "white",
     marginBottom: 10,
   },
   signInRectangle: {
@@ -337,13 +343,13 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "column",
     alignItems: "center",
-   // marginBottom: 50,
+    // marginBottom: 50,
   },
   icon: {
-    width: 60,
-    height: 60,
-    marginRight: 10,
-    borderRadius: 20,
+    width: 100,
+    height: 100,
+    //marginRight: 10,
+    //borderRadius: 20,
   },
 });
 

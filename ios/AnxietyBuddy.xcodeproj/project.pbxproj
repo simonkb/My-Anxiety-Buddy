@@ -12,13 +12,14 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		195885ACE2A949A284969D76 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E193F405EEE4194ACC64856 /* noop-file.swift */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		A332566DCAE85E397D73C4CF /* libPods-AntiAnxiety.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D130CCF7B6C1DDA2BE6354A2 /* libPods-AntiAnxiety.a */; };
-		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
+		42F537CB540E0D70AC2C75C5 /* libPods-AnxietyBuddy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C338CCB0AFD38AA53D257CD /* libPods-AnxietyBuddy.a */; };
+		B3D12232ED9FC601ED6B15C6 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC43E65C4994C3041ECA187 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		07BAD58DB38B92BCC510F4FA /* Pods-AnxietyBuddy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnxietyBuddy.debug.xcconfig"; path = "Target Support Files/Pods-AnxietyBuddy/Pods-AnxietyBuddy.debug.xcconfig"; sourceTree = "<group>"; };
 		08BB2876BB57FFEC49D3C63E /* Pods-AntiAnxiety.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AntiAnxiety.debug.xcconfig"; path = "Target Support Files/Pods-AntiAnxiety/Pods-AntiAnxiety.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* AnxietyBuddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnxietyBuddy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = AntiAnxiety/AppDelegate.h; sourceTree = "<group>"; };
@@ -27,13 +28,14 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = AntiAnxiety/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = AntiAnxiety/main.m; sourceTree = "<group>"; };
 		165B6B4A29E0907900344B48 /* AntiAnxietyDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = AntiAnxietyDebug.entitlements; path = AntiAnxiety/AntiAnxietyDebug.entitlements; sourceTree = "<group>"; };
+		2AC43E65C4994C3041ECA187 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-AnxietyBuddy/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		3C338CCB0AFD38AA53D257CD /* libPods-AnxietyBuddy.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AnxietyBuddy.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		595B96C7EA7FC0FC0646FD86 /* Pods-AnxietyBuddy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnxietyBuddy.release.xcconfig"; path = "Target Support Files/Pods-AnxietyBuddy/Pods-AnxietyBuddy.release.xcconfig"; sourceTree = "<group>"; };
 		5ADFFE3272817A9FA66C4102 /* Pods-AntiAnxiety.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AntiAnxiety.release.xcconfig"; path = "Target Support Files/Pods-AntiAnxiety/Pods-AntiAnxiety.release.xcconfig"; sourceTree = "<group>"; };
 		8E193F405EEE4194ACC64856 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "AntiAnxiety/noop-file.swift"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = AntiAnxiety/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
-		D130CCF7B6C1DDA2BE6354A2 /* libPods-AntiAnxiety.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AntiAnxiety.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-AntiAnxiety/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,7 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A332566DCAE85E397D73C4CF /* libPods-AntiAnxiety.a in Frameworks */,
+				42F537CB540E0D70AC2C75C5 /* libPods-AnxietyBuddy.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,7 +71,7 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				D130CCF7B6C1DDA2BE6354A2 /* libPods-AntiAnxiety.a */,
+				3C338CCB0AFD38AA53D257CD /* libPods-AnxietyBuddy.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -104,14 +106,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		92DBD88DE9BF7D494EA9DA96 /* AntiAnxiety */ = {
-			isa = PBXGroup;
-			children = (
-				FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */,
-			);
-			name = AntiAnxiety;
-			sourceTree = "<group>";
-		};
 		BB2F792B24A3F905000567C9 /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
@@ -126,6 +120,8 @@
 			children = (
 				08BB2876BB57FFEC49D3C63E /* Pods-AntiAnxiety.debug.xcconfig */,
 				5ADFFE3272817A9FA66C4102 /* Pods-AntiAnxiety.release.xcconfig */,
+				07BAD58DB38B92BCC510F4FA /* Pods-AnxietyBuddy.debug.xcconfig */,
+				595B96C7EA7FC0FC0646FD86 /* Pods-AnxietyBuddy.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -133,9 +129,17 @@
 		D7E4C46ADA2E9064B798F356 /* ExpoModulesProviders */ = {
 			isa = PBXGroup;
 			children = (
-				92DBD88DE9BF7D494EA9DA96 /* AntiAnxiety */,
+				EA0F85B7FCF0EEBE4BD17A4C /* AnxietyBuddy */,
 			);
 			name = ExpoModulesProviders;
+			sourceTree = "<group>";
+		};
+		EA0F85B7FCF0EEBE4BD17A4C /* AnxietyBuddy */ = {
+			isa = PBXGroup;
+			children = (
+				2AC43E65C4994C3041ECA187 /* ExpoModulesProvider.swift */,
+			);
+			name = AnxietyBuddy;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -228,7 +232,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AntiAnxiety/Pods-AntiAnxiety-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-AnxietyBuddy/Pods-AnxietyBuddy-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/EXConstants.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/EXUpdates/EXUpdates.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
@@ -245,7 +249,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AntiAnxiety/Pods-AntiAnxiety-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AnxietyBuddy/Pods-AnxietyBuddy-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8A247542237EB47B30C48A58 /* [CP] Check Pods Manifest.lock */ = {
@@ -263,7 +267,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-AntiAnxiety-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-AnxietyBuddy-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -298,8 +302,8 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */,
 				195885ACE2A949A284969D76 /* noop-file.swift in Sources */,
+				B3D12232ED9FC601ED6B15C6 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,9 +312,10 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 08BB2876BB57FFEC49D3C63E /* Pods-AntiAnxiety.debug.xcconfig */;
+			baseConfigurationReference = 07BAD58DB38B92BCC510F4FA /* Pods-AnxietyBuddy.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = AntiAnxiety/AntiAnxietyDebug.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
@@ -323,8 +328,11 @@
 					"FB_SONARKIT_ENABLED=1",
 				);
 				INFOPLIST_FILE = AntiAnxiety/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AnxietyBuddy;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -342,9 +350,10 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5ADFFE3272817A9FA66C4102 /* Pods-AntiAnxiety.release.xcconfig */;
+			baseConfigurationReference = 595B96C7EA7FC0FC0646FD86 /* Pods-AnxietyBuddy.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = AntiAnxiety/AntiAnxiety.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
@@ -352,8 +361,11 @@
 				ENABLE_TESTABILITY = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = AntiAnxiety/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AnxietyBuddy;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

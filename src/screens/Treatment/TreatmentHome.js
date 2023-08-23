@@ -9,10 +9,14 @@ import {
   ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import bg1 from "../../../assets/bg1.jpeg";
-import bg2 from "../../../assets/bg2.jpg";
-import bg3 from "../../../assets/bg3.jpg";
-import { setGlobalState, useGlobalState } from "../../states/state.js";
+
+import {
+  setGlobalState,
+  useGlobalState,
+  bg1,
+  bg2,
+  bg3,
+} from "../../states/state.js";
 import OverlayComponent from "./OverlayComponent";
 
 const TreatmentHome = (route, navigation) => {

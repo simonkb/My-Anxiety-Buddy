@@ -14,10 +14,14 @@ import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import bg1 from "../../../assets/bg1.jpeg";
-import bg2 from "../../../assets/bg2.jpg";
-import bg3 from "../../../assets/bg3.jpg";
-import { setGlobalState, useGlobalState } from "../../states/state.js";
+
+import {
+  setGlobalState,
+  useGlobalState,
+  bg1,
+  bg2,
+  bg3,
+} from "../../states/state.js";
 import { useRoute } from "@react-navigation/native";
 
 const Settings = (navigation) => {

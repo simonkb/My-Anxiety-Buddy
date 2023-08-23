@@ -1,6 +1,5 @@
 {
   "expo": {
-
     "name": "AnxietyBuddy",
     "slug": "AnxietyBuddy",
     "version": "1.0.1",
@@ -8,7 +7,7 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash_screen.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -25,30 +24,31 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.simonkd.My"
+      "package": "com.simonkd.My",
+      "useNextNotificationsApi": true
     },
     "web": {
       "favicon": "./assets/icon.png"
     },
-    "extra": {
-      "eas": {
-        "projectId": "92882374-abfd-4b3d-84bb-08c5f04b16d3"
-      }
-    },
-    
     "plugins": [
       [
-      "react-native-health",
-      {
-        "isClinicalDataEnabled": true,
-        "healthSharePermission": "Custom health share permission",
-        "healthUpdatePermission": "Custom health update permission",
-        "healthClinicalDescription": "Custom health share permission for clinical data"
+        "react-native-health",
+        {
+          "isClinicalDataEnabled": true,
+          "healthSharePermission": "Custom health share permission",
+          "healthUpdatePermission": "Custom health update permission",
+          "healthClinicalDescription": "Custom health share permission for clinical data"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "0c66746a-de8f-4f12-ab2c-b20b4d36a280"
       }
-    ]
-    ]
+    },
+    "owner": "simonkd"
   }
 }

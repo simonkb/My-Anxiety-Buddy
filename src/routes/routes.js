@@ -16,11 +16,116 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ChatBot from "../screens/chatbot";
 import { NavigationContainer } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import NotificationsPage from "../screens/NotificationsPage";
+//import NotificationsPage from "../screens/NotificationsPage";
+import { useNavigation } from "@react-navigation/native";
+import { useEffect } from "react";
+import { Platform } from "react-native";
+import * as Notifications from "expo-notifications";
+import * as Permissions from "expo-permissions";
+import MorningCheckInScreen from "../screens/Treatment/MorningCheckIn";
+import DailyCheckin from "../screens/Treatment/DailyCheckin";
+import ExperienceEntryScreen from "../screens/Treatment/ExperienceEntry";
+// Notifications.setNotificationHandler({
+//   handleNotification: async () => ({
+//     shouldShowAlert: true,
+//     shouldPlaySound: true,
+//     shouldSetBadge: true,
+//   }),
+// });
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const MainStack = () => {
+  const navigator = useNavigation();
+  // Configure the notification handling
+  Notifications.setNotificationHandler({
+    handleNotification: async (notification) => {
+      // Navigate to the Journaling Screen when the notification is clicked
+      const screen = notification.request.content.data.screen; // Access the screen name from the notification data
+      navigator.navigate(screen); // Navigate to the specified screen
+      return {
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: true,
+      };
+    },
+  });
+  // Function to schedule a daily notification at a specific time
+  const scheduleDailyNotification = async (hour, minute) => {
+    // Calculate the delay until the next specified time
+    const now = new Date();
+    const targetTime = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      hour,
+      minute,
+      0,
+      0
+    );
+    let delay = targetTime.getTime() - now.getTime();
+    if (delay < 0) {
+      delay += 24 * 60 * 60 * 1000; // Add 24 hours if the target time has already passed
+    }
+
+    // Schedule the notification trigger
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Time to reflect!",
+        body: "Don't forget to reflect on your day, this will boost your productivity",
+        data: { screen: "Journaling" },
+      },
+
+      trigger: { seconds: Math.floor(delay / 1000) },
+    });
+  };
+
+  useEffect(() => {
+    const getNotificationPermission = async () => {
+      if (Platform.OS === "ios") {
+        const { status } = await Permissions.askAsync(
+          Permissions.NOTIFICATIONS
+        );
+        if (status !== "granted") {
+          // Handle the case when permission is not granted
+          return;
+        }
+      }
+    };
+
+    getNotificationPermission();
+  }, []);
+
+  useEffect(() => {
+    const scheduleNotifications = async () => {
+      const selectedHour = 20; // Example: 8:00pm
+      const selectedMinute = 0;
+
+      //const heartRateThreshold = 100; // Example threshold
+
+      await scheduleDailyNotification(selectedHour, selectedMinute);
+      // await scheduleHeartRateNotification(heartRateThreshold);
+    };
+
+    scheduleNotifications();
+  }, []);
+
+  // Function to schedule a heart rate notification
+  // const scheduleHeartRateNotification = async (threshold) => {
+  //   const heartRate = HeartRate.getHeartRate(); // Assuming you have a method to get the current heart rate
+  //   if (heartRate > threshold) {
+  //     await Notifications.scheduleNotificationAsync({
+  //       content: {
+  //         title: "High Heart Rate",
+  //         body: `Your heart rate is above ${threshold}. Take a break and relax.`,
+  //         data: { screen: "HeartRateScreen" }, // Replace "HeartRateScreen" with the actual screen name to navigate to
+  //       },
+  //       trigger: null, // Trigger immediately
+  //     });
+  //   }
+  // };
+
   return (
     <Tab.Navigator
       initialRouteName="Your Buddy"
@@ -30,7 +135,7 @@ const MainStack = () => {
     >
       <Tab.Screen
         name="Your Buddy"
-        component={ChatBot}
+        component={HomeStack}
         options={{
           tabBarLabel: "Home",
           tabBarIcon: ({ color, size }) => (
@@ -38,7 +143,6 @@ const MainStack = () => {
           ),
           headerShown: false,
         }}
-        initialParams={{ chatType: "default", otherParam: "nothing" }}
       />
       <Tab.Screen
         name="Treatment"
@@ -63,19 +167,6 @@ const MainStack = () => {
           headerShown: true,
         }}
       />
-        <Tab.Screen
-        name="Notifications"
-        component={NotificationsPage}
-        options={{
-          tabBarLabel: "Notifications",
-          tabBarBadge:3,
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="notifications" size={size} color={color} />
-          ),
-          headerShown: false,
-        }}
-      />
-
       <Tab.Screen
         name="Profile"
         component={ProfileStack}
@@ -90,14 +181,37 @@ const MainStack = () => {
     </Tab.Navigator>
   );
 };
+
+const HomeStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        initialParams={{ chatType: "default", otherParam: "nothing" }}
+        options={{ headerShown: false, gestureEnabled: false }}
+        name="Home"
+        component={ChatBot}
+      ></Stack.Screen>
+      <Stack.Screen
+        options={{ headerShown: true, gestureEnabled: false }}
+        name="Morning Check in"
+        component={MorningCheckInScreen}
+      />
+      <Stack.Screen
+        options={{ headerShown: true, gestureEnabled: false }}
+        name="Daily check in"
+        component={DailyCheckin}
+      />
+        <Stack.Screen
+        options={{ headerShown: true, gestureEnabled: false }}
+        name="Experience entry"
+        component={ExperienceEntryScreen}
+      />
+    </Stack.Navigator>
+  );
+};
 const TreatmentStack = () => {
   return (
     <Stack.Navigator>
-      {/* <Stack.Screen
-        options={{ headerShown: true, gestureEnabled: true }}
-        name="Treatment Home"
-        component={TreatmentHome}
-      /> */}
       <Stack.Screen
         options={{ headerShown: true, gestureEnabled: true }}
         name="Readings"
@@ -154,20 +268,24 @@ const AuthenticationStack = () => {
     </Stack.Navigator>
   );
 };
+
 const Navigation = () => {
   const [user, setUser] = React.useState(null);
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
   onAuthStateChanged(auth, (user) => {
-    setUser(user);
     if (user) {
-      setIsLoggedIn(user.emailVerified);
+      setUser(user);
+      // setIsLoggedIn(user.emailVerified);
+    } else {
+      setUser(null);
     }
   });
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {isLoggedIn && user ? (
+        {user ? (
           <Stack.Screen
             name="Main"
             component={MainStack}

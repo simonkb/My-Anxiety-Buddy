@@ -17,10 +17,8 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import bg1 from "../../../assets/bg1.jpeg";
-import bg2 from "../../../assets/bg2.jpg";
-import bg3 from "../../../assets/bg3.jpg";
-import { setGlobalState, useGlobalState } from "../../states/state.js";
+
+import { setGlobalState, useGlobalState , bg1, bg2, bg3} from "../../states/state.js";
 import { db, auth } from "../../config/firebaseConfig";
 import { collection, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -95,6 +93,15 @@ const EditProfile = () => {
             "Please verify your email. We have sent you the link for verification. Please check your inbox, junk or trash mail box as well. "
           );
         });
+        await updateDoc(doc(usersRef, user.uid), userData)
+          .then(() => {
+            Alert.alert("Success", "Changes made successfully");
+            setIsLoading(false);
+            navigator.navigate("Settings", { username: userData.username });
+          })
+          .catch((error) => {
+            console.error("Error updating document: ", error);
+          });
       }
     }
   };
@@ -182,6 +189,19 @@ const EditProfile = () => {
                 onChangeText={(text) => onChange("email_address", text)}
                 editable={false}
               />
+              {!auth.currentUser.emailVerified && (
+                <Button
+                  title="Verify email"
+                  onPress={() => {
+                    sendEmailVerification(auth.currentUser).then(() => {
+                      Alert.alert(
+                        "Please Verify your email",
+                        "A link to verfiy your email has been sent to your email address."
+                      );
+                    });
+                  }}
+                ></Button>
+              )}
               <TextInput
                 style={styles.textInputStyle}
                 placeholder="Phone"

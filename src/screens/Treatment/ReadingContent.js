@@ -64,13 +64,7 @@ const ReadingContent = ({ listOfObjects }) => {
 };
 
 const styles = StyleSheet.create({
-  // titleContainer: {
-  //   paddingHorizontal: 16,
-  //   paddingVertical: 8,
-  //   backgroundColor: "#F5F5F5",
-  //   borderRadius: 10,
-  //   opacity: 0.8,
-  // },
+
   title: {
     fontSize: 24,
     fontWeight: "bold",

@@ -9,15 +9,12 @@ import {
   View,
   KeyboardAvoidingView,
   Alert,
-  ActivityIndicator,
   Button,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
-import bg1 from "../../../assets/bg1.jpeg";
-import bg2 from "../../../assets/bg2.jpg";
-import bg3 from "../../../assets/bg3.jpg";
-import { useGlobalState } from "../../states/state";
+
+import { useGlobalState, bg1, bg2, bg3 } from "../../states/state";
 import { auth, db } from "../../config/firebaseConfig";
 import {
   createUserWithEmailAndPassword,
@@ -45,20 +42,6 @@ const Register = () => {
   const [email, onChangeEmail] = React.useState(null);
   const navigator = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
-  const resend = () => {
-    if (auth.currentUser !== null && !auth.currentUser.emailVerified)
-      sendEmailVerification(auth.currentUser)
-        .then(() => {
-          Alert.alert(
-            "Verify",
-            "Verification email sent again, please check your email."
-          );
-          setIsLoading(!auth.currentUser.emailVerified);
-        })
-        .catch((error) => {
-          Alert.alert(error.code, error.message);
-        });
-  };
   const onLoginPressed = () => {
     navigator.navigate("Login");
   };
@@ -154,7 +137,8 @@ const Register = () => {
           }).catch((error) => {
             Alert.alert(error.errorCode, error.message);
           });
-          navigator.navigate("Login");
+          //navigator.navigate("Login");
+          setIsLoading(auth.currentUser !== null);
         })
         .catch((error) => {
           if (error.code === "auth/invalid-email") {
@@ -182,13 +166,13 @@ const Register = () => {
         resizeMode="cover"
         style={styles.bgImage}
       >
-        {/* {isLoading && (
+        {isLoading && (
           <View
             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
           >
             <ActivityIndicator size="large" />
           </View>
-        )} */}
+        )}
         <KeyboardAvoidingView behavior="height">
           <ScrollView
             contentContainerStyle={{
@@ -199,7 +183,7 @@ const Register = () => {
               alignItems: "center",
             }}
           >
-            <Text style={styles.title}>Anti-anxiety</Text>
+            <Text style={styles.title}>AnxietyBuddy</Text>
             <View style={styles.signUpRectangle}>
               <TextInput
                 style={styles.input}
@@ -247,12 +231,6 @@ const Register = () => {
             <TouchableOpacity onPress={onSignUpPressed} style={styles.button}>
               <Text style={styles.buttonText}>Sign Up</Text>
             </TouchableOpacity>
-            {isLoading && (
-              <Button
-                title="Resend the verification email"
-                onPress={resend()}
-              ></Button>
-            )}
             <TouchableOpacity onPress={onLoginPressed}>
               <Text style={styles.signUpText}>
                 Already have an account?
@@ -284,7 +262,9 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: "center",
-    color: "rgba(85,82,82,1)",
+    //color: "rgba(85,82,82,1)",
+    color:'white',
+    fontWeight:'bold',
     fontSize: 32,
     letterSpacing: -0.18,
     marginBottom: 20,

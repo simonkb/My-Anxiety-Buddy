@@ -10,10 +10,14 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
-import bg1 from "../../../assets/bg1.jpeg";
-import bg2 from "../../../assets/bg2.jpg";
-import bg3 from "../../../assets/bg3.jpg";
-import { setGlobalState, useGlobalState } from "../../states/state.js";
+
+import {
+  setGlobalState,
+  useGlobalState,
+  bg1,
+  bg2,
+  bg3,
+} from "../../states/state.js";
 import { auth, db } from "../../config/firebaseConfig.js";
 import {
   collection,
@@ -181,7 +185,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderBottomColor: "black",
     borderBottomWidth: 2,
-    backgroundColor:'white'
+    backgroundColor: "white",
   },
   inputLabel: {
     fontSize: 18,
@@ -197,7 +201,6 @@ const styles = StyleSheet.create({
   responsesContainer: {
     flexGrow: 1,
     padding: 20,
-   
   },
   response: {
     borderWidth: 1,

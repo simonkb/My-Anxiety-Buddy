@@ -25,7 +25,6 @@ const BarGraph = ({ data }) => {
     { color: "#DED511", label: "Moderate anxiety" },
     { color: "red", label: "Severe anxiety" },
   ];
-
   const LegendItem = ({ color, label }) => {
     return (
       <View style={{ width: "100%", flexDirection: "row" }}>

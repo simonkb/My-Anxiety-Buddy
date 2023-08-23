@@ -12,10 +12,13 @@ import {
   Platform,
 } from "react-native";
 
-import bg1 from "../../assets/bg1.jpeg";
-import bg2 from "../../assets/bg2.jpg";
-import bg3 from "../../assets/bg3.jpg";
-import { useGlobalState, setGlobalState } from "../states/state.js";
+import {
+  useGlobalState,
+  setGlobalState,
+  bg1,
+  bg2,
+  bg3,
+} from "../states/state.js";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import GAD7Questionnaire from "./GAD1Questionnaire";
 import { db } from "../config/firebaseConfig";
@@ -263,7 +266,7 @@ const Chatbot = ({ route, navigation }) => {
         {/* Logo and App Name */}
         <View style={stylesNew.logoContainer}>
           <Image
-            source={require("../../assets/icon.png")}
+            source={require("../../assets/icon_copy.png")}
             style={stylesNew.logo}
           />
           <Text style={stylesNew.appName}>AnxietyBuddy</Text>
@@ -283,8 +286,53 @@ const Chatbot = ({ route, navigation }) => {
             opacity: 0.8,
             justifyContent: "center",
             borderRadius: 15,
+            marginTop: 40,
           }}
         >
+          <View style={stylesNew.iconsContainer}>
+            <TouchableOpacity
+              style={stylesNew.iconContainer}
+              onPress={() => {
+                navigation.navigate("Daily check in");
+              }}
+            >
+              <Ionicons
+                name="today"
+                size={30}
+                color="green"
+                style={stylesNew.icon}
+              />
+              <Text style={{ textAlign: "center" }}>Daily{"\n"}Check In</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={stylesNew.iconContainer}
+              onPress={() => {
+                navigation.navigate("Morning Check in");
+              }}
+            >
+              <Ionicons
+                name="sunny-outline"
+                size={30}
+                color="green"
+                style={stylesNew.icon}
+              />
+              <Text style={{ textAlign: "center" }}>Morning{"\n"}Check In</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={stylesNew.iconContainer}
+              onPress={() => {
+                navigation.navigate("Experience entry");
+              }}
+            >
+              <Ionicons
+                name="sad-outline"
+                size={30}
+                color="green"
+                style={stylesNew.icon}
+              />
+              <Text style={{ textAlign: "center" }}>Experience{"\n"}entry</Text>
+            </TouchableOpacity>
+          </View>
           <View style={stylesNew.iconsContainer}>
             <TouchableOpacity
               onPress={() => {
@@ -296,13 +344,12 @@ const Chatbot = ({ route, navigation }) => {
             >
               <Ionicons
                 name="ios-analytics"
-                size={50}
+                size={30}
                 color="green"
                 style={stylesNew.icon}
               />
               <Text style={{ textAlign: "center" }}>Self{"\n"}assessment</Text>
             </TouchableOpacity>
-
             <TouchableOpacity
               style={stylesNew.iconContainer}
               onPress={() => {
@@ -313,14 +360,12 @@ const Chatbot = ({ route, navigation }) => {
             >
               <Ionicons
                 name="ios-heart"
-                size={50}
+                size={30}
                 color="green"
                 style={stylesNew.icon}
               />
               <Text style={{ textAlign: "center" }}>Breathing{"\n"}Guide</Text>
             </TouchableOpacity>
-          </View>
-          <View style={stylesNew.iconsContainer}>
             <TouchableOpacity
               onPress={() => {
                 navigation.setParams({
@@ -331,7 +376,7 @@ const Chatbot = ({ route, navigation }) => {
             >
               <MaterialCommunityIcons
                 name="brain"
-                size={50}
+                size={30}
                 color="green"
                 style={stylesNew.icon}
               />
@@ -339,7 +384,7 @@ const Chatbot = ({ route, navigation }) => {
                 Cognitive{"\n"}Training
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={stylesNew.iconContainer}
               onPress={() => {
                 navigation.navigate("Journaling");
@@ -347,12 +392,12 @@ const Chatbot = ({ route, navigation }) => {
             >
               <Ionicons
                 name="ios-journal"
-                size={50}
+                size={30}
                 color="green"
                 style={stylesNew.icon}
               />
               <Text style={{ textAlign: "center" }}>Daily{"\n"}Journaling</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       </View>
@@ -362,33 +407,36 @@ const Chatbot = ({ route, navigation }) => {
   const stylesNew = StyleSheet.create({
     container: {
       flex: 1,
-      paddingVertical: 20,
+      paddingVertical: 10,
       paddingHorizontal: 10,
     },
     logoContainer: {
       alignItems: "center",
     },
     logo: {
-      width: 80,
-      height: 80,
-      resizeMode: "contain",
-      borderRadius: 100,
+      width: 100,
+      height: 100,
     },
     appName: {
       fontSize: 36,
       fontWeight: "bold",
       marginTop: 10,
+      color: "white",
     },
     iconsContainer: {
       flexDirection: "row",
       justifyContent: "space-evenly",
-      marginVertical: 20,
+      marginVertical: 15,
     },
     icon: {
       backgroundColor: "#f5f5f5",
       borderRadius: 15,
       padding: 15,
       elevation: 2,
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.3,
+      shadowRadius: 9,
     },
     iconContainer: {
       alignItems: "center",
@@ -732,7 +780,7 @@ const Chatbot = ({ route, navigation }) => {
           >
             {/* {Platform.OS === "ios" && !Platform.isPad && <ReadData></ReadData>} */}
 
-            {Platform.OS === "android" && <ReadDataAndroid></ReadDataAndroid>}
+            {/* {Platform.OS === "android" && <ReadDataAndroid></ReadDataAndroid>} */}
           </View>
         )}
         {route.params.chatType !== "default" && (

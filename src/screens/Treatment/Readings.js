@@ -13,10 +13,8 @@ import React, { useState, useEffect } from "react";
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import bg1 from "../../../assets/bg1.jpeg";
-import bg2 from "../../../assets/bg2.jpg";
-import bg3 from "../../../assets/bg3.jpg";
-import { useGlobalState } from "../../states/state.js";
+
+import { useGlobalState, bg1, bg2, bg3 } from "../../states/state.js";
 import firebase from "firebase/app";
 import {
   collection,
@@ -64,7 +62,6 @@ const Readings = () => {
 
   const Display = () => {
     if (value === "quotes") {
-  
       const quotesDefault = [
         {
           quote:

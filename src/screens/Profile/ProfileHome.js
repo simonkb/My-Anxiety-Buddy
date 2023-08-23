@@ -12,10 +12,14 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import bg1 from "../../../assets/bg1.jpeg";
-import bg2 from "../../../assets/bg2.jpg";
-import bg3 from "../../../assets/bg3.jpg";
-import { setGlobalState, useGlobalState } from "../../states/state.js";
+
+import {
+  setGlobalState,
+  useGlobalState,
+  bg1,
+  bg2,
+  bg3,
+} from "../../states/state.js";
 import { auth, db } from "../../config/firebaseConfig";
 import {
   collection,
@@ -47,7 +51,7 @@ const ProfileHome = ({ route, navigation }) => {
   const [currentUser, setUser] = useState("Loading...");
   const [bio, setBio] = useState("Loading...");
   onAuthStateChanged(auth, (user) => {
-    if (user !== null && user.emailVerified) {
+    if (user !== null) {
       const uid = user.uid;
       try {
         onSnapshot(doc(db, "Users", uid), (doc) => {

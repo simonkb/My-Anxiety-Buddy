@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   initializeAuth,
   getReactNativePersistence,
@@ -28,12 +28,18 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 //const analytics = getAnalytics(app);
 //const auth = getAuth(app);
-const auth = initializeAuth(app, {
-  persistence: getReactNativePersistence(AsyncStorage),
-});
+const auth = initializeAuth(
+  app
+  //   {
+  //   persistence: getReactNativePersistence(AsyncStorage),
+  // }
+);
 
 // const db = getFirestore(app, { experimentalForceLongPolling: true });
 const db = initializeFirestore(app, {
   experimentalForceLongPolling: true,
 });
-export { auth, db };
+const API_URL = "https://api.openai.com/v1/chat/completions";
+const API_KEY = "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";
+
+export { auth, db, API_KEY, API_URL };

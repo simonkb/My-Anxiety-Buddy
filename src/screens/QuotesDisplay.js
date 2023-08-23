@@ -59,20 +59,26 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     alignItems: "center",
   },
+
   quoteContainer: {
     width: "95%",
     backgroundColor: "#f5f5f5",
     borderRadius: 8,
     paddingHorizontal: 20,
     paddingVertical: 10,
-    elevation: 2,
     minHeight: 100,
     justifyContent: "center",
     alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 9,
+    elevation: 2, // This property is for Android only
     transform: [{ rotateY: "-10deg" }],
   },
+  
   quoteText: {
-    fontSize: 26,
+    fontSize: 20,
     fontStyle: "italic",
   },
   bottomContainer: {
