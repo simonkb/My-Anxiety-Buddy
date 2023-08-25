@@ -11,10 +11,10 @@ import {
   Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useGlobalState, bg1,bg2,bg3 } from "../../states/state";
+import { useGlobalState, bg1, bg2, bg3 } from "../../states/state";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../config/firebaseConfig";
-
+import { SuccessButton } from "../../buttons";
 const ForgetPassword = () => {
   //Updating background
   let defaultBg = useGlobalState("defaultBackgroundImage");
@@ -30,7 +30,6 @@ const ForgetPassword = () => {
   const [email, onChangeNumber] = React.useState(null);
   const navigator = useNavigation();
   const onSendPressed = () => {
-    //navigator.navigate("ConfirmOTP");
     sendPasswordResetEmail(auth, email)
       .then(() => {
         Alert.alert(
@@ -65,10 +64,7 @@ const ForgetPassword = () => {
             keyboardType="email-address"
           />
         </View>
-
-        <TouchableOpacity style={styles.button} onPress={onSendPressed}>
-          <Text style={styles.buttonText}>Send</Text>
-        </TouchableOpacity>
+        <SuccessButton onPress={onSendPressed} title={"Send"}></SuccessButton>
       </ImageBackground>
     </View>
   );
@@ -87,26 +83,19 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 20,
     alignItems: "center",
+    margin: 15,
   },
   title: {
     textAlign: "center",
-    color: "rgba(85,82,82,1)",
+    //color: "rgba(85,82,82,1)",
+    color: "white",
     fontSize: 20,
     width: "80%",
     alignSelf: "center",
     marginTop: "40%",
+    marginBottom: 10,
   },
-  button: {
-    backgroundColor: "#2962FF",
-    borderRadius: 10,
-    padding: 10,
-    marginTop: 20,
-  },
-  buttonText: {
-    color: "white",
-    alignSelf: "center",
-    fontSize: 18,
-  },
+
   input: {
     width: "100%",
     height: 40,

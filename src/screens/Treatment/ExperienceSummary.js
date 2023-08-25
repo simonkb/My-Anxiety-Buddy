@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import img from "../../../assets/experiencySummaryBg.png";
 import { useNavigation } from "@react-navigation/native";
+import { SuccessButton } from "../../buttons";
 
 const ExperienceSummary = (props) => {
   const navigator = useNavigation();
@@ -34,7 +35,7 @@ const ExperienceSummary = (props) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Experience Entry Summary</Text>
+      <Text style={styles.title}>Situation Summary</Text>
       <View
         style={{
           width: "100%",
@@ -96,14 +97,17 @@ const ExperienceSummary = (props) => {
           <Text style={styles.cardLabel}>My recomendations for you.</Text>
           <Text style={styles.smallText}>{summary[5].content}</Text>
         </TouchableOpacity>
-        <TouchableOpacity
+        <View
           style={styles.button1}
           onPress={() => navigator.navigate("Home", { chatType: "breathing" })}
         >
-          <Text style={styles.buttonText1}>
-            Continue to calm breathing section
-          </Text>
-        </TouchableOpacity>
+          <SuccessButton
+            title={"Continue to calm breathing section"}
+            onPress={() =>
+              navigator.navigate("Home", { chatType: "breathing" })
+            }
+          ></SuccessButton>
+        </View>
       </View>
 
       <Modal
@@ -229,8 +233,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   button1: {
-    backgroundColor: "#051f48",
-    borderRadius: 15,
     alignSelf: "center",
     position: "absolute",
     top: 600,

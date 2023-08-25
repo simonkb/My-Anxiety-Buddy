@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,8 +7,8 @@ import {
   StyleSheet,
   ImageBackground,
   Alert,
+  ScrollView,
 } from "react-native";
-
 import {
   setGlobalState,
   useGlobalState,
@@ -16,7 +16,20 @@ import {
   bg2,
   bg3,
 } from "../../states/state.js";
-import { ScrollView } from "react-native-gesture-handler";
+import DailyCheckin from "./DailyCheckin.js";
+import { auth, db } from "../../config/firebaseConfig.js";
+import {
+  collection,
+  doc,
+  setDoc,
+  query,
+  getDoc,
+  getDocs,
+  updateDoc,
+  where,
+  orderBy,
+} from "firebase/firestore";
+
 const MorningCheckInScreen = () => {
   //Updating background
   let defaultBg = useGlobalState("defaultBackgroundImage");
@@ -29,6 +42,17 @@ const MorningCheckInScreen = () => {
     currentBg = bg1;
   }
   //
+
+  const currentTime = new Date().getHours();
+  let greeting = "";
+  if (currentTime >= 5 && currentTime < 12) {
+    greeting = "Good Morning!";
+  } else if (currentTime >= 12 && currentTime < 18) {
+    greeting = "Good Afternoon!";
+  } else {
+    greeting = "Good Evening!";
+  }
+
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState([]);
   const questions = [
@@ -44,6 +68,7 @@ const MorningCheckInScreen = () => {
     newAnswers[questionIndex] = text;
     setAnswers(newAnswers);
   };
+  const currentUserId = auth.currentUser.uid;
 
   const handleContinue = () => {
     if (questionIndex < questions.length - 1) {
@@ -53,10 +78,52 @@ const MorningCheckInScreen = () => {
         Alert.alert("Error", "Please enter your response to the question.");
       }
     } else {
-      // Save answers or perform any other action
-      console.log("Answers:", answers);
+      if (!answers[questionIndex]) {
+        Alert.alert("Error", "Please enter your response to the question.");
+      } else {
+        //Save to database here
+        setDoc(
+          doc(
+            db,
+            "/Users/" + currentUserId + "/checkins",
+            new Date().toDateString()
+          ),
+          {
+            date: new Date().toDateString(),
+            response: answers,
+          }
+        );
+        setDoneForToday(true);
+      }
     }
   };
+
+  const [doneForToday, setDoneForToday] = useState(false);
+  //Check the database if this state variable should be true or false
+  useEffect(() => {
+    const fetchData = async () => {
+      const docRef = doc(
+        db,
+        "/Users/" + currentUserId + "/checkins",
+        new Date().toDateString()
+      );
+
+      try {
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          setAnswers(docSnap.data().response);
+          setDoneForToday(true);
+        } else {
+          setDoneForToday(false);
+        }
+      } catch (error) {
+        Alert.alert("Error", "Please check your internet connection.");
+      }
+    };
+
+    fetchData(); // Call the async function here
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -66,23 +133,28 @@ const MorningCheckInScreen = () => {
         style={styles.bgImage}
       >
         <ScrollView>
-          <View style={styles.card}>
-            <Text style={styles.title}>Morning Check-In</Text>
-            <Text
-              style={{
-                color: "gray",
-                fontWeight: "bold",
-                fontSize: 16,
-              }}
-            >
-              {new Date().toUTCString().substring(0, 16)}
-            </Text>
-            <Text style={styles.message}>
-              Start the day by checking in with yourself and connecting your
-              thoughts.
-            </Text>
-            {questionIndex < questions.length ? (
-              <>
+          {!doneForToday && questionIndex < questions.length ? (
+            <>
+              <View style={styles.card}>
+                <Text style={styles.title}>
+                  {" "}
+                  {greeting === "Good Morning!"
+                    ? "Morning Check In"
+                    : "Daily Check In"}
+                </Text>
+                <Text
+                  style={{
+                    color: "gray",
+                    fontWeight: "bold",
+                    fontSize: 16,
+                  }}
+                >
+                  {new Date().toUTCString().substring(0, 16)}
+                </Text>
+                <Text style={styles.message}>
+                  Start the day by checking in with yourself and connecting your
+                  thoughts.
+                </Text>
                 <Text style={styles.question}>{questions[questionIndex]}</Text>
                 <TextInput
                   style={{
@@ -115,9 +187,12 @@ const MorningCheckInScreen = () => {
                       : "Continue"}
                   </Text>
                 </TouchableOpacity>
-              </>
-            ) : null}
-          </View>
+              </View>
+            </>
+          ) : (
+            <DailyCheckin response={answers}></DailyCheckin>
+          )}
+
           <View style={{ height: "60%", paddingBottom: 300 }}></View>
         </ScrollView>
       </ImageBackground>

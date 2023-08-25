@@ -19,7 +19,6 @@ import {
   bg3,
 } from "../../states/state.js";
 import { useNavigation } from "@react-navigation/native";
-import bgImage from "../../../assets/experiencySummaryBg.png";
 import ExperienceSummary from "./ExperienceSummary";
 import { API_URL, API_KEY } from "../../config/firebaseConfig";
 import { auth, db } from "../../config/firebaseConfig.js";
@@ -34,6 +33,7 @@ import {
   where,
   orderBy,
 } from "firebase/firestore";
+
 const ExperienceEntryScreen = () => {
   // Updating background
   let defaultBg = useGlobalState("defaultBackgroundImage");
@@ -51,7 +51,7 @@ const ExperienceEntryScreen = () => {
   const [answers, setAnswers] = useState([]);
   const questions = [
     {
-      question: "Are you currently having any anxiety experience?",
+      question: "Are you currently having any anxiety situation?",
       type: "yesOrNo",
     },
     {
@@ -321,7 +321,7 @@ Please structure your response accordingly. In your response address the user di
           {!done && !loading ? (
             <ScrollView>
               <View style={styles.card}>
-                <Text style={styles.title}>Experience Entry</Text>
+                <Text style={styles.title}>Situation Entry</Text>
                 <Text
                   style={{
                     fontSize: 16,
@@ -331,8 +331,8 @@ Please structure your response accordingly. In your response address the user di
                   {new Date().toDateString()}
                 </Text>
                 <Text style={styles.message}>
-                  This simple experience entry record will help you see the
-                  relationship between your experiences, thoughts, and emotions.
+                  This simple situation entry record will help you see the
+                  relationship between your situation, thoughts, and emotions.
                 </Text>
 
                 {renderQuestion()}
@@ -348,11 +348,19 @@ Please structure your response accordingly. In your response address the user di
               }}
             >
               <Text
-                style={{ fontSize: 24, fontWeight: "bold", marginBottom: 30 }}
+                style={{
+                  fontSize: 24,
+                  fontWeight: "bold",
+                  color: "white",
+                  margin: 30,
+                }}
               >
                 Summarizing your response and generating suggestions...
               </Text>
-              <ActivityIndicator size="large"></ActivityIndicator>
+              <ActivityIndicator
+                size="large"
+                color="#0000ff"
+              ></ActivityIndicator>
             </View>
           ) : (
             <>

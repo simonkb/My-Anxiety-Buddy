@@ -18,11 +18,18 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 
-import { setGlobalState, useGlobalState , bg1, bg2, bg3} from "../../states/state.js";
+import {
+  setGlobalState,
+  useGlobalState,
+  bg1,
+  bg2,
+  bg3,
+} from "../../states/state.js";
 import { db, auth } from "../../config/firebaseConfig";
 import { collection, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { sendEmailVerification } from "firebase/auth";
+import { CancelButton, SuccessButton } from "../../buttons.js";
 
 const EditProfile = () => {
   //Updating background
@@ -283,11 +290,17 @@ const EditProfile = () => {
                 style={{
                   margin: 20,
                   flexDirection: "row",
-                  alignSelf: "center",
+                  justifyContent: "space-evenly",
                 }}
               >
-                <Button title="Save" onPress={() => onSavePressed()} />
-                <Button title="Cancel" onPress={() => onCancelPressed()} />
+                <SuccessButton
+                  title={"Save"}
+                  onPress={() => onSavePressed()}
+                ></SuccessButton>
+                <CancelButton
+                  title={"Cancel"}
+                  onPress={() => onCancelPressed()}
+                ></CancelButton>
               </View>
             </ScrollView>
           </KeyboardAvoidingView>

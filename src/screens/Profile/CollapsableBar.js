@@ -9,7 +9,7 @@ const CollapsibleBar = ({ title, children }) => {
   return (
     <View
       style={{
-        backgroundColor: "rgba(217, 217, 217, 0.53)",
+        backgroundColor: "rgba(217, 217, 217, 0.93)",
         borderRadius: 5,
         marginBottom: 10,
         overflow: "hidden",

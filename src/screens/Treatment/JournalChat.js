@@ -30,6 +30,7 @@ import {
   where,
   orderBy,
 } from "firebase/firestore";
+import { SuccessButton } from "../../buttons.js";
 const JournalChat = () => {
   let defaultBg = useGlobalState("defaultBackgroundImage");
   let currentBg;
@@ -124,11 +125,15 @@ const JournalChat = () => {
                 />
               </View>
             ))}
-            <Button title="Submit" onPress={handleResponseSubmit} />
+            <SuccessButton
+              title={"Submit"}
+              onPress={handleResponseSubmit}
+            ></SuccessButton>
             <Text
               style={{
                 fontSize: 18,
                 fontWeight: "bold",
+                marginTop: 15,
               }}
             >
               All Journals

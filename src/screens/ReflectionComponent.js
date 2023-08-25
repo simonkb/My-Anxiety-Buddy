@@ -13,7 +13,7 @@ import { doc, setDoc } from "firebase/firestore";
 const ReflectionComponent = ({ activity, onClose }) => {
   const [questions, setQuestions] = useState([
     {
-      text: "How did you feel before starting the " + activity +"?",
+      text: "How did you feel before starting the " + activity + "?",
       response: "",
     },
     {
@@ -53,9 +53,6 @@ const ReflectionComponent = ({ activity, onClose }) => {
       })),
     };
 
-    // send the reflection to the server or store it in the app's state
-    // ...
-
     const currentUserId = auth.currentUser.uid;
     setDoc(
       doc(db, "/Users/" + currentUserId + "/Reflections", Date()),
@@ -72,10 +69,7 @@ const ReflectionComponent = ({ activity, onClose }) => {
   };
 
   return (
-    <TouchableOpacity
-      activeOpacity={1}
-      style={styles.overlay}
-    >
+    <TouchableOpacity activeOpacity={1} style={styles.overlay}>
       <View style={styles.container}>
         <Text style={styles.title}>Reflect on your {activity}</Text>
         {questions.map((q, index) => (

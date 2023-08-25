@@ -21,6 +21,7 @@ import {
   sendEmailVerification,
 } from "firebase/auth";
 import { collection, doc, setDoc } from "firebase/firestore";
+import { SuccessButton } from "../../buttons";
 
 const Register = () => {
   //Updating background
@@ -170,7 +171,7 @@ const Register = () => {
           <View
             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
           >
-            <ActivityIndicator size="large" />
+            <ActivityIndicator size="large"  color="#0000ff" />
           </View>
         )}
         <KeyboardAvoidingView behavior="height">
@@ -228,15 +229,16 @@ const Register = () => {
                 autoCorrect={false}
               />
             </View>
-            <TouchableOpacity onPress={onSignUpPressed} style={styles.button}>
-              <Text style={styles.buttonText}>Sign Up</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={onLoginPressed}>
-              <Text style={styles.signUpText}>
-                Already have an account?
-                <Text style={{ color: "#2962FF" }}> Login</Text>
-              </Text>
-            </TouchableOpacity>
+
+            <SuccessButton
+              onPress={onSignUpPressed}
+              title={"Sign up"}
+            ></SuccessButton>
+            <Text style={styles.signUpText}>Already have an account?</Text>
+            <SuccessButton
+              onPress={onLoginPressed}
+              title={"Login"}
+            ></SuccessButton>
           </ScrollView>
         </KeyboardAvoidingView>
       </ImageBackground>
@@ -259,27 +261,18 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 20,
     alignItems: "center",
+    marginVertical: 15,
   },
   title: {
     textAlign: "center",
     //color: "rgba(85,82,82,1)",
-    color:'white',
-    fontWeight:'bold',
+    color: "white",
+    fontWeight: "bold",
     fontSize: 32,
     letterSpacing: -0.18,
     marginBottom: 20,
   },
-  button: {
-    backgroundColor: "green",
-    borderRadius: 10,
-    padding: 10,
-    marginTop: 20,
-  },
-  buttonText: {
-    color: "#fff",
-    textAlign: "center",
-    fontSize: 20,
-  },
+
   input: {
     minWidth: "90%",
     maxWidth: "95%",

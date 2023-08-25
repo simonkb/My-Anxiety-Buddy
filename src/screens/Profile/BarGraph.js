@@ -59,6 +59,7 @@ const BarGraph = ({ data }) => {
         onContentSizeChange={() =>
           scrollViewRef.current.scrollToEnd({ animated: true })
         }
+        style={{ padding: 10, margin: 5 }}
       >
         <Svg width={graphWidth} height={graphHeight + 2 * GRAPH_MARGIN}>
           <Rect

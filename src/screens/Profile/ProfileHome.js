@@ -72,51 +72,6 @@ const ProfileHome = ({ route, navigation }) => {
     3: "#DED511",
     4: "red",
   };
-  // useEffect(() => {
-  //   const currentUserId = auth.currentUser.uid;
-  //   const journalsRef = collection(db, "Users", currentUserId, "Sessions");
-  //   const q = query(journalsRef, orderBy("date", "asc"));
-  //   getDocs(q)
-  //     .then((querySnapshot) => {
-  //       const data = querySnapshot.docs.map((doc) => doc.data());
-  //       const values = [];
-  //       for (let d in data) {
-  //         values.push({
-  //           date: new Date(data[d].date).toString().substring(0, 10),
-  //           level:
-  //             data[d].decision === "Severe Anxiety"
-  //               ? 4
-  //               : data[d].decision === "Mild Anxiety"
-  //               ? 2
-  //               : data[d].decision === "Moderate Anxiety"
-  //               ? 3
-  //               : 1,
-  //         });
-  //       }
-  //       setData(values);
-  //     })
-  //     .catch((error) => {
-  //       console.log("Error getting documents: ", error);
-  //     });
-  //   if (anxietyData.length > 0) {
-  //     setColor(COLORS[anxietyData[anxietyData.length - 1].level]);
-  //   }
-  // }, []);
-  // const [reflections, setReflctions] = useState([]);
-  // useEffect(() => {
-  //   const currentUserId = auth.currentUser.uid;
-  //   const journalsRef = collection(db, "Users", currentUserId, "Reflections");
-  //   const q = query(journalsRef, orderBy("date", "asc"));
-  //   getDocs(q)
-  //     .then((querySnapshot) => {
-  //       const data = querySnapshot.docs.map((doc) => doc.data());
-  //       setReflctions(data);
-  //     })
-  //     .catch((error) => {
-  //       console.log("Error getting documents: ", error);
-  //     });
-  // }, []);
-
   useEffect(() => {
     const currentUserId = auth.currentUser.uid;
     const journalsRef = collection(db, "Users", currentUserId, "Sessions");
@@ -149,9 +104,7 @@ const ProfileHome = ({ route, navigation }) => {
       unsubscribe();
     };
   }, []);
-
   const [reflections, setReflections] = useState([]);
-
   useEffect(() => {
     const currentUserId = auth.currentUser.uid;
     const reflectionsRef = collection(
@@ -171,7 +124,6 @@ const ProfileHome = ({ route, navigation }) => {
       unsubscribe();
     };
   }, []);
-
   const [color, setColor] = useState("green");
   const styles2 = StyleSheet.create({
     container: {
@@ -237,7 +189,62 @@ const ProfileHome = ({ route, navigation }) => {
         });
     }
   }, []);
+  const [checkins, setCheckins] = useState([]);
+  useEffect(() => {
+    const currentUserId = auth.currentUser.uid;
+    const reflectionsRef = collection(db, "Users", currentUserId, "checkins");
+    const q = query(reflectionsRef, orderBy("date", "asc"));
 
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const data = querySnapshot.docs.map((doc) => doc.data());
+      setCheckins(data);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+  const dailyCheckinList = [
+    "Number one priority: ",
+    "Unhelpful thought: ",
+    "To do more of: ",
+    "To do less of: ",
+    "Mission: ",
+  ];
+
+  const styles3 = StyleSheet.create({
+    container: {
+      margin: 5,
+      backgroundColor: "#fff", // Background color
+      borderRadius: 10,
+      padding: 15,
+      marginBottom: 15,
+      shadowColor: "#000", // Shadow color
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.2,
+      shadowRadius: 4,
+      elevation: 5, // For Android shadow
+      marginVertical: 5,
+    },
+    summaryDate: {
+      fontSize: 18,
+      fontWeight: "bold",
+      marginBottom: 10,
+    },
+    responseContainer: {
+      flexDirection: "column",
+    },
+    responseItem: {
+      flexDirection: "row",
+      alignItems: "center",
+      marginBottom: 5,
+    },
+    responseText: {
+      fontSize: 16,
+      marginRight: 5,
+      maxWidth: 270,
+    },
+  });
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -294,6 +301,33 @@ const ProfileHome = ({ route, navigation }) => {
                 <Text>Loading</Text>
               )}
             </CollapsibleBar>
+
+            <CollapsibleBar title="Checkin summaries">
+              {checkins.length > 0 ? (
+                <FlatList
+                  data={checkins}
+                  renderItem={({ item }) => (
+                    <View style={styles3.container}>
+                      <Text style={styles3.summaryDate}>
+                        Summary on {item.date}
+                      </Text>
+                      <View style={styles3.responseContainer}>
+                        {item.response.map((response, index) => (
+                          <View key={index} style={styles3.responseItem}>
+                            <Text style={styles3.responseText}>
+                              {dailyCheckinList[index]}
+                            </Text>
+                            <Text style={styles3.responseText}>{response}</Text>
+                          </View>
+                        ))}
+                      </View>
+                    </View>
+                  )}
+                />
+              ) : (
+                <Text>Loading</Text>
+              )}
+            </CollapsibleBar>
           </ScrollView>
         </SafeAreaView>
       </ImageBackground>
@@ -313,10 +347,11 @@ const styles = StyleSheet.create({
     alignContent: "center",
   },
   title: {
-    color: "#333", // color of the title text
+    color: "#ffff", // color of the title text
     fontSize: 20, // size of the title text
     fontWeight: "bold", // make the text bold
     marginVertical: 10,
+    textAlign: "center",
   },
   header: {
     flexDirection: "row",

@@ -37,6 +37,7 @@ import {
   collection,
   query,
 } from "firebase/firestore";
+import { SuccessButton } from "../../buttons";
 
 const Login = () => {
   //Updating background
@@ -223,7 +224,10 @@ const Login = () => {
   }, []);
   const [index, setIndex] = useState(Math.floor(Math.random() * quotes.length));
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
       <ImageBackground
         source={currentBg}
         resizeMode="cover"
@@ -231,7 +235,6 @@ const Login = () => {
       >
         <View style={styles.header}>
           <Text style={styles.title}>Welcome to AnxietyBuddy</Text>
-
           <Image
             source={require("../../../assets/icon_copy.png")}
             style={styles.icon}
@@ -268,21 +271,17 @@ const Login = () => {
             <Text style={{ color: "#2962FF" }}>Forget password?</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={onLoginPressed} style={styles.button}>
-          <Text style={styles.buttonText}>Log In</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={onSignUpPressed}>
-          <Text style={styles.signUpText}>
-            Don't have an account?{" "}
-            <Text style={{ color: "#2962FF" }}>Sign Up</Text>
-          </Text>
-        </TouchableOpacity>
+        <SuccessButton onPress={onLoginPressed} title={"Login"}></SuccessButton>
+        <Text style={styles.signUpText}>Don't have an account?</Text>
+        <SuccessButton
+          title={"Sign up"}
+          onPress={onSignUpPressed}
+        ></SuccessButton>
       </ImageBackground>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
-// Styles variable
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -308,6 +307,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 20,
     alignItems: "center",
+    marginVertical: 15,
   },
   input: {
     width: "100%",
@@ -323,17 +323,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     marginBottom: 10,
   },
-  button: {
-    backgroundColor: "green",
-    borderRadius: 10,
-    padding: 10,
-    marginTop: 20,
-  },
-  buttonText: {
-    color: "#fff",
-    textAlign: "center",
-    fontSize: 20,
-  },
+
   signUpText: {
     color: "#fff",
     marginTop: 20,
@@ -343,13 +333,10 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "column",
     alignItems: "center",
-    // marginBottom: 50,
   },
   icon: {
     width: 100,
     height: 100,
-    //marginRight: 10,
-    //borderRadius: 20,
   },
 });
 

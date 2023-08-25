@@ -42,6 +42,7 @@ import ReflectionComponent from "./ReflectionComponent";
 import { Dimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import QuoteDisplay from "./QuotesDisplay";
+import { SuccessButton } from "../buttons.js";
 
 const Chat = (props) => {
   const { globalState, setGlobalStateNew } = useContext(GlobalStateContext);
@@ -261,15 +262,29 @@ const Chatbot = ({ route, navigation }) => {
     const [index, setIndex] = useState(
       Math.floor(Math.random() * quotes.length)
     );
+    const currentTime = new Date().getHours();
+    let greeting = "";
+    if (currentTime >= 5 && currentTime < 12) {
+      greeting = "Good Morning!";
+    } else if (currentTime >= 12 && currentTime < 18) {
+      greeting = "Good Afternoon!";
+    } else {
+      greeting = "Good Evening!";
+    }
+
     return (
       <View style={stylesNew.container}>
-        {/* Logo and App Name */}
         <View style={stylesNew.logoContainer}>
-          <Image
-            source={require("../../assets/icon_copy.png")}
-            style={stylesNew.logo}
-          />
-          <Text style={stylesNew.appName}>AnxietyBuddy</Text>
+          <View style={{ flexDirection: "row" }}>
+            <Image
+              source={require("../../assets/icon_copy.png")}
+              style={stylesNew.logo}
+            />
+            <Text style={{ ...stylesNew.appName, fontSize: 40 }}>
+              AnxietyBuddy
+            </Text>
+          </View>
+          <Text style={stylesNew.appName}>{greeting}</Text>
         </View>
 
         <QuoteDisplay
@@ -293,21 +308,7 @@ const Chatbot = ({ route, navigation }) => {
             <TouchableOpacity
               style={stylesNew.iconContainer}
               onPress={() => {
-                navigation.navigate("Daily check in");
-              }}
-            >
-              <Ionicons
-                name="today"
-                size={30}
-                color="green"
-                style={stylesNew.icon}
-              />
-              <Text style={{ textAlign: "center" }}>Daily{"\n"}Check In</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={stylesNew.iconContainer}
-              onPress={() => {
-                navigation.navigate("Morning Check in");
+                navigation.navigate("Check in");
               }}
             >
               <Ionicons
@@ -316,12 +317,16 @@ const Chatbot = ({ route, navigation }) => {
                 color="green"
                 style={stylesNew.icon}
               />
-              <Text style={{ textAlign: "center" }}>Morning{"\n"}Check In</Text>
+              <Text style={stylesNew.buttonText}>
+                {greeting === "Good Morning!"
+                  ? "Morning\nCheck In"
+                  : "Daily \nCheck In"}
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={stylesNew.iconContainer}
               onPress={() => {
-                navigation.navigate("Experience entry");
+                navigation.navigate("Situation entry");
               }}
             >
               <Ionicons
@@ -330,7 +335,7 @@ const Chatbot = ({ route, navigation }) => {
                 color="green"
                 style={stylesNew.icon}
               />
-              <Text style={{ textAlign: "center" }}>Experience{"\n"}entry</Text>
+              <Text style={stylesNew.buttonText}>Situation{"\n"}entry</Text>
             </TouchableOpacity>
           </View>
           <View style={stylesNew.iconsContainer}>
@@ -348,7 +353,7 @@ const Chatbot = ({ route, navigation }) => {
                 color="green"
                 style={stylesNew.icon}
               />
-              <Text style={{ textAlign: "center" }}>Self{"\n"}assessment</Text>
+              <Text style={stylesNew.buttonText}>Self{"\n"}assessment</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={stylesNew.iconContainer}
@@ -364,7 +369,7 @@ const Chatbot = ({ route, navigation }) => {
                 color="green"
                 style={stylesNew.icon}
               />
-              <Text style={{ textAlign: "center" }}>Breathing{"\n"}Guide</Text>
+              <Text style={stylesNew.buttonText}>Breathing{"\n"}Guide</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
@@ -380,9 +385,7 @@ const Chatbot = ({ route, navigation }) => {
                 color="green"
                 style={stylesNew.icon}
               />
-              <Text style={{ textAlign: "center" }}>
-                Cognitive{"\n"}Training
-              </Text>
+              <Text style={stylesNew.buttonText}>Cognitive{"\n"}Training</Text>
             </TouchableOpacity>
             {/* <TouchableOpacity
               style={stylesNew.iconContainer}
@@ -412,15 +415,16 @@ const Chatbot = ({ route, navigation }) => {
     },
     logoContainer: {
       alignItems: "center",
+      margin: 30,
     },
     logo: {
-      width: 100,
-      height: 100,
+      width: 50,
+      height: 50,
     },
     appName: {
       fontSize: 36,
       fontWeight: "bold",
-      marginTop: 10,
+      marginTop: 0,
       color: "white",
     },
     iconsContainer: {
@@ -443,6 +447,11 @@ const Chatbot = ({ route, navigation }) => {
       backgroundColor: "white",
       padding: 10,
       borderRadius: 15,
+    },
+    buttonText: {
+      textAlign: "center",
+      fontSize: 18,
+      fontWeight: "bold",
     },
   });
   const DisplayChat = () => {
@@ -799,18 +808,18 @@ const Chatbot = ({ route, navigation }) => {
           <View
             style={{
               position: "absolute",
-              left: 20,
+              left: 10,
               bottom: 5,
             }}
           >
-            <Button
-              title="Back to home"
+            <SuccessButton
+              title={"Back"}
               onPress={() => {
                 navigation.setParams({
                   chatType: "default",
                 });
               }}
-            ></Button>
+            ></SuccessButton>
           </View>
         )}
         {displayReflection && (

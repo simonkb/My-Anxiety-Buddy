@@ -21,9 +21,8 @@ import { useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
 import { Platform } from "react-native";
 import * as Notifications from "expo-notifications";
-import * as Permissions from "expo-permissions";
+// import * as Permissions from "expo-permissions";
 import MorningCheckInScreen from "../screens/Treatment/MorningCheckIn";
-import DailyCheckin from "../screens/Treatment/DailyCheckin";
 import ExperienceEntryScreen from "../screens/Treatment/ExperienceEntry";
 // Notifications.setNotificationHandler({
 //   handleNotification: async () => ({
@@ -81,20 +80,32 @@ const MainStack = () => {
     });
   };
 
-  useEffect(() => {
-    const getNotificationPermission = async () => {
-      if (Platform.OS === "ios") {
-        const { status } = await Permissions.askAsync(
-          Permissions.NOTIFICATIONS
-        );
-        if (status !== "granted") {
-          // Handle the case when permission is not granted
-          return;
-        }
-      }
-    };
+  // useEffect(() => {
+  //   const getNotificationPermission = async () => {
+  //     if (Platform.OS === "ios") {
+  //       const { status } = await Permissions.askAsync(
+  //         Permissions.NOTIFICATIONS
+  //       );
+  //       if (status !== "granted") {
+  //         // Handle the case when permission is not granted
+  //         return;
+  //       }
+  //     }
+  //   };
 
-    getNotificationPermission();
+  //   getNotificationPermission();
+  // }, []);
+
+  useEffect(() => {
+    // Request notifications permissions
+    async function registerForPushNotifications() {
+      const { status } = await Notifications.requestPermissionsAsync();
+      if (status !== "granted") {
+        // Handle permission denied case
+        return;
+      }
+    }
+    registerForPushNotifications();
   }, []);
 
   useEffect(() => {
@@ -193,17 +204,17 @@ const HomeStack = () => {
       ></Stack.Screen>
       <Stack.Screen
         options={{ headerShown: true, gestureEnabled: false }}
-        name="Morning Check in"
+        name="Check in"
         component={MorningCheckInScreen}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         options={{ headerShown: true, gestureEnabled: false }}
         name="Daily check in"
         component={DailyCheckin}
-      />
-        <Stack.Screen
+      /> */}
+      <Stack.Screen
         options={{ headerShown: true, gestureEnabled: false }}
-        name="Experience entry"
+        name="Situation entry"
         component={ExperienceEntryScreen}
       />
     </Stack.Navigator>

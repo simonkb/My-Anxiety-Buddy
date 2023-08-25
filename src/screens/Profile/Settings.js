@@ -23,6 +23,7 @@ import {
   bg3,
 } from "../../states/state.js";
 import { useRoute } from "@react-navigation/native";
+import { CancelButton, SuccessButton } from "../../buttons";
 
 const Settings = (navigation) => {
   let [value, setValue] = useState("all");
@@ -52,6 +53,7 @@ const Settings = (navigation) => {
               <Text> Authentication</Text>
             </MaterialCommunityIcons>
           </TouchableOpacity>
+
           <Button title="Save" onPress={() => onSavePressed()}></Button>
           <Button title="Cancel" onPress={() => onCancelPressed()}></Button>
         </View>
@@ -87,11 +89,21 @@ const Settings = (navigation) => {
           </ScrollView>
           <View
             style={{
-              maxWidth: 110,
-              alignSelf: "center",
+              justifyContent: "space-evenly",
+              flexDirection: "row",
+              marginTop: 30,
             }}
           >
-            <Button title="Save" onPress={() => onDonePressed()}></Button>
+            <SuccessButton
+              title={"Save"}
+              onPress={() => onDonePressed()}
+            ></SuccessButton>
+            <CancelButton
+              title={"Cancel"}
+              onPress={() => {
+                setbgImageUri(bg3);
+              }}
+            ></CancelButton>
           </View>
         </View>
       );
@@ -124,14 +136,6 @@ const Settings = (navigation) => {
         <View>
           <TouchableOpacity
             style={styles.rowStyle}
-            onPress={() => setValue((value = "authentication"))}
-          >
-            <MaterialCommunityIcons name="security" size={20}>
-              <Text> Authentication</Text>
-            </MaterialCommunityIcons>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.rowStyle}
             onPress={() => setValue((value = "changeBackground"))}
           >
             <MaterialCommunityIcons name="image" size={20}>
@@ -140,7 +144,16 @@ const Settings = (navigation) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.rowStyle}
-            onPress={() => setValue((value = "changeLanguage"))}
+            // onPress={() => setValue((value = "authentication"))}
+          >
+            <MaterialCommunityIcons name="security" size={20}>
+              <Text> Authentication</Text>
+            </MaterialCommunityIcons>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.rowStyle}
+            // onPress={() => setValue((value = "changeLanguage"))}
           >
             <MaterialCommunityIcons name="globe-model" size={20}>
               <Text> Change language</Text>
@@ -148,7 +161,7 @@ const Settings = (navigation) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.rowStyle}
-            onPress={() => setValue((value = "privacy"))}
+            // onPress={() => setValue((value = "privacy"))}
           >
             <MaterialCommunityIcons name="security" size={20}>
               <Text> Privacy</Text>
@@ -165,15 +178,15 @@ const Settings = (navigation) => {
           >
             <View
               style={{
-                maxWidth: 100,
+                // maxWidth: 100,
                 borderRadius: 15,
                 alignContent: "center",
                 alignSelf: "center",
                 marginTop: 20,
               }}
             >
-              <Button
-                title="Logout"
+              <CancelButton
+                title={"Logout"}
                 onPress={() => {
                   signOut(auth)
                     .then(() => {
@@ -184,7 +197,7 @@ const Settings = (navigation) => {
                       Alert.alert("Error", error);
                     });
                 }}
-              />
+              ></CancelButton>
             </View>
           </View>
         </View>
@@ -216,7 +229,7 @@ const Settings = (navigation) => {
 
         <Text
           style={{
-            color: "black",
+            color: "white",
             alignSelf: "center",
             fontStyle: "normal",
             fontSize: 26,
@@ -224,9 +237,18 @@ const Settings = (navigation) => {
         >
           {username}
         </Text>
-        <TouchableOpacity style={styles.button} onPress={onEditProfilePressed}>
-          <Text style={styles.buttonText}>Edit profile</Text>
-        </TouchableOpacity>
+
+        <View
+          style={{
+            width: 200,
+            alignSelf: "center",
+          }}
+        >
+          <SuccessButton
+            title={"Edit profile"}
+            onPress={onEditProfilePressed}
+          ></SuccessButton>
+        </View>
 
         <ScrollView
           style={{
