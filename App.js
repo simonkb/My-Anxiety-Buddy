@@ -34,6 +34,107 @@ const App = (navigation) => {
   );
 };
 export default App;
+
+// import React, { useState, useEffect } from "react";
+// import { GlobalStateContext } from "./src/states/GlobalState";
+// import Navigation from "./src/routes/routes.js";
+// import * as Speech from "expo-speech";
+// import * as SplashScreen from "expo-splash-screen";
+
+// if (__DEV__) {
+//   const ignoreWarns = [
+//     "VirtualizedLists should never be nested inside plain ScrollViews",
+//   ];
+
+//   const errorWarn = global.console.error;
+//   global.console.error = (...arg) => {
+//     for (const error of ignoreWarns) {
+//       if (arg[0].startsWith(error)) {
+//         return;
+//       }
+//     }
+//     errorWarn(...arg);
+//   };
+// }
+
+// function App() {
+//   const [globalState, setGlobalStateNew] = useState({
+//     speakEnabled: false,
+//     Speech: Speech,
+//   });
+
+//   useEffect(() => {
+//     SplashScreen.preventAutoHideAsync();
+
+//     // Hide the splash screen
+
+//     async function hideSplashScreen() {
+//       await SplashScreen.hideAsync();
+//     }
+
+//     hideSplashScreen();
+//   }, []);
+
+//   return (
+//     <GlobalStateContext.Provider value={{ globalState, setGlobalStateNew }}>
+//       <Navigation />
+//     </GlobalStateContext.Provider>
+//   );
+// }
+
+// export default App;
+
+// import React, { useState, useEffect } from "react";
+// import { GlobalStateContext } from "./src/states/GlobalState";
+// import Navigation from "./src/routes/routes.js";
+// import * as Speech from "expo-speech";
+// import * as SplashScreen from "expo-splash-screen";
+
+// if (__DEV__) {
+//   const ignoreWarns = [
+//     "VirtualizedLists should never be nested inside plain ScrollViews",
+//   ];
+
+//   const errorWarn = global.console.error;
+//   global.console.error = (...arg) => {
+//     for (const error of ignoreWarns) {
+//       if (arg[0].startsWith(error)) {
+//         return;
+//       }
+//     }
+//     errorWarn(...arg);
+//   };
+// }
+
+// function App() {
+//   const [globalState, setGlobalStateNew] = useState({
+//     speakEnabled: false,
+//     Speech: Speech,
+//   });
+
+//   useEffect(() => {
+//     async function prepareApp() {
+//       // Prevent the native splash screen from auto-hiding
+//       await SplashScreen.preventAutoHideAsync();
+
+//       // Perform any additional initialization here
+
+//       // Now you can hide the splash screen
+//       await SplashScreen.hideAsync();
+//     }
+
+//     prepareApp();
+//   }, []);
+
+//   return (
+//     <GlobalStateContext.Provider value={{ globalState, setGlobalStateNew }}>
+//       <Navigation />
+//     </GlobalStateContext.Provider>
+//   );
+// }
+
+// export default App;
+
 // import React, { useCallback, useEffect, useState } from "react";
 // import { Text, View } from "react-native";
 // import Entypo from "@expo/vector-icons/Entypo";

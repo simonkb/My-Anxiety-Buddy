@@ -21,9 +21,10 @@ import { useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
 import { Platform } from "react-native";
 import * as Notifications from "expo-notifications";
-// import * as Permissions from "expo-permissions";
 import MorningCheckInScreen from "../screens/Treatment/MorningCheckIn";
 import ExperienceEntryScreen from "../screens/Treatment/ExperienceEntry";
+import CongnitiveTraining from "../screens/Treatment/CognitiveTrainig";
+import CTraining from "../screens/Treatment/CTraining";
 // Notifications.setNotificationHandler({
 //   handleNotification: async () => ({
 //     shouldShowAlert: true,
@@ -159,7 +160,7 @@ const MainStack = () => {
         name="Treatment"
         component={TreatmentStack}
         options={{
-          tabBarLabel: "Contents",
+          tabBarLabel: "Readings",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="ios-book" size={size} color={color} />
           ),
@@ -204,18 +205,23 @@ const HomeStack = () => {
       ></Stack.Screen>
       <Stack.Screen
         options={{ headerShown: true, gestureEnabled: false }}
-        name="Check in"
+        name="Check In"
         component={MorningCheckInScreen}
       />
-      {/* <Stack.Screen
-        options={{ headerShown: true, gestureEnabled: false }}
-        name="Daily check in"
-        component={DailyCheckin}
-      /> */}
       <Stack.Screen
         options={{ headerShown: true, gestureEnabled: false }}
-        name="Situation entry"
+        name="Situation Entry"
         component={ExperienceEntryScreen}
+      />
+      <Stack.Screen
+        options={{ headerShown: true, gestureEnabled: false }}
+        name="Cognitive Training"
+        component={CongnitiveTraining}
+      />
+      <Stack.Screen
+        options={{ headerShown: true, gestureEnabled: false }}
+        name="Cognitive Training Phase"
+        component={CTraining}
       />
     </Stack.Navigator>
   );

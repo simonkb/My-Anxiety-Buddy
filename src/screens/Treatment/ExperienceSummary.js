@@ -8,18 +8,28 @@ import {
   ScrollView,
   Modal,
   Animated,
+  Alert,
 } from "react-native";
 import img from "../../../assets/experiencySummaryBg.png";
 import { useNavigation } from "@react-navigation/native";
 import { SuccessButton } from "../../buttons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const ExperienceSummary = (props) => {
   const navigator = useNavigation();
-  // console.log(props.summary);
+  var summary = [];
+  try {
+    summary = JSON.parse(props.summary);
+  } catch (error) {
+    Alert.alert(
+      "Error",
+      "An error occured while generating summary please try again."
+    );
 
-  const summary = JSON.parse(props.summary);
-  // const summary = props.summary;
-  console.log(summary);
+    navigator.navigate("Home");
+    return;
+  }
+
   const [overlayVisible, setOverlayVisible] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
 
@@ -47,55 +57,110 @@ const ExperienceSummary = (props) => {
         <ImageBackground source={img} style={styles.experienceSummaryBg} />
         <TouchableOpacity
           style={styles.eventCard}
-          onPress={() => handleCardPress("Event", summary[1].content)}
+          onPress={() => handleCardPress("Event", summary[1]?.content)}
         >
           <Text style={styles.cardLabel}>Event</Text>
-          <Text style={styles.smallText}>{summary[1].content}</Text>
+          <MaterialCommunityIcons
+            name="arrow-expand"
+            size={20}
+            style={{
+              position: "absolute",
+              right: 4,
+              top: 2,
+            }}
+          ></MaterialCommunityIcons>
+
+          <Text style={styles.smallText}>{summary[1]?.content}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.thoughtsCard}
-          onPress={() => handleCardPress("Thoughts", summary[0].content)}
+          onPress={() => handleCardPress("Thoughts", summary[0]?.content)}
         >
           <Text style={styles.cardLabel}>Thoughts</Text>
-          <Text style={styles.smallText}>{summary[0].content}</Text>
+          <MaterialCommunityIcons
+            name="arrow-expand"
+            size={20}
+            style={{
+              position: "absolute",
+              right: 4,
+              top: 2,
+            }}
+          ></MaterialCommunityIcons>
+          <Text style={styles.smallText}>{summary[0]?.content}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.constructiveCard}
           onPress={() =>
-            handleCardPress(`Constructive Behaviors`, summary[3].content)
+            handleCardPress(`Constructive Behaviors`, summary[3]?.content)
           }
         >
           <Text style={styles.cardLabel}>Constructive{"\n"}Behaviors</Text>
-          <Text style={styles.smallText}>{summary[3].content}</Text>
+          <MaterialCommunityIcons
+            name="arrow-expand"
+            size={20}
+            style={{
+              position: "absolute",
+              right: 4,
+              top: 2,
+            }}
+          ></MaterialCommunityIcons>
+          <Text style={styles.smallText}>{summary[3]?.content}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.destructiveCard}
           onPress={() =>
-            handleCardPress(`Destructive Behaviors`, summary[4].content)
+            handleCardPress(`Destructive Behaviors`, summary[4]?.content)
           }
         >
           <Text style={styles.cardLabel}>Destructive{"\n"}Behaviors</Text>
-          <Text style={styles.smallText}>{summary[4].content}</Text>
+          <MaterialCommunityIcons
+            name="arrow-expand"
+            size={20}
+            style={{
+              position: "absolute",
+              right: 4,
+              top: 2,
+            }}
+          ></MaterialCommunityIcons>
+          <Text style={styles.smallText}>{summary[4]?.content}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.emotionsCard}
-          onPress={() => handleCardPress(`Emotions`, summary[2].content)}
+          onPress={() => handleCardPress(`Emotions`, summary[2]?.content)}
         >
           <Text style={styles.cardLabel}>Emotions</Text>
-          <Text style={styles.smallText}>{summary[2].content}</Text>
+          <MaterialCommunityIcons
+            name="arrow-expand"
+            size={20}
+            style={{
+              position: "absolute",
+              right: 4,
+              top: 2,
+            }}
+          ></MaterialCommunityIcons>
+          <Text style={styles.smallText}>{summary[2]?.content}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.suggestionsCard}
           onPress={() =>
-            handleCardPress(`My recomendations for you.`, summary[5].content)
+            handleCardPress(`My recomendations for you.`, summary[5]?.content)
           }
         >
           <Text style={styles.cardLabel}>My recomendations for you.</Text>
-          <Text style={styles.smallText}>{summary[5].content}</Text>
+          <MaterialCommunityIcons
+            name="arrow-expand"
+            size={20}
+            style={{
+              position: "absolute",
+              right: 4,
+              top: 2,
+            }}
+          ></MaterialCommunityIcons>
+          <Text style={styles.smallText}>{summary[5]?.content}</Text>
         </TouchableOpacity>
         <View
           style={styles.button1}
@@ -226,7 +291,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    color: "#000",
+    color: "#fff",
     fontSize: 25,
     fontWeight: "700",
     alignSelf: "center",

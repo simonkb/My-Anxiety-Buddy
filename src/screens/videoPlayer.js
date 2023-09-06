@@ -4,6 +4,7 @@ import { Video } from "expo-av";
 import LevelPicker from "./levelPicker";
 import Loading from "../loading";
 import ReflectionComponent from "./ReflectionComponent";
+import { SuccessButton } from "../buttons";
 
 export default function VideoPlayer({ videoFilename }) {
   const [videoRef, setVideoRef] = useState(null);
@@ -87,7 +88,7 @@ export default function VideoPlayer({ videoFilename }) {
         flexDirection: "column",
         alignItems: "center",
         flexGrow: 1,
-        padding: 10,
+        //padding: 10,
       }}
     >
       <LevelPicker
@@ -117,6 +118,7 @@ export default function VideoPlayer({ videoFilename }) {
             flexGrow: 1,
             width: "100%",
             height: "100%",
+            marginVertical: 5,
           }}
           source={{ uri: difficulty }}
           useNativeControls={false}
@@ -130,35 +132,27 @@ export default function VideoPlayer({ videoFilename }) {
         />
       </View>
 
+      <SuccessButton
+        title={isPlaying ? "Stop" : "Start"}
+        onPress={handlePlayPause}
+      ></SuccessButton>
+
       <View
         style={{
-          flexDirection: "row",
-          marginHorizontal: 10,
+          backgroundColor: "gray",
+          padding: 10,
+          borderRadius: 10,
+          marginHorizontal: 20,
+          marginVertical: 5,
         }}
       >
-        <TouchableOpacity
-          onPress={handlePlayPause}
-          style={{ backgroundColor: "blue", padding: 10, borderRadius: 10 }}
+        <Text
+          style={{ color: "white", fontWeight: "bold", alignSelf: "center" }}
         >
-          <Text style={{ color: "white", fontWeight: "bold" }}>
-            {isPlaying ? "Stop" : "Start"}
-          </Text>
-        </TouchableOpacity>
-        <View
-          style={{
-            backgroundColor: "blue",
-            padding: 10,
-            borderRadius: 10,
-            marginHorizontal: 20,
-          }}
-        >
-          <Text
-            style={{ color: "white", fontWeight: "bold", alignSelf: "center" }}
-          >
-            Breath Count: {loopCount}
-          </Text>
-        </View>
+          Breath Count: {loopCount}
+        </Text>
       </View>
+
       {displayReflection && (
         <ReflectionComponent
           activity={"breathing exercise"}

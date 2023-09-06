@@ -4,10 +4,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
   View,
-  Button,
-  ScrollView,
   Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -15,6 +12,7 @@ import { useGlobalState, bg1, bg2, bg3 } from "../../states/state";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../config/firebaseConfig";
 import { SuccessButton } from "../../buttons";
+
 const ForgetPassword = () => {
   //Updating background
   let defaultBg = useGlobalState("defaultBackgroundImage");
@@ -42,7 +40,7 @@ const ForgetPassword = () => {
         Alert.alert(error.code, error.message);
       });
   };
-  return (
+return (
     <View style={styles.container}>
       <ImageBackground
         source={currentBg}
@@ -77,6 +75,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
+
   signInRectangle: {
     width: "80%",
     backgroundColor: "#fff",
@@ -85,6 +84,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     margin: 15,
   },
+
   title: {
     textAlign: "center",
     //color: "rgba(85,82,82,1)",

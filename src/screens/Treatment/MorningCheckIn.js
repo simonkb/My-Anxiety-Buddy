@@ -9,25 +9,14 @@ import {
   Alert,
   ScrollView,
 } from "react-native";
-import {
-  setGlobalState,
-  useGlobalState,
-  bg1,
-  bg2,
-  bg3,
-} from "../../states/state.js";
+import { useGlobalState, bg1, bg2, bg3 } from "../../states/state.js";
 import DailyCheckin from "./DailyCheckin.js";
 import { auth, db } from "../../config/firebaseConfig.js";
 import {
-  collection,
   doc,
   setDoc,
-  query,
   getDoc,
-  getDocs,
-  updateDoc,
-  where,
-  orderBy,
+
 } from "firebase/firestore";
 
 const MorningCheckInScreen = () => {
@@ -57,10 +46,10 @@ const MorningCheckInScreen = () => {
   const [answers, setAnswers] = useState([]);
   const questions = [
     "What is your number one priority today?",
-    "What are unhelpful thoughts do you have?",
-    "What to do more of today?",
-    "What do less of today?",
-    "What would make today amazing?",
+    "What unhelpful thoughts have you experienced today?",
+    "Today I will do more of: ",
+    "Today I will do less of: ",
+    "How would you make your day amazing?",
   ];
 
   const handleAnswerChange = (text) => {
@@ -136,25 +125,29 @@ const MorningCheckInScreen = () => {
           {!doneForToday && questionIndex < questions.length ? (
             <>
               <View style={styles.card}>
-                <Text style={styles.title}>
-                  {" "}
-                  {greeting === "Good Morning!"
-                    ? "Morning Check In"
-                    : "Daily Check In"}
-                </Text>
-                <Text
-                  style={{
-                    color: "gray",
-                    fontWeight: "bold",
-                    fontSize: 16,
-                  }}
-                >
-                  {new Date().toUTCString().substring(0, 16)}
-                </Text>
-                <Text style={styles.message}>
-                  Start the day by checking in with yourself and connecting your
-                  thoughts.
-                </Text>
+                {questionIndex === 0 && (
+                  <>
+                    <Text style={styles.title}>
+                      {greeting === "Good Morning!"
+                        ? "Morning Check In"
+                        : "Daily Check In"}
+                    </Text>
+                    <Text
+                      style={{
+                        color: "gray",
+                        fontWeight: "bold",
+                        fontSize: 16,
+                      }}
+                    >
+                      {new Date().toDateString()}
+                    </Text>
+                    <Text style={styles.message}>
+                      Start the day by checking in with yourself and connecting
+                      your thoughts.
+                    </Text>
+                  </>
+                )}
+
                 <Text style={styles.question}>{questions[questionIndex]}</Text>
                 <TextInput
                   style={{
@@ -225,8 +218,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   question: {
-    fontSize: 35,
+    fontSize: 25,
     fontWeight: "bold",
+    paddingHorizontal: 20,
   },
   button: {
     paddingVertical: 10,

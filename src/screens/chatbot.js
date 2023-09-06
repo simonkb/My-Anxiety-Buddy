@@ -39,7 +39,6 @@ import ReadDataAndroid from "./GoogleTsx";
 import VideoPlayer from "./videoPlayer";
 import ReflectionComponent from "./ReflectionComponent";
 
-import { Dimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import QuoteDisplay from "./QuotesDisplay";
 import { SuccessButton } from "../buttons.js";
@@ -276,15 +275,19 @@ const Chatbot = ({ route, navigation }) => {
       <View style={stylesNew.container}>
         <View style={stylesNew.logoContainer}>
           <View style={{ flexDirection: "row" }}>
-            <Image
+            {/* <Image
               source={require("../../assets/icon_copy.png")}
               style={stylesNew.logo}
-            />
+            /> */}
             <Text style={{ ...stylesNew.appName, fontSize: 40 }}>
               AnxietyBuddy
             </Text>
           </View>
-          <Text style={stylesNew.appName}>{greeting}</Text>
+          <Text
+            style={{ ...stylesNew.appName, color: "#05F593", fontSize: 24 }}
+          >
+            {greeting}
+          </Text>
         </View>
 
         <QuoteDisplay
@@ -298,7 +301,7 @@ const Chatbot = ({ route, navigation }) => {
         <View
           style={{
             backgroundColor: "gray",
-            opacity: 0.8,
+            opacity: 0.95,
             justifyContent: "center",
             borderRadius: 15,
             marginTop: 40,
@@ -308,14 +311,14 @@ const Chatbot = ({ route, navigation }) => {
             <TouchableOpacity
               style={stylesNew.iconContainer}
               onPress={() => {
-                navigation.navigate("Check in");
+                navigation.navigate("Check In");
               }}
             >
               <Ionicons
                 name="sunny-outline"
-                size={30}
-                color="green"
-                style={stylesNew.icon}
+                size={40}
+                color="#05F593"
+                //style={stylesNew.icon}
               />
               <Text style={stylesNew.buttonText}>
                 {greeting === "Good Morning!"
@@ -326,16 +329,16 @@ const Chatbot = ({ route, navigation }) => {
             <TouchableOpacity
               style={stylesNew.iconContainer}
               onPress={() => {
-                navigation.navigate("Situation entry");
+                navigation.navigate("Situation Entry");
               }}
             >
               <Ionicons
                 name="sad-outline"
-                size={30}
-                color="green"
-                style={stylesNew.icon}
+                size={40}
+                color="#05F593"
+                //style={stylesNew.icon}
               />
-              <Text style={stylesNew.buttonText}>Situation{"\n"}entry</Text>
+              <Text style={stylesNew.buttonText}>Situation{"\n"}Entry</Text>
             </TouchableOpacity>
           </View>
           <View style={stylesNew.iconsContainer}>
@@ -349,11 +352,11 @@ const Chatbot = ({ route, navigation }) => {
             >
               <Ionicons
                 name="ios-analytics"
-                size={30}
-                color="green"
-                style={stylesNew.icon}
+                size={40}
+                color="#05F593"
+                //style={stylesNew.icon}
               />
-              <Text style={stylesNew.buttonText}>Self{"\n"}assessment</Text>
+              <Text style={stylesNew.buttonText}>Self{"\n"}Assessment</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={stylesNew.iconContainer}
@@ -365,25 +368,23 @@ const Chatbot = ({ route, navigation }) => {
             >
               <Ionicons
                 name="ios-heart"
-                size={30}
-                color="green"
-                style={stylesNew.icon}
+                size={40}
+                color="#05F593"
+                //style={stylesNew.icon}
               />
               <Text style={stylesNew.buttonText}>Breathing{"\n"}Guide</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                navigation.setParams({
-                  chatType: "brain",
-                });
+                navigation.navigate("Cognitive Training");
               }}
               style={stylesNew.iconContainer}
             >
               <MaterialCommunityIcons
                 name="brain"
-                size={30}
-                color="green"
-                style={stylesNew.icon}
+                size={40}
+                color="#05F593"
+                // style={stylesNew.icon}
               />
               <Text style={stylesNew.buttonText}>Cognitive{"\n"}Training</Text>
             </TouchableOpacity>
@@ -446,11 +447,11 @@ const Chatbot = ({ route, navigation }) => {
       alignItems: "center",
       backgroundColor: "white",
       padding: 10,
-      borderRadius: 15,
+      borderRadius: 10,
     },
     buttonText: {
       textAlign: "center",
-      fontSize: 18,
+      fontSize: 16,
       fontWeight: "bold",
     },
   });
@@ -512,7 +513,7 @@ const Chatbot = ({ route, navigation }) => {
             <Chat
               type={"toUser"}
               message={
-                "Sit down in relaxed position and click on start whenever you are ready."
+                "Sit down in a relaxed position and click on start whenever you are ready."
               }
             />
             <VideoPlayer></VideoPlayer>
@@ -524,223 +525,6 @@ const Chatbot = ({ route, navigation }) => {
         <View style={{ top: 40 }}>
           <HomePage></HomePage>
         </View>
-      );
-    } else if (route.params.chatType === "afterBreathing") {
-      return (
-        <>
-          <Chat
-            type={"toUser"}
-            message={
-              "Good job, you have completed your breathing exercise for today."
-            }
-          />
-          <Chat
-            type={"toUser"}
-            message={
-              'You can do it again anytime by going to treatment section, and clicking on "Breathing Exercise"'
-            }
-          />
-          <Chat
-            type={"toUser"}
-            message={"How do you feel after doing the breathing exercise?"}
-          />
-          <Chat
-            type={"toBot"}
-            responses={[
-              "I feel better now, it helped me relax",
-              "It helped me relax, but I'm still anxious",
-              "I don't like the exercise, do you have anything else?",
-            ]}
-            handleOnPress={handleOnpress}
-          />
-        </>
-      );
-    } else if (route.params.chatType === "brain") {
-      const [brainExercises, setBrainExercises] = useState([]);
-      async function read() {
-        const docRef = doc(db, "exercises", "brainExercises");
-
-        const docSnap = await getDoc(docRef);
-        return docSnap.data();
-      }
-      if (brainExercises.length === 0) {
-        read()
-          .then((data) => {
-            setBrainExercises(data.questions);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-      const ChatBrain = (props) => {
-        return (
-          <View
-            style={
-              props.type === "toBot"
-                ? {
-                    flexDirection: "row",
-                    alignItems: "flex-end",
-                    padding: 10,
-                    marginBottom: 10,
-                    alignSelf: "flex-end",
-                  }
-                : {
-                    flexDirection: "row",
-                    alignItems: "flex-end",
-                    padding: 10,
-                    marginBottom: 10,
-                  }
-            }
-          >
-            {props.type === "toUser" && (
-              <MaterialCommunityIcons
-                name="account"
-                color={"gray"}
-                size={30}
-                style={{ marginRight: 5 }}
-              />
-            )}
-            <View
-              style={{
-                backgroundColor:
-                  props.type === "toUser"
-                    ? "#f1f0f0"
-                    : "rgba(255, 255, 255, 0.7)",
-                padding: 10,
-                borderRadius: 10,
-                maxWidth: "80%",
-              }}
-            >
-              <Text style={{ fontSize: 20 }}>{props.message}</Text>
-              {props.type === "toBot" &&
-                props.responses.map((option) => (
-                  <TouchableOpacity
-                    key={option}
-                    style={{
-                      backgroundColor: "rgba(0, 0, 0, 0.2)",
-                      opacity: 0.9,
-                      padding: 5,
-                      borderRadius: 5,
-                      marginVertical: 2,
-                    }}
-                    onPress={() =>
-                      props.handleSelection(
-                        props.responses.indexOf(option),
-                        props.answer
-                      )
-                    }
-                  >
-                    <Text
-                      style={{
-                        fontSize: 18,
-                        color: "black",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {option}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-            </View>
-            {props.type === "toBot" && (
-              <MaterialCommunityIcons
-                name="account"
-                color={"gray"}
-                size={30}
-                style={{ marginRight: 5 }}
-              />
-            )}
-          </View>
-        );
-      };
-
-      const handleReadOutLoudPress = async (text) => {
-        // Start the TTS engine and pass the text as a parameter
-        // Initialize the TTS engine
-
-        try {
-          if (globalState.speakEnabled)
-            await Speech.speak(text, { language: "en-US" });
-        } catch (error) {
-          console.error(error);
-        }
-      };
-      const [currentIndex, setCurrentIndex] = useState(0);
-      const [selectedResponse, setSelectedResponse] = useState(-1);
-      const handleResponsePress = (index) => {
-        setSelectedResponse(index);
-        if (currentIndex >= brainExercises.length) {
-          console.log("done with brain E");
-        } else {
-          handleReadOutLoudPress(brainExercises[currentIndex].feedbacks[index]);
-        }
-      };
-
-      const handleNextPress = () => {
-        if (selectedResponse === brainExercises[currentIndex].answer) {
-          setCurrentIndex(currentIndex + 1);
-          setSelectedResponse(-1);
-        } else {
-          // Show feedback message
-          console.log(brainExercises[currentIndex].feedbacks[selectedResponse]);
-        }
-      };
-
-      useEffect(() => {
-        if (currentIndex < brainExercises.length) {
-          handleReadOutLoudPress(brainExercises[currentIndex].message);
-        } else if (
-          currentIndex === brainExercises.length &&
-          brainExercises.length !== 0
-        ) {
-          setDisplayReflection(true);
-        }
-      }, [currentIndex]);
-      const handleAfterBrain = () => {};
-
-      return (
-        <>
-          {currentIndex < brainExercises.length && (
-            <View
-              style={{
-                marginTop: 100,
-
-                flexDirection: "column",
-              }}
-            >
-              <View>
-                <ChatBrain
-                  type="toUser"
-                  message={brainExercises[currentIndex].message}
-                />
-              </View>
-              <View>
-                <ChatBrain
-                  type="toBot"
-                  responses={brainExercises[currentIndex].responses}
-                  handleSelection={handleResponsePress}
-                  answer={brainExercises[currentIndex].answer}
-                />
-              </View>
-              {brainExercises[currentIndex].feedbacks[selectedResponse] && (
-                <View>
-                  <ChatBrain
-                    type="toUser"
-                    message={
-                      brainExercises[currentIndex].feedbacks[selectedResponse]
-                    }
-                  />
-                </View>
-              )}
-              <View style={{ alignItems: "center" }}>
-                {selectedResponse === brainExercises[currentIndex].answer ? (
-                  <Button title="Next" onPress={handleNextPress} />
-                ) : null}
-              </View>
-            </View>
-          )}
-          {brainExercises.length === 0 && <Loading />}
-        </>
       );
     } else if (route.params.chatType === "GAD7") {
       return <GAD7Questionnaire handleOnPress={handleOnpress} />;
@@ -796,8 +580,8 @@ const Chatbot = ({ route, navigation }) => {
           <View
             style={{
               position: "absolute",
-              right: 20,
-              bottom: 20,
+              right: 10,
+              bottom: 5,
             }}
           >
             <ReadOutLoudButton></ReadOutLoudButton>
@@ -809,7 +593,7 @@ const Chatbot = ({ route, navigation }) => {
             style={{
               position: "absolute",
               left: 10,
-              bottom: 5,
+              top: 40,
             }}
           >
             <SuccessButton

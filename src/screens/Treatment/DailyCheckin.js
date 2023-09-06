@@ -7,14 +7,11 @@ import {
   ScrollView,
   StyleSheet,
   KeyboardAvoidingView,
-  ImageBackground,
-  Image,
   Alert,
   Animated,
 } from "react-native";
 
 import {
-  setGlobalState,
   useGlobalState,
   bg1,
   bg2,
@@ -23,15 +20,9 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { auth, db } from "../../config/firebaseConfig.js";
 import {
-  collection,
   doc,
-  setDoc,
-  query,
-  getDoc,
-  getDocs,
   updateDoc,
-  where,
-  orderBy,
+
 } from "firebase/firestore";
 const DailyCheckin = (props) => {
   //Updating background
@@ -153,7 +144,7 @@ const DailyCheckin = (props) => {
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Text style={styles.greeting}>{greeting} </Text>
+        {/* <Text style={styles.greeting}>{greeting} </Text>
         <Text
           style={{
             ...styles.greeting,
@@ -163,7 +154,7 @@ const DailyCheckin = (props) => {
           }}
         >
           Your today's check in summary{" "}
-        </Text>
+        </Text> */}
 
         <Text style={styles.date}>{new Date().toDateString()}</Text>
         <Animated.View
@@ -205,12 +196,12 @@ const DailyCheckin = (props) => {
             ],
           }}
         >
-          <View style={{ width: 170 }}>
-            <Text style={{ ...styles.prompt, fontSize: 16 }}>
+          <View style={{ width: 190 }}>
+            <Text style={{ ...styles.prompt }}>
               An unhelpful thought I have today is
             </Text>
             <TextInput
-              style={{ ...styles.input, fontSize: 16 }}
+              style={{ ...styles.input }}
               value={unhelpfulThought}
               onChangeText={setUnhelpfulThought}
               placeholder="Enter your thought"
@@ -228,8 +219,8 @@ const DailyCheckin = (props) => {
             <Animated.Image
               source={require("../../../assets/ballon.png")}
               style={{
-                width: 200,
-                height: 160,
+                width: 150,
+                height: 150,
                 transform: [
                   { translateX: animationValue },
                   { translateY: animationValue },
@@ -308,7 +299,7 @@ const DailyCheckin = (props) => {
           style={{
             flexDirection: "row",
             justifyContent: "space-evenly",
-            paddingBottom: 20,
+            //paddingBottom: 20,
           }}
         >
           <TouchableOpacity style={styles.doneButton} onPress={handleDone}>
@@ -332,8 +323,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     backgroundColor: "#fff",
-    //    backgroundColor: "#FAD7A0",
-
     margin: 15,
     borderRadius: 15,
     opacity: 1,
@@ -350,7 +339,7 @@ const styles = StyleSheet.create({
   },
   date: {
     fontSize: 16,
-    marginBottom: 20,
+    marginBottom: 5,
     alignSelf: "center",
     color: "gray",
   },
@@ -358,7 +347,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   prompt: {
-    fontSize: 20,
+    fontSize: 18,
     marginBottom: 10,
     alignSelf: "center",
     fontWeight: "bold",
@@ -367,46 +356,50 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 10,
     alignSelf: "center",
+    fontWeight: "bold",
   },
   input: {
-    //height: 40,
-    borderBottomWidth: 3,
-    borderRadius: 5,
+    borderRadius: 10,
     paddingHorizontal: 10,
-    fontSize: 16,
-    borderBottomColor: "gray",
+    fontSize: 14,
     alignSelf: "center",
-    fontWeight: "900",
+    backgroundColor: "#d2d5d9",
+    width: "95%",
+    minHeight: 60,
+    marginVertical: 10,
+    padding: 10,
+    paddingTop: 10,
+    fontSize: 14,
   },
   greenCircleInput: {
-    minHeight: 40,
-    borderRadius: 15,
-    backgroundColor: "#00B050",
-    color: "white",
-    width: 180,
-    fontSize: 16,
+    minHeight: 50,
+    borderRadius: 5,
+    backgroundColor: "#F9E79F",
+    //color: "white",
+    width: 160,
+    fontSize: 14,
     paddingHorizontal: 10,
-    fontWeight: "900",
+    //fontWeight: "900",
   },
   redCircleInput: {
-    minHeight: 20,
-    borderRadius: 15,
+    minHeight: 50,
+    borderRadius: 5,
     backgroundColor: "#eb9354",
-    color: "white",
-    width: 150,
-    fontSize: 16,
+    //color: "white",
+    width: 160,
+    fontSize: 14,
     padding: 10,
-    fontWeight: "900",
+    //fontWeight: "900",
   },
   doneButton: {
-    backgroundColor: "orange",
+    backgroundColor: "#F39C12",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
     marginTop: 20,
   },
   skipButton: {
-    backgroundColor: "gray",
+    backgroundColor: "#2ECC71",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,

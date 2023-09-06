@@ -11,28 +11,12 @@ import {
   ActivityIndicator,
 } from "react-native";
 
-import {
-  setGlobalState,
-  useGlobalState,
-  bg1,
-  bg2,
-  bg3,
-} from "../../states/state.js";
+import { useGlobalState, bg1, bg2, bg3 } from "../../states/state.js";
 import { useNavigation } from "@react-navigation/native";
 import ExperienceSummary from "./ExperienceSummary";
 import { API_URL, API_KEY } from "../../config/firebaseConfig";
 import { auth, db } from "../../config/firebaseConfig.js";
-import {
-  collection,
-  doc,
-  setDoc,
-  query,
-  getDoc,
-  getDocs,
-  updateDoc,
-  where,
-  orderBy,
-} from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 
 const ExperienceEntryScreen = () => {
   // Updating background
@@ -51,7 +35,7 @@ const ExperienceEntryScreen = () => {
   const [answers, setAnswers] = useState([]);
   const questions = [
     {
-      question: "Are you currently having any anxiety situation?",
+      question: "Are you currently experiencing any anxiety situation?",
       type: "yesOrNo",
     },
     {
@@ -59,11 +43,13 @@ const ExperienceEntryScreen = () => {
       type: "selectFromEmojies",
     },
     {
-      question: "What made you feel this way?",
+      //question: "What made you feel this way?",
+      question: "What were your immediate thoughts?",
       type: "writing",
     },
     {
-      question: "What events occurred just before the situation?",
+      // question: "What events occurred just before the situation?",
+      question: "How do you want to challenge your thoughts?",
       type: "writing",
     },
     {
@@ -71,15 +57,17 @@ const ExperienceEntryScreen = () => {
       type: "writing",
     },
     {
-      question: "Has any of the methods you used worked?",
+      question: "Did any of the methods you used work?",
       type: "yesOrNo",
     },
     {
-      question: "What do you think made the situation worse?",
+      //question: "What do you think made the situation worse?",
+      question: "What events occurred just before the situation?",
       type: "writing",
     },
     {
-      question: "How do you want to challenge your thoughts?",
+      //question: "How do you want to challenge your thoughts?",
+      question: "What do you think made the situation worse?",
       type: "writing",
     },
   ];
@@ -91,7 +79,7 @@ const ExperienceEntryScreen = () => {
     if ((questionIndex === 0) & (answer === "No")) {
       Alert.alert(
         "Message",
-        "Great, you can go through the experience entry whenever you have anxiety or related feeling."
+        "Great, you can go through the situation entry whenever you have anxiety or related feeling."
       );
       navigator.goBack();
       return;
@@ -118,7 +106,7 @@ const ExperienceEntryScreen = () => {
         Alert.alert("Error", "Please enter your response to the question.");
       } else {
         setLoading(true);
-        const prompt = `In this role-play, you are a compassionate therapist within an anxiety management app. This is my application and I want you to act as a therapist and respond to the user directly making him the second person. 
+        const prompt = `In this role-play, you are a compassionate therapist within an anxiety management app named AnxietyBuddy. This is my application and I want you to act as a therapist and respond to the user directly making him the second person. 
 Your primary aim is to provide empathetic support and guidance to users experiencing anxiety.
 Given the scenario below, generate a comprehensive response that includes multiple facets.
 
@@ -128,54 +116,19 @@ Your task is to craft a detailed summary to assist the him or her effectively.
 
 Questions my  app asked the user:
 
-User's Questions:
-const questions = [
-  {
-    question: "Are you currently having any anxiety experience?",
-    type: "yesOrNo",
-  },
-  {
-    question: "How are you feeling at the moment?",
-    type: "selectFromEmojies",
-  },
-  {
-    question: "What made you feel this way?",
-    type: "writing",
-  },
-  {
-    question: "What events occurred just before the situation?",
-    type: "writing",
-  },
-  {
-    question: "Have you tried anything to make the situation better?",
-    type: "writing",
-  },
-  {
-    question: "Has any of the methods you used worked?",
-    type: "yesOrNo",
-  },
-  {
-    question: "What do you think made the situation worse?",
-    type: "writing",
-  },
-  {
-    question: "How do you want to challenge your thoughts?",
-    type: "writing",
-  },
-];
-
+User's Questions: ${questions}
 The responses of the user for the respective questions:
 Answers: ${answers}
 
 Desired Response Format:
-Please return a list of objects all in one array (only a list should be returned and the returned list should always have the same 6 objects structure to avoid any errors), each addressing a specific aspect of the user's situation.
+Please return a list of objects all in one JSON (only a JSON (list of objects in JSON format) should be returned and the returned JSON should always have the same 6 objects structure to avoid any errors), each addressing a specific aspect of the user's situation.
 1. User's Thoughts
 2. Event Description
 3. Emotions
 4. Constructive Behaviors
 5. Destructive Behaviors
 6. App Suggestions
-Please structure your response accordingly. In your response address the user directly use short expressions to the point like in two three words since your response is a summary. but for the suggestions aim for a  200 word paragraph clearly suggesting the user directly addressing him 'you'. it should be a professional suggestion that helps the user recover from their situation. The format matters the most just return a list of objects all in one javascript array. and your response is presented to my user directly so don't address the user as a third person just tell everything to the user directly. Except for the last object the others should be very short like few words or a sentence. But the last object should have 2 paragraphs clear and professional suggestion. Note every object in the list should have title and content varibles.`;
+Please structure your response accordingly. In your response address the user directly use short expressions to the point, like in two three words since your response is a summary. but for the suggestions aim for a  200 word paragraph clearly suggesting the user directly addressing him 'you'. it should be a professional suggestion that helps the user recover from their situation. The format matters the most just return a JSON whih is list of objects all in one JSON. and your response is presented to my user directly so don't address the user as a third person just tell everything to the user directly. Except for the last object the others should be very short like few words or a sentence. But the last object should have 2 paragraphs clear and professional suggestion. Note every object in the list should have "title" and "content" properties in having doulble quotes as per the roles of JSON.`;
 
         try {
           const response = await fetch(API_URL, {
@@ -195,8 +148,7 @@ Please structure your response accordingly. In your response address the user di
             }),
           });
           const data = await response.json();
-          // const data = await JSON.parse(response);
-          const botResponse = data.choices[0].message.content;
+          const botResponse = data?.choices[0].message.content;
           setSummary(botResponse);
           const object = {
             userResponse: answers,
@@ -234,7 +186,7 @@ Please structure your response accordingly. In your response address the user di
               <Text style={styles.buttonText}>Yes</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.button, { backgroundColor: "red" }]}
+              style={[styles.button, { backgroundColor: "orange" }]}
               onPress={() => handleAnswerChange("No")}
             >
               <Text style={styles.buttonText}>No</Text>
@@ -321,19 +273,24 @@ Please structure your response accordingly. In your response address the user di
           {!done && !loading ? (
             <ScrollView>
               <View style={styles.card}>
-                <Text style={styles.title}>Situation Entry</Text>
-                <Text
-                  style={{
-                    fontSize: 16,
-                    fontWeight: "300",
-                  }}
-                >
-                  {new Date().toDateString()}
-                </Text>
-                <Text style={styles.message}>
-                  This simple situation entry record will help you see the
-                  relationship between your situation, thoughts, and emotions.
-                </Text>
+                {questionIndex === 0 && (
+                  <>
+                    <Text style={styles.title}>Situation Entry</Text>
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        fontWeight: "300",
+                      }}
+                    >
+                      {new Date().toDateString()}
+                    </Text>
+                    <Text style={styles.message}>
+                      This simple situation entry will help you see how any
+                      situation is connected by your thoughts, mood, and
+                      behavior
+                    </Text>
+                  </>
+                )}
 
                 {renderQuestion()}
               </View>

@@ -113,7 +113,7 @@ const ProfileHome = ({ route, navigation }) => {
       currentUserId,
       "Reflections"
     );
-    const q = query(reflectionsRef, orderBy("date", "asc"));
+    const q = query(reflectionsRef, orderBy("date", "desc"));
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const data = querySnapshot.docs.map((doc) => doc.data());
@@ -193,7 +193,7 @@ const ProfileHome = ({ route, navigation }) => {
   useEffect(() => {
     const currentUserId = auth.currentUser.uid;
     const reflectionsRef = collection(db, "Users", currentUserId, "checkins");
-    const q = query(reflectionsRef, orderBy("date", "asc"));
+    const q = query(reflectionsRef, orderBy("date", "desc"));
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const data = querySnapshot.docs.map((doc) => doc.data());

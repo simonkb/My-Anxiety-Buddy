@@ -41,8 +41,8 @@ const QuoteDisplay = ({ quote, onSave, onClick }) => {
         </TouchableOpacity>
         <View style={styles.bottomContainer}>
           <TouchableOpacity onPress={handleSave} style={styles.likeButton}>
-            <Ionicons name="heart" size={20} color="red" />
-            <Text style={styles.saveText}>Save</Text>
+            <Ionicons name="heart" size={25} color="red" />
+            {/* <Text style={styles.saveText}>Save</Text> */}
           </TouchableOpacity>
           <View style={styles.authorContainer}>
             <Text style={styles.authorText}>- {quote?.author}</Text>
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     elevation: 2, // This property is for Android only
     transform: [{ rotateY: "-10deg" }],
   },
-  
+
   quoteText: {
     fontSize: 20,
     fontStyle: "italic",
@@ -87,13 +87,16 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   likeButton: {
-    flexDirection: "row",
+    //flexDirection: "row",
     alignItems: "center",
-    borderRadius: 20,
+    borderRadius: 10,
     backgroundColor: "white",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    marginRight: 10,
+    // paddingHorizontal: 10,
+    // paddingVertical: 5,
+    //marginRight: 10,
+    padding: 5,
+    width: 35,
+    height: 35,
   },
   saveText: {
     marginLeft: 5,

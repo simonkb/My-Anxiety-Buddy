@@ -96,7 +96,6 @@ const Register = () => {
       alert("Passwords do not match.");
       return false;
     }
-
     // Validate the phone number (optional)
     if (phoneNumber && !/^\d{10}$/.test(phoneNumber)) {
       alert("Please enter a 10-digit phone number.");
