@@ -10,20 +10,12 @@ import {
   Alert,
   Animated,
 } from "react-native";
+import { useFonts } from "expo-font";
 
-import {
-  useGlobalState,
-  bg1,
-  bg2,
-  bg3,
-} from "../../states/state.js";
+import { useGlobalState, bg1, bg2, bg3 } from "../../states/state.js";
 import { useNavigation } from "@react-navigation/native";
 import { auth, db } from "../../config/firebaseConfig.js";
-import {
-  doc,
-  updateDoc,
-
-} from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 const DailyCheckin = (props) => {
   //Updating background
   let defaultBg = useGlobalState("defaultBackgroundImage");
@@ -36,6 +28,7 @@ const DailyCheckin = (props) => {
     currentBg = bg1;
   }
   //
+
   const response = props.response;
   const navigation = useNavigation();
   const [priority, setPriority] = useState(response[0]);
@@ -370,6 +363,7 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingTop: 10,
     fontSize: 14,
+    fontStyle: "italic",
   },
   greenCircleInput: {
     minHeight: 50,

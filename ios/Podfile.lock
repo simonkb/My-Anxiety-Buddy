@@ -479,7 +479,7 @@ PODS:
   - RNScreens (3.15.0):
     - React-Core
     - React-RCTImage
-  - RNSVG (13.12.0):
+  - RNSVG (13.14.0):
     - React-Core
   - TextToSpeech (4.1.0):
     - React
@@ -751,7 +751,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: bad495418bcbd3ab47017a38d93d290ebd406f50
   RNReanimated: 2cf7451318bb9cc430abeec8d67693f9cf4e039c
   RNScreens: 4a1af06327774490d97342c00aee0c2bafb497b7
-  RNSVG: 6d07f8f8f246c85e3e16e0bcfc0d047db0c48496
+  RNSVG: d00c8f91c3cbf6d476451313a18f04d220d4f396
   TextToSpeech: b3aa777ff5585705f179c0a2436bfd0926d1716e
   Yoga: 7a4d48cfb35dfa542151e615fa73c1a0d88caf21
 

@@ -11,6 +11,11 @@ import {
   Button,
   Platform,
 } from "react-native";
+import {
+  CopilotProvider,
+  CopilotStep,
+  walkthroughable,
+} from "react-native-copilot";
 
 import {
   useGlobalState,
@@ -270,6 +275,7 @@ const Chatbot = ({ route, navigation }) => {
     } else {
       greeting = "Good Evening!";
     }
+    const CopilotText = walkthroughable(Text);
 
     return (
       <View style={stylesNew.container}>
@@ -284,7 +290,7 @@ const Chatbot = ({ route, navigation }) => {
             </Text>
           </View>
           <Text
-            style={{ ...stylesNew.appName, color: "#05F593", fontSize: 24 }}
+            style={{ ...stylesNew.appName, color: "green", fontSize: 24 }}
           >
             {greeting}
           </Text>
@@ -317,7 +323,7 @@ const Chatbot = ({ route, navigation }) => {
               <Ionicons
                 name="sunny-outline"
                 size={40}
-                color="#05F593"
+                color="#28a745"
                 //style={stylesNew.icon}
               />
               <Text style={stylesNew.buttonText}>
@@ -326,6 +332,7 @@ const Chatbot = ({ route, navigation }) => {
                   : "Daily \nCheck In"}
               </Text>
             </TouchableOpacity>
+
             <TouchableOpacity
               style={stylesNew.iconContainer}
               onPress={() => {
@@ -335,7 +342,7 @@ const Chatbot = ({ route, navigation }) => {
               <Ionicons
                 name="sad-outline"
                 size={40}
-                color="#05F593"
+                color="#28a745"
                 //style={stylesNew.icon}
               />
               <Text style={stylesNew.buttonText}>Situation{"\n"}Entry</Text>
@@ -353,7 +360,7 @@ const Chatbot = ({ route, navigation }) => {
               <Ionicons
                 name="ios-analytics"
                 size={40}
-                color="#05F593"
+                color="#28a745"
                 //style={stylesNew.icon}
               />
               <Text style={stylesNew.buttonText}>Self{"\n"}Assessment</Text>
@@ -369,7 +376,7 @@ const Chatbot = ({ route, navigation }) => {
               <Ionicons
                 name="ios-heart"
                 size={40}
-                color="#05F593"
+                color="#28a745"
                 //style={stylesNew.icon}
               />
               <Text style={stylesNew.buttonText}>Breathing{"\n"}Guide</Text>
@@ -383,7 +390,7 @@ const Chatbot = ({ route, navigation }) => {
               <MaterialCommunityIcons
                 name="brain"
                 size={40}
-                color="#05F593"
+                color="#28a745"
                 // style={stylesNew.icon}
               />
               <Text style={stylesNew.buttonText}>Cognitive{"\n"}Training</Text>
@@ -572,7 +579,6 @@ const Chatbot = ({ route, navigation }) => {
             }}
           >
             {/* {Platform.OS === "ios" && !Platform.isPad && <ReadData></ReadData>} */}
-
             {/* {Platform.OS === "android" && <ReadDataAndroid></ReadDataAndroid>} */}
           </View>
         )}
@@ -592,8 +598,8 @@ const Chatbot = ({ route, navigation }) => {
           <View
             style={{
               position: "absolute",
-              left: 10,
-              top: 40,
+              left: 0,
+              bottom: 5,
             }}
           >
             <SuccessButton

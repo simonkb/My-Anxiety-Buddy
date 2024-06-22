@@ -80,23 +80,6 @@ const MainStack = () => {
       trigger: { seconds: Math.floor(delay / 1000) },
     });
   };
-
-  // useEffect(() => {
-  //   const getNotificationPermission = async () => {
-  //     if (Platform.OS === "ios") {
-  //       const { status } = await Permissions.askAsync(
-  //         Permissions.NOTIFICATIONS
-  //       );
-  //       if (status !== "granted") {
-  //         // Handle the case when permission is not granted
-  //         return;
-  //       }
-  //     }
-  //   };
-
-  //   getNotificationPermission();
-  // }, []);
-
   useEffect(() => {
     // Request notifications permissions
     async function registerForPushNotifications() {
@@ -114,29 +97,12 @@ const MainStack = () => {
       const selectedHour = 20; // Example: 8:00pm
       const selectedMinute = 0;
 
-      //const heartRateThreshold = 100; // Example threshold
-
       await scheduleDailyNotification(selectedHour, selectedMinute);
       // await scheduleHeartRateNotification(heartRateThreshold);
     };
 
     scheduleNotifications();
   }, []);
-
-  // Function to schedule a heart rate notification
-  // const scheduleHeartRateNotification = async (threshold) => {
-  //   const heartRate = HeartRate.getHeartRate(); // Assuming you have a method to get the current heart rate
-  //   if (heartRate > threshold) {
-  //     await Notifications.scheduleNotificationAsync({
-  //       content: {
-  //         title: "High Heart Rate",
-  //         body: `Your heart rate is above ${threshold}. Take a break and relax.`,
-  //         data: { screen: "HeartRateScreen" }, // Replace "HeartRateScreen" with the actual screen name to navigate to
-  //       },
-  //       trigger: null, // Trigger immediately
-  //     });
-  //   }
-  // };
 
   return (
     <Tab.Navigator

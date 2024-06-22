@@ -125,10 +125,19 @@ const JournalChat = () => {
                 />
               </View>
             ))}
-            <SuccessButton
-              title={"Submit"}
-              onPress={handleResponseSubmit}
-            ></SuccessButton>
+            <View
+              style={{
+                justifyContent: "center",
+                width: 150,
+                alignSelf: "center",
+                marginTop: 10,
+              }}
+            >
+              <SuccessButton
+                title={"Submit"}
+                onPress={handleResponseSubmit}
+              ></SuccessButton>
+            </View>
             <Text
               style={{
                 fontSize: 18,
@@ -186,22 +195,29 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   journalInputContainer: {
-    marginBottom: 0,
-    padding: 20,
-    borderBottomColor: "black",
-    borderBottomWidth: 2,
-    backgroundColor: "white",
+    marginBottom: 5,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    borderBottomColor: "green",
+    borderBottomWidth: 5,
+    backgroundColor: "#f0f3f7",
+    borderRadius: 10,
   },
   inputLabel: {
     fontSize: 18,
-    marginBottom: 10,
+    marginBottom: 5,
+    fontWeight: "bold",
   },
   textInput: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginBottom: 10,
-    padding: 10,
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    fontSize: 14,
+    alignSelf: "center",
+    backgroundColor: "#d2d5d9",
+    width: "95%",
+    minHeight: 40,
+    marginVertical: 5,
+    fontSize: 14,
   },
   responsesContainer: {
     flexGrow: 1,
@@ -214,7 +230,7 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 20,
     backgroundColor: "white",
-    opacity: 0.6,
+    opacity: 0.9,
   },
   dateText: {
     fontSize: 16,

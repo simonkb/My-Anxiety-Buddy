@@ -15,7 +15,6 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 import { useGlobalState, bg1, bg2, bg3 } from "../../states/state.js";
-import firebase from "firebase/app";
 import {
   collection,
   doc,
@@ -193,8 +192,6 @@ const Readings = () => {
         Linking.canOpenURL(url).then((supported) => {
           if (supported) {
             Linking.openURL(url);
-          } else {
-            console.log("Don't know how to open URI: " + url);
           }
         });
         const linksRef = collection(db, "links");
@@ -210,31 +207,13 @@ const Readings = () => {
             style={{
               width: "94%",
               height: "100%",
-              backgroundColor: "rgba(217, 217, 217, 0.53)",
+              backgroundColor: "white",
               left: "3%",
               right: "3%",
               top: 70,
               flex: 1,
             }}
           >
-            <View
-              style={{
-                width: "100%",
-                height: 40,
-                backgroundColor: "green",
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 18,
-                  color: "#FFFFFF",
-                  fontWeight: "400",
-                  padding: 10,
-                }}
-              >
-                Hotlines
-              </Text>
-            </View>
             <FlatList
               data={array}
               renderItem={({ item }) => (
@@ -255,7 +234,7 @@ const Readings = () => {
                     <Text
                       style={{
                         fontSize: 18,
-                        color: "#000000",
+                        color: "blue",
                         fontWeight: "400",
                         padding: 10,
                         width: "90%",
@@ -275,81 +254,13 @@ const Readings = () => {
                         position: "absolute",
                       }}
                     >
-                      <Text style={{ fontSize: 14 }}>{item.viewsCount}</Text>
+                      <Text style={{ fontSize: 16 }}>{item.viewsCount}</Text>
                     </MaterialCommunityIcons>
                   </TouchableOpacity>
                 </View>
               )}
               contentContainerStyle={{ justifyContent: "space-evenly" }}
             />
-            <View
-              style={{
-                width: "100%",
-                height: 40,
-                backgroundColor: "green",
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 18,
-                  color: "#FFFFFF",
-                  fontWeight: "400",
-                  padding: 10,
-                }}
-              >
-                Other links
-              </Text>
-            </View>
-            {/* <View style={{
-              height:array.length*5, flex:1
-            }}> */}
-            <FlatList
-              data={array}
-              renderItem={({ item }) => (
-                <View>
-                  <TouchableOpacity
-                    style={{
-                      width: "100%",
-                      backgroundColor: "rgba(255, 255, 255, 0.31)",
-                      flexDirection: "row",
-                      shadowColor: "rgba(0, 0, 0, 0.25)",
-                      borderBottomColor: "gray",
-                      borderBottomWidth: 2,
-                    }}
-                    onPress={() =>
-                      openLinkInBrowser(item.link, item.id, item.viewsCount)
-                    }
-                  >
-                    <Text
-                      style={{
-                        fontSize: 18,
-                        color: "#000000",
-                        fontWeight: "400",
-                        padding: 10,
-                        width: "90%",
-                      }}
-                    >
-                      {item.description}
-                    </Text>
-
-                    <MaterialCommunityIcons
-                      name="eye"
-                      color={"gray"}
-                      size={18}
-                      style={{
-                        padding: 10,
-                        paddingLeft: 30,
-                        right: 0,
-                        position: "absolute",
-                      }}
-                    >
-                      <Text style={{ fontSize: 14 }}>{item.viewsCount}</Text>
-                    </MaterialCommunityIcons>
-                  </TouchableOpacity>
-                </View>
-              )}
-            />
-            {/* </View> */}
           </View>
         </>
       );
@@ -403,7 +314,7 @@ const Readings = () => {
             style={{
               width: "94%",
               height: "100%",
-              backgroundColor: "rgba(217, 217, 217, 0.53)",
+              backgroundColor: "white",
               left: "3%",
               right: "3%",
               top: 70,
@@ -494,22 +405,21 @@ const Readings = () => {
                     >
                       {item.content}
                     </Text> */}
-                    {/* <MarkdownDisplay>
-                      {
-                        "# My Markdown Title \n\nThis is some **bold** and _italic_ text.\n\n- First list item\n- Second list item\n\nThis line will be on a new line, but part of the same paragraph.\n\nThis line will be on a new line and a new paragraph."
-                      }
-                    </MarkdownDisplay> */}
-                    {/* <MarkdownDisplay mergeStyle={true}>
-                      {item.content}
-                    </MarkdownDisplay> */}
+
                     <ReadingContent
                       listOfObjects={item.content}
                     ></ReadingContent>
                   </View>
                 )}
+              
               </View>
             )}
           />
+            <View
+                  style={{
+                    paddingBottom: 75,
+                  }}
+                ></View>
         </>
       );
     }

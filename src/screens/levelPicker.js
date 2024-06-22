@@ -67,11 +67,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   levelButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 16,
+    paddingHorizontal: 10,
+    borderRadius: 10,
     backgroundColor: "#eee",
     marginHorizontal: 8,
+    justifyContent:'center'
   },
   selectedLevelButton: {
     backgroundColor: "green",
