@@ -75,3 +75,5 @@ dist/
 # @end expo-cli
 # Ignore Gradle build output directory
 build
+.expo-shared
+.vscode
