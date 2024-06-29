@@ -40,6 +40,8 @@ allprojects {
     configurations.all {
         resolutionStrategy {
             force "com.facebook.react:react-native:" + REACT_NATIVE_VERSION
+            force "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+            force "androidx.lifecycle:lifecycle-viewmodel:2.5.1"
         }
     }
 
