@@ -4,44 +4,65 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
   View,
-  Button,
-  ScrollView,
+  Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { KeyboardAwareView } from "react-native-keyboard-aware-view";
-import { StaticImage } from "../../classes/StaticImages";
+import { useGlobalState, bg1, bg2, bg3 } from "../../states/state";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "../../config/firebaseConfig";
+import { SuccessButton } from "../../buttons";
 
 const ForgetPassword = () => {
-  const [phoneNumber, onChangeNumber] = React.useState(null);
+  //Updating background
+  let defaultBg = useGlobalState("defaultBackgroundImage");
+  let currentBg;
+  if (defaultBg[0] === "bgOrange") {
+    currentBg = bg3;
+  } else if (defaultBg[0] === "bgBlue") {
+    currentBg = bg2;
+  } else {
+    currentBg = bg1;
+  }
+  //
+  const [email, onChangeNumber] = React.useState(null);
   const navigator = useNavigation();
   const onSendPressed = () => {
-    navigator.navigate("ConfirmOTP");
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        Alert.alert(
+          "Message",
+          "Password reset email has been sent to your email address"
+        );
+        navigator.navigate("Login");
+      })
+      .catch((error) => {
+        Alert.alert(error.code, error.message);
+      });
   };
-  return (
+return (
     <View style={styles.container}>
       <ImageBackground
-        source={StaticImage.currentBackgroundImage}
+        source={currentBg}
         resizeMode="cover"
         style={styles.bgImage}
       >
         <Text style={styles.title}>
-          Enter your phone number/email, we will send you OTP to verify.
+          Enter your email, to reset your password.
         </Text>
+
         <View style={styles.signInRectangle}>
           <TextInput
             style={styles.input}
             onChangeText={onChangeNumber}
-            value={phoneNumber}
-            placeholder="Phone number or email"
+            value={email}
+            placeholder="email"
             autoCorrect={false}
+            autoCapitalize={false}
+            keyboardType="email-address"
           />
         </View>
-
-        <TouchableOpacity style={styles.button} onPress={onSendPressed}>
-          <Text style={styles.buttonText}>Send</Text>
-        </TouchableOpacity>
+        <SuccessButton onPress={onSendPressed} title={"Send"}></SuccessButton>
       </ImageBackground>
     </View>
   );
@@ -49,53 +70,41 @@ const ForgetPassword = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
   },
   bgImage: {
     flex: 1,
-    justifyContent: "center",
+    alignItems: "center",
   },
+
   signInRectangle: {
-    justifyContent: "center",
-    alignSelf: "center",
     width: "80%",
-    height: "10%",
-    borderRadius: 10,
-    backgroundColor: "rgba(255, 255, 255, 255)",
-    opacity: 0.9,
-    marginTop: 10,
-    shadowOpacity: 0.05,
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    padding: 20,
+    alignItems: "center",
+    margin: 15,
   },
+
   title: {
     textAlign: "center",
-    color: "rgba(85,82,82,1)",
-    fontSize: 18,
-    width: 300,
-    alignSelf: "center",
-  },
-  button: {
-    width: 165,
-    height: 45,
-    alignSelf: "center",
-    backgroundColor: "rgba(142,94,181,1)",
-    borderRadius: 15,
-    margin: 20,
-    padding: 8,
-  },
-  buttonText: {
+    //color: "rgba(85,82,82,1)",
     color: "white",
+    fontSize: 20,
+    width: "80%",
     alignSelf: "center",
-    fontSize: 18,
+    marginTop: "40%",
+    marginBottom: 10,
   },
+
   input: {
-    height: "50%",
-    margin: 5,
-    borderWidth: 0.5,
-    paddingLeft: 10,
+    width: "100%",
+    height: 40,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: "#ccc",
     borderRadius: 10,
-    borderColor: "darkgrey",
-    backgroundColor: "white",
-    fontSize: 18,
+    paddingLeft: 10,
+    paddingRight: 10,
   },
 });
 export default ForgetPassword;

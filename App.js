@@ -1,13 +1,38 @@
 import React from "react";
-import HomeStack from "./src/routes/homeStack";
-import { NavigationContainer } from "@react-navigation/native";
+import { useState } from "react";
+import { GlobalStateContext } from "./src/states/GlobalState";
+import Navigation from "./src/routes/routes.js";
+import * as Speech from "expo-speech";
+import { CopilotProvider, CopilotStep } from "react-native-copilot";
+import { Text } from "react-native";
+if (__DEV__) {
+  const ignoreWarns = [
+    "VirtualizedLists should never be nested inside plain ScrollViews",
+  ];
 
-const App = () => {
+  const errorWarn = global.console.error;
+  global.console.error = (...arg) => {
+    for (const error of ignoreWarns) {
+      if (arg[0].startsWith(error)) {
+        return;
+      }
+    }
+    errorWarn(...arg);
+  };
+}
+
+const App = (navigation) => {
+  const [globalState, setGlobalStateNew] = useState({
+    speakEnabled: false,
+    Speech: Speech,
+  });
+
   return (
-    <NavigationContainer independent={true}>
-      <HomeStack />
-    </NavigationContainer>
+    <GlobalStateContext.Provider value={{ globalState, setGlobalStateNew }}>
+      <CopilotProvider>
+        <Navigation></Navigation>
+      </CopilotProvider>
+    </GlobalStateContext.Provider>
   );
 };
-
 export default App;
