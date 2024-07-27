@@ -38,6 +38,7 @@ import {
   query,
 } from "firebase/firestore";
 import { SuccessButton } from "../../buttons";
+import { useTranslation } from "react-i18next";
 
 const Login = () => {
   //Updating background
@@ -55,7 +56,7 @@ const Login = () => {
   const [email, setEmail] = React.useState(null);
   const [password, setPassword] = React.useState(null);
   const onSignUpPressed = () => {
-    navigator.navigate("Register");
+    navigator.navigate(t("register"));
   };
   var tester =
     /^[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
@@ -147,7 +148,7 @@ const Login = () => {
         });
   };
   const onForgetPassPressed = () => {
-    navigator.navigate("Forget Password");
+    navigator.navigate(t("forgetPassword"));
   };
   const quotesDefault = [
     {
@@ -223,6 +224,7 @@ const Login = () => {
       });
   }, []);
   const [index, setIndex] = useState(Math.floor(Math.random() * quotes.length));
+  const {t} = useTranslation();
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -234,7 +236,7 @@ const Login = () => {
         style={styles.bgImage}
       >
         <View style={styles.header}>
-          <Text style={styles.title}>Welcome to AnxietyBuddy</Text>
+          <Text style={styles.title}>{t("welcomeToAnxietyBuddy")}</Text>
           <Image
             source={require("../../../assets/icon_copy.png")}
             style={styles.icon}
@@ -251,7 +253,7 @@ const Login = () => {
             style={styles.input}
             onChangeText={setEmail}
             value={email}
-            placeholder="Email"
+            placeholder={t('email')}
             keyboardType="email-address"
             autoCorrect={false}
             autoCapitalize="none"
@@ -260,7 +262,7 @@ const Login = () => {
             style={styles.input}
             onChangeText={setPassword}
             value={password}
-            placeholder="Password"
+            placeholder={t("password")}
             secureTextEntry={true}
             autoCorrect={false}
           />
@@ -268,13 +270,13 @@ const Login = () => {
             style={styles.forgetPass}
             onPress={onForgetPassPressed}
           >
-            <Text style={{ color: "#2962FF" }}>Forget password?</Text>
+            <Text style={{ color: "#2962FF" }}>{t('forgetPassword')}</Text>
           </TouchableOpacity>
         </View>
-        <SuccessButton onPress={onLoginPressed} title={"Login"}></SuccessButton>
-        <Text style={styles.signUpText}>Don't have an account?</Text>
+        <SuccessButton onPress={onLoginPressed} title={t("login")}></SuccessButton>
+        <Text style={styles.signUpText}>{t('dontHaveAccount')}</Text>
         <SuccessButton
-          title={"Sign up"}
+          title={t('signUp')}
           onPress={onSignUpPressed}
         ></SuccessButton>
       </ImageBackground>

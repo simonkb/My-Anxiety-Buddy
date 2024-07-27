@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { View, ScrollView, Text } from "react-native";
 import { Svg, Rect, Text as T } from "react-native-svg";
 
@@ -25,6 +26,7 @@ const BarGraph = ({ data }) => {
     { color: "#DED511", label: "Moderate anxiety" },
     { color: "red", label: "Severe anxiety" },
   ];
+  const {t} = useTranslation();
   const LegendItem = ({ color, label }) => {
     return (
       <View style={{ width: "100%", flexDirection: "row" }}>
@@ -100,7 +102,7 @@ const BarGraph = ({ data }) => {
             <LegendItem
               key={index}
               color={legendItem.color}
-              label={legendItem.label}
+              label={t(legendItem.label)}
             />
           ))}
         </View>

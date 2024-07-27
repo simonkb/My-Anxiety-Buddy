@@ -47,6 +47,7 @@ import ReflectionComponent from "./ReflectionComponent";
 import { Ionicons } from "@expo/vector-icons";
 import QuoteDisplay from "./QuotesDisplay";
 import { SuccessButton } from "../buttons.js";
+import { useTranslation } from "react-i18next";
 
 const Chat = (props) => {
   const { globalState, setGlobalStateNew } = useContext(GlobalStateContext);
@@ -146,6 +147,7 @@ const ReadOutLoudButton = () => {
 };
 
 const Chatbot = ({ route, navigation }) => {
+  const { t } = useTranslation();
   let defaultBg = useGlobalState("defaultBackgroundImage");
   let currentBg;
   if (defaultBg[0] === "bgOrange") {
@@ -171,12 +173,12 @@ const Chatbot = ({ route, navigation }) => {
         chatType: "breathing",
       });
     } else if (selectedOption === "I want to read more about anxiety") {
-      navigation.navigate("Treatment", {
-        screen: "Readings",
+      navigation.navigate(t("treatment"), {
+        screen: t("readings"),
       });
     } else if (selectedOption === "I want to do my journal of today") {
-      navigation.navigate("Treatment", {
-        screen: "Journals",
+      navigation.navigate(t("treatment"), {
+        screen: t("journals"),
       });
     } else {
       if (question === "Done with GAD7") {
@@ -269,11 +271,11 @@ const Chatbot = ({ route, navigation }) => {
     const currentTime = new Date().getHours();
     let greeting = "";
     if (currentTime >= 5 && currentTime < 12) {
-      greeting = "Good Morning!";
+      greeting = t("goodMorning");
     } else if (currentTime >= 12 && currentTime < 18) {
-      greeting = "Good Afternoon!";
+      greeting = t("goodAfternoon");
     } else {
-      greeting = "Good Evening!";
+      greeting = t("goodEvening");
     }
     const CopilotText = walkthroughable(Text);
 
@@ -286,12 +288,10 @@ const Chatbot = ({ route, navigation }) => {
               style={stylesNew.logo}
             /> */}
             <Text style={{ ...stylesNew.appName, fontSize: 40 }}>
-              AnxietyBuddy
+              {t("anxietyBuddy")}
             </Text>
           </View>
-          <Text
-            style={{ ...stylesNew.appName, color: "green", fontSize: 24 }}
-          >
+          <Text style={{ ...stylesNew.appName, color: "green", fontSize: 24 }}>
             {greeting}
           </Text>
         </View>
@@ -317,7 +317,7 @@ const Chatbot = ({ route, navigation }) => {
             <TouchableOpacity
               style={stylesNew.iconContainer}
               onPress={() => {
-                navigation.navigate("Check In");
+                navigation.navigate(t("checkIn"));
               }}
             >
               <Ionicons
@@ -326,17 +326,13 @@ const Chatbot = ({ route, navigation }) => {
                 color="#28a745"
                 //style={stylesNew.icon}
               />
-              <Text style={stylesNew.buttonText}>
-                {greeting === "Good Morning!"
-                  ? "Morning\nCheck In"
-                  : "Daily \nCheck In"}
-              </Text>
+              <Text style={stylesNew.buttonText}>{t("dailyCheckIn")}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={stylesNew.iconContainer}
               onPress={() => {
-                navigation.navigate("Situation Entry");
+                navigation.navigate(t("situationEntryRoute"));
               }}
             >
               <Ionicons
@@ -345,7 +341,7 @@ const Chatbot = ({ route, navigation }) => {
                 color="#28a745"
                 //style={stylesNew.icon}
               />
-              <Text style={stylesNew.buttonText}>Situation{"\n"}Entry</Text>
+              <Text style={stylesNew.buttonText}>{t("situationEntry")}</Text>
             </TouchableOpacity>
           </View>
           <View style={stylesNew.iconsContainer}>
@@ -363,7 +359,7 @@ const Chatbot = ({ route, navigation }) => {
                 color="#28a745"
                 //style={stylesNew.icon}
               />
-              <Text style={stylesNew.buttonText}>Self{"\n"}Assessment</Text>
+              <Text style={stylesNew.buttonText}>{t("selfAssessment")}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={stylesNew.iconContainer}
@@ -379,11 +375,11 @@ const Chatbot = ({ route, navigation }) => {
                 color="#28a745"
                 //style={stylesNew.icon}
               />
-              <Text style={stylesNew.buttonText}>Breathing{"\n"}Guide</Text>
+              <Text style={stylesNew.buttonText}>{t("breathingGuide")}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("Cognitive Training");
+                navigation.navigate(t("cognitiveTrainingRoute"));
               }}
               style={stylesNew.iconContainer}
             >
@@ -393,22 +389,8 @@ const Chatbot = ({ route, navigation }) => {
                 color="#28a745"
                 // style={stylesNew.icon}
               />
-              <Text style={stylesNew.buttonText}>Cognitive{"\n"}Training</Text>
+              <Text style={stylesNew.buttonText}>{t("cognitiveTraining")}</Text>
             </TouchableOpacity>
-            {/* <TouchableOpacity
-              style={stylesNew.iconContainer}
-              onPress={() => {
-                navigation.navigate("Journaling");
-              }}
-            >
-              <Ionicons
-                name="ios-journal"
-                size={30}
-                color="green"
-                style={stylesNew.icon}
-              />
-              <Text style={{ textAlign: "center" }}>Daily{"\n"}Journaling</Text>
-            </TouchableOpacity> */}
           </View>
         </View>
       </View>

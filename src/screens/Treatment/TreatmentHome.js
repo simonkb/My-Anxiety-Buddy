@@ -33,10 +33,10 @@ const TreatmentHome = (route, navigation) => {
   //
   const navigator = useNavigation();
   const onShortReadingsPressed = () => {
-    navigator.navigate("Readings");
+    navigator.navigate(t("readings"));
   };
   const onJournalingPressed = () => {
-    navigator.navigate("Journals");
+    navigator.navigate(t("journals"));
   };
   const onBreathingPressed = () => {
     navigator.navigate("Main", {

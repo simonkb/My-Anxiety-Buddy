@@ -16,6 +16,7 @@ import { useGlobalState, bg1, bg2, bg3 } from "../../states/state.js";
 import { useNavigation } from "@react-navigation/native";
 import { auth, db } from "../../config/firebaseConfig.js";
 import { doc, updateDoc } from "firebase/firestore";
+import { useTranslation } from "react-i18next";
 const DailyCheckin = (props) => {
   //Updating background
   let defaultBg = useGlobalState("defaultBackgroundImage");
@@ -72,7 +73,7 @@ const DailyCheckin = (props) => {
         console.log(error);
       });
 
-    navigation.navigate("Home");
+    navigation.navigate(t("home"));
   };
   const currentTime = new Date().getHours();
   let greeting = "";
@@ -133,7 +134,7 @@ const DailyCheckin = (props) => {
       }),
     ]).start();
   }, [animationValues]);
-
+  const {t} = useTranslation();
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -164,12 +165,12 @@ const DailyCheckin = (props) => {
             ],
           }}
         >
-          <Text style={styles.prompt}>Today my number one priority is</Text>
+          <Text style={styles.prompt}>{t("Today my number one priority is")}</Text>
           <TextInput
             style={styles.input}
             value={priority}
             onChangeText={setPriority}
-            placeholder="Enter your priority"
+            placeholder={t("Enter your priority")}
             multiline
           />
         </Animated.View>
@@ -191,13 +192,13 @@ const DailyCheckin = (props) => {
         >
           <View style={{ width: 190 }}>
             <Text style={{ ...styles.prompt }}>
-              An unhelpful thought I have today is
+             {t("An unhelpful thought I have today is")}
             </Text>
             <TextInput
               style={{ ...styles.input }}
               value={unhelpfulThought}
               onChangeText={setUnhelpfulThought}
-              placeholder="Enter your thought"
+              placeholder={t("Enter your thought")}
               multiline
             />
           </View>
@@ -237,27 +238,27 @@ const DailyCheckin = (props) => {
             ],
           }}
         >
-          <Text style={styles.prompt}>To challenge my thoughts</Text>
+          <Text style={styles.prompt}>{t("To challenge my thoughts")}</Text>
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
             <View>
-              <Text style={styles.subPrompt}>I will do more of</Text>
+              <Text style={styles.subPrompt}>{t("I will do more of")}</Text>
               <TextInput
                 style={styles.greenCircleInput}
                 value={challengeMore}
                 onChangeText={setChallengeMore}
-                placeholder="Enter your plan"
+                placeholder={t("Enter your plan")}
                 multiline
               />
             </View>
             <View>
-              <Text style={styles.subPrompt}>I will do less of</Text>
+              <Text style={styles.subPrompt}>{t("I will do less of")}</Text>
               <TextInput
                 style={styles.redCircleInput}
                 value={challengeLess}
                 onChangeText={setChallengeLess}
-                placeholder="Enter your plan"
+                placeholder={t("Enter your plan")}
                 multiline
               />
             </View>
@@ -278,12 +279,12 @@ const DailyCheckin = (props) => {
             ],
           }}
         >
-          <Text style={styles.prompt}>My mission today is to</Text>
+          <Text style={styles.prompt}>{t("My mission today is to")}</Text>
           <TextInput
             style={styles.input}
             value={mission}
             onChangeText={setMission}
-            placeholder="Enter your mission"
+            placeholder={t("Enter your mission")}
             multiline
           />
         </Animated.View>
@@ -296,7 +297,7 @@ const DailyCheckin = (props) => {
           }}
         >
           <TouchableOpacity style={styles.doneButton} onPress={handleDone}>
-            <Text style={styles.buttonText}>Update</Text>
+            <Text style={styles.buttonText}>{t("Update")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.skipButton}
@@ -304,7 +305,7 @@ const DailyCheckin = (props) => {
               navigation.goBack();
             }}
           >
-            <Text style={styles.buttonText}>Done</Text>
+            <Text style={styles.buttonText}>{t("Done")}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
