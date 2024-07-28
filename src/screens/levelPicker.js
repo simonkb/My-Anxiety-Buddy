@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   ScrollView,
   TouchableOpacity,
@@ -34,7 +35,7 @@ const LevelPicker = ({ selectedLevel, onLevelSelected }) => {
       scrollViewRef.scrollToEnd();
     }
   };
-
+  const {t} = useTranslation();
   return (
     <View style={styles.container}>
       {LEVELS.map((level) => (
@@ -52,7 +53,7 @@ const LevelPicker = ({ selectedLevel, onLevelSelected }) => {
               level.value === selectedLevel ? styles.selectedLevelText : null,
             ]}
           >
-            {level.label}
+            {t(level.label)}
           </Text>
         </TouchableOpacity>
       ))}

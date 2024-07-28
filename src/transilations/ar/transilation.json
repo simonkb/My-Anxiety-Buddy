@@ -113,7 +113,24 @@
   "Enter your response": "أدخل ردك",
   "Situation Entry": "إدخال الحالة",
   "This simple situation entry will help you see how any situation is connected by your thoughts, mood, and behavior": "سيساعدك إدخال الحالة البسيط هذا في رؤية كيف ترتبط أي حالة بأفكارك ومزاجك وسلوكك.",
-  "Summarizing your response and generating suggestions...": "جاري تلخيص ردك وتوليد الاقتراحات..."
-
+  "Summarizing your response and generating suggestions...": "جاري تلخيص ردك وتوليد الاقتراحات...",
+  "Journals": "اليوميات",
+  "Easy": "سهل",
+  "Medium": "متوسط",
+  "Hard": "صعب",
+  "Stop": "توقف",
+  "Start": "ابدأ",
+  "Oops! An error occurred while loading the video.": "عذرًا! حدث خطأ أثناء تحميل الفيديو.",
+  "Breath Count:": "عدد الأنفاس:",
+  "How did you feel before starting the breathing exercise?": "كيف كنت تشعر قبل بدء تمرين التنفس؟",
+  "How did you feel before starting the brain exercise?": "كيف كنت تشعر قبل بدء تمرين العقل؟",
+  "What thoughts or feelings came up during the exercise?": "ما هي الأفكار أو المشاعر التي ظهرت أثناء التمرين؟",
+  "How do you feel now that you've completed the exercise?": "كيف تشعر الآن بعد أن أكملت التمرين؟",
+  "Please reflect on all the questions.": "يرجى التفكير في جميع الأسئلة.",
+  "Reflect on your breathing exercise": "فكر في تمرين التنفس الخاص بك",
+  "Reflect on your brain exercise": "فكر في تمرين العقل الخاص بك",
+  "Submitting...": "جاري الإرسال...",
+  "Success": "نجاح",
+  "Good job, you have completed 10 cycles of breathing.": "عمل جيد، لقد أكملت 10 دورات من التنفس."
   }
   

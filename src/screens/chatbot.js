@@ -178,7 +178,7 @@ const Chatbot = ({ route, navigation }) => {
       });
     } else if (selectedOption === "I want to do my journal of today") {
       navigation.navigate(t("treatment"), {
-        screen: t("journals"),
+        screen: t("Journals"),
       });
     } else {
       if (question === "Done with GAD7") {
@@ -585,7 +585,7 @@ const Chatbot = ({ route, navigation }) => {
             }}
           >
             <SuccessButton
-              title={"Back"}
+              title={t("back")}
               onPress={() => {
                 navigation.setParams({
                   chatType: "default",

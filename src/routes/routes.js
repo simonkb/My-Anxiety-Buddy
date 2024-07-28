@@ -208,7 +208,7 @@ const TreatmentStack = () => {
       />
       <Stack.Screen
         options={{ headerShown: true, gestureEnabled: true }}
-        name={t("journals")}
+        name={t("Journals")}
         component={JournalChat}
       />
     </Stack.Navigator>

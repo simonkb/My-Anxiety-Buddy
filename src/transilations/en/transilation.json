@@ -115,17 +115,25 @@
 "Enter your response":"Enter your response",
 "Situation Entry":"Situation Entry",
 "This simple situation entry will help you see how any situation is connected by your thoughts, mood, and behavior":"This simple situation entry will help you see how any situation is connected by your thoughts, mood, and behavior",
-"Summarizing your response and generating suggestions...":"Summarizing your response and generating suggestions..."
+"Summarizing your response and generating suggestions...":"Summarizing your response and generating suggestions...",
+"Journals":"Journals",
+"Easy":"Easy",
+"Medium":"Medium",
+"Hard":"Hard",
+"Stop":"Stop",
+"Start":"Start",
+"Oops! An error occurred while loading the video.":"Oops! An error occurred while loading the video.",
+"Breath Count":"Breath Count:",
+"How did you feel before starting the breathing exercise?":"How did you feel before starting the breathing exercise?",
+ "How did you feel before starting the brain exercise?":"How did you feel before starting the brain exercise?",
+"What thoughts or feelings came up during the exercise?": "What thoughts or feelings came up during the exercise?",
+ "How do you feel now that you've completed the exercise?":"How do you feel now that you've completed the exercise?",
+ "Please reflect on all the questions.":"Please reflect on all the questions.",
+ "Reflect on your breathing exercise":"Reflect on your breathing exercise",
+ "Reflect on your brain exercise":"Reflect on your brain exercise",
+"Submitting...":"Submitting...",
+"Success":"Success",
+"Good job, you have completed 10 cycles of breathing.": "Good job, you have completed 10 cycles of breathing."
 
-
-
-
-
-
-
-
-
-
-
-  }
+ }
   

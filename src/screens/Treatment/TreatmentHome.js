@@ -36,7 +36,7 @@ const TreatmentHome = (route, navigation) => {
     navigator.navigate(t("readings"));
   };
   const onJournalingPressed = () => {
-    navigator.navigate(t("journals"));
+    navigator.navigate(t("Journals"));
   };
   const onBreathingPressed = () => {
     navigator.navigate("Main", {
