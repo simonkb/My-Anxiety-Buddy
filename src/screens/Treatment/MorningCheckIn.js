@@ -12,12 +12,8 @@ import {
 import { useGlobalState, bg1, bg2, bg3 } from "../../states/state.js";
 import DailyCheckin from "./DailyCheckin.js";
 import { auth, db } from "../../config/firebaseConfig.js";
-import {
-  doc,
-  setDoc,
-  getDoc,
-
-} from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { useTranslation } from "react-i18next";
 
 const MorningCheckInScreen = () => {
   //Updating background
@@ -113,7 +109,7 @@ const MorningCheckInScreen = () => {
 
     fetchData(); // Call the async function here
   }, []);
-
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -127,11 +123,7 @@ const MorningCheckInScreen = () => {
               <View style={styles.card}>
                 {questionIndex === 0 && (
                   <>
-                    <Text style={styles.title}>
-                      {greeting === "Good Morning!"
-                        ? "Morning Check In"
-                        : "Daily Check In"}
-                    </Text>
+                    <Text style={styles.title}>{t("dailyCheckIn")}</Text>
                     <Text
                       style={{
                         color: "gray",
@@ -142,13 +134,16 @@ const MorningCheckInScreen = () => {
                       {new Date().toDateString()}
                     </Text>
                     <Text style={styles.message}>
-                      Start the day by checking in with yourself and connecting
-                      your thoughts.
+                      {t(
+                        "Start the day by checking in with yourself and connecting your thoughts."
+                      )}
                     </Text>
                   </>
                 )}
 
-                <Text style={styles.question}>{questions[questionIndex]}</Text>
+                <Text style={styles.question}>
+                  {t(questions[questionIndex])}
+                </Text>
                 <TextInput
                   style={{
                     backgroundColor: "#d2d5d9",
@@ -176,8 +171,8 @@ const MorningCheckInScreen = () => {
                 >
                   <Text style={styles.buttonText}>
                     {questionIndex === questions.length - 1
-                      ? "Done"
-                      : "Continue"}
+                      ? t("Done")
+                      : t("Continue")}
                   </Text>
                 </TouchableOpacity>
               </View>

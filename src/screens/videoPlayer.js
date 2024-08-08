@@ -5,6 +5,7 @@ import LevelPicker from "./levelPicker";
 import Loading from "../loading";
 import ReflectionComponent from "./ReflectionComponent";
 import { SuccessButton } from "../buttons";
+import { useTranslation } from "react-i18next";
 
 export default function VideoPlayer({ videoFilename }) {
   const [videoRef, setVideoRef] = useState(null);
@@ -72,8 +73,8 @@ export default function VideoPlayer({ videoFilename }) {
   };
   if (loopCount === 10) {
     Alert.alert(
-      "Success",
-      "Good job, you have completed 10 cycles of breathing."
+      t("Success"),
+      t("Good job, you have completed 10 cycles of breathing.")
     );
     videoRef.pauseAsync();
     setIsPlaying(false);
@@ -81,6 +82,7 @@ export default function VideoPlayer({ videoFilename }) {
     setDisplayReflection(true);
     setLoopCount(0);
   }
+  const { t } = useTranslation();
   return (
     <View
       style={{
@@ -109,7 +111,7 @@ export default function VideoPlayer({ videoFilename }) {
       >
         {!isVideoReady && <Loading />}
         {isError && (
-          <Text>Oops! An error occurred while loading the video.</Text>
+          <Text>{t("Oops! An error occurred while loading the video.")}</Text>
         )}
 
         <Video
@@ -133,7 +135,7 @@ export default function VideoPlayer({ videoFilename }) {
       </View>
 
       <SuccessButton
-        title={isPlaying ? "Stop" : "Start"}
+        title={t(isPlaying ? "Stop" : "Start")}
         onPress={handlePlayPause}
       ></SuccessButton>
 
@@ -149,7 +151,7 @@ export default function VideoPlayer({ videoFilename }) {
         <Text
           style={{ color: "white", fontWeight: "bold", alignSelf: "center" }}
         >
-          Breath Count: {loopCount}
+          {t("Breath Count:")} {loopCount}
         </Text>
       </View>
 

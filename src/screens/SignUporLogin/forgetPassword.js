@@ -12,6 +12,7 @@ import { useGlobalState, bg1, bg2, bg3 } from "../../states/state";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../config/firebaseConfig";
 import { SuccessButton } from "../../buttons";
+import { useTranslation } from "react-i18next";
 
 const ForgetPassword = () => {
   //Updating background
@@ -34,12 +35,13 @@ const ForgetPassword = () => {
           "Message",
           "Password reset email has been sent to your email address"
         );
-        navigator.navigate("Login");
+        navigator.navigate(t("login"));
       })
       .catch((error) => {
         Alert.alert(error.code, error.message);
       });
   };
+  const {t} = useTranslation();
 return (
     <View style={styles.container}>
       <ImageBackground
@@ -48,7 +50,7 @@ return (
         style={styles.bgImage}
       >
         <Text style={styles.title}>
-          Enter your email, to reset your password.
+          {t("enterYourEmailToReset")}
         </Text>
 
         <View style={styles.signInRectangle}>
@@ -56,13 +58,13 @@ return (
             style={styles.input}
             onChangeText={onChangeNumber}
             value={email}
-            placeholder="email"
+            placeholder={t("email")}
             autoCorrect={false}
             autoCapitalize={false}
             keyboardType="email-address"
           />
         </View>
-        <SuccessButton onPress={onSendPressed} title={"Send"}></SuccessButton>
+        <SuccessButton onPress={onSendPressed} title={t("send")}></SuccessButton>
       </ImageBackground>
     </View>
   );

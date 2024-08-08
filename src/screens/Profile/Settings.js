@@ -24,8 +24,11 @@ import {
 } from "../../states/state.js";
 import { useRoute } from "@react-navigation/native";
 import { CancelButton, SuccessButton } from "../../buttons";
+import LanguageSelector from "../languageSelector";
+import { useTranslation } from "react-i18next";
 
 const Settings = (navigation) => {
+  const { t } = useTranslation();
   let [value, setValue] = useState("all");
   let defaultBg = useGlobalState("defaultBackgroundImage");
   let currentBg;
@@ -39,7 +42,7 @@ const Settings = (navigation) => {
   let [bgImageUri, setbgImageUri] = useState(currentBg);
   const navigator = useNavigation();
   const onEditProfilePressed = () => {
-    navigator.navigate("Edit Profile");
+    navigator.navigate(t("editProfile"));
   };
   const onSavePressed = () => setValue((value = "all"));
   const onCancelPressed = () => setValue((value = "all"));
@@ -50,12 +53,15 @@ const Settings = (navigation) => {
         <View>
           <TouchableOpacity style={styles.rowStyle}>
             <MaterialCommunityIcons name="security" size={20}>
-              <Text> Authentication</Text>
+              <Text> {t("authentication")}</Text>
             </MaterialCommunityIcons>
           </TouchableOpacity>
 
-          <Button title="Save" onPress={() => onSavePressed()}></Button>
-          <Button title="Cancel" onPress={() => onCancelPressed()}></Button>
+          <Button title={t("save")} onPress={() => onSavePressed()}></Button>
+          <Button
+            title={t("cancel")}
+            onPress={() => onCancelPressed()}
+          ></Button>
         </View>
       );
     } else if (value === "changeBackground") {
@@ -73,7 +79,7 @@ const Settings = (navigation) => {
         <View>
           <TouchableOpacity style={styles.rowStyle}>
             <MaterialCommunityIcons name="image" size={20}>
-              <Text> Change Background</Text>
+              <Text> {t("changeBackground")}</Text>
             </MaterialCommunityIcons>
           </TouchableOpacity>
           <ScrollView horizontal={true}>
@@ -95,13 +101,14 @@ const Settings = (navigation) => {
             }}
           >
             <SuccessButton
-              title={"Save"}
+              title={t("save")}
               onPress={() => onDonePressed()}
             ></SuccessButton>
             <CancelButton
-              title={"Cancel"}
+              title={t("cancel")}
               onPress={() => {
                 setbgImageUri(bg3);
+                onCancelPressed();
               }}
             ></CancelButton>
           </View>
@@ -112,11 +119,12 @@ const Settings = (navigation) => {
         <View>
           <TouchableOpacity style={styles.rowStyle}>
             <MaterialCommunityIcons name="globe-model" size={20}>
-              <Text> Change language</Text>
+              <Text>{t("changeLanguage")}</Text>
             </MaterialCommunityIcons>
           </TouchableOpacity>
-          <Button title="Save" onPress={() => onSavePressed()}></Button>
-          <Button title="Cancel" onPress={() => onCancelPressed()}></Button>
+          <LanguageSelector></LanguageSelector>
+
+          <Button title={t("back")} onPress={() => onCancelPressed()}></Button>
         </View>
       );
     } else if (value === "privacy") {
@@ -124,11 +132,14 @@ const Settings = (navigation) => {
         <View>
           <TouchableOpacity style={styles.rowStyle}>
             <MaterialCommunityIcons name="security" size={20}>
-              <Text> Privacy</Text>
+              <Text>{t("privacy")}</Text>
             </MaterialCommunityIcons>
           </TouchableOpacity>
-          <Button title="Save" onPress={() => onSavePressed()}></Button>
-          <Button title="Cancel" onPress={() => onCancelPressed()}></Button>
+          <Button title={t("save")} onPress={() => onSavePressed()}></Button>
+          <Button
+            title={t("cancel")}
+            onPress={() => onCancelPressed()}
+          ></Button>
         </View>
       );
     } else {
@@ -139,7 +150,7 @@ const Settings = (navigation) => {
             onPress={() => setValue((value = "changeBackground"))}
           >
             <MaterialCommunityIcons name="image" size={20}>
-              <Text> Change Background</Text>
+              <Text> {t("changeBackground")}</Text>
             </MaterialCommunityIcons>
           </TouchableOpacity>
           <TouchableOpacity
@@ -147,16 +158,16 @@ const Settings = (navigation) => {
             // onPress={() => setValue((value = "authentication"))}
           >
             <MaterialCommunityIcons name="security" size={20}>
-              <Text> Authentication</Text>
+              <Text> {t("authentication")}</Text>
             </MaterialCommunityIcons>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.rowStyle}
-            // onPress={() => setValue((value = "changeLanguage"))}
+            onPress={() => setValue((value = "changeLanguage"))}
           >
             <MaterialCommunityIcons name="globe-model" size={20}>
-              <Text> Change language</Text>
+              <Text> {t("changeLanguage")}</Text>
             </MaterialCommunityIcons>
           </TouchableOpacity>
           <TouchableOpacity
@@ -164,7 +175,7 @@ const Settings = (navigation) => {
             // onPress={() => setValue((value = "privacy"))}
           >
             <MaterialCommunityIcons name="security" size={20}>
-              <Text> Privacy</Text>
+              <Text> {t("privacy")}</Text>
             </MaterialCommunityIcons>
           </TouchableOpacity>
           <View
@@ -186,7 +197,7 @@ const Settings = (navigation) => {
               }}
             >
               <CancelButton
-                title={"Logout"}
+                title={t("logout")}
                 onPress={() => {
                   signOut(auth)
                     .then(() => {
@@ -245,7 +256,7 @@ const Settings = (navigation) => {
           }}
         >
           <SuccessButton
-            title={"Edit profile"}
+            title={t("editProfile")}
             onPress={onEditProfilePressed}
           ></SuccessButton>
         </View>
