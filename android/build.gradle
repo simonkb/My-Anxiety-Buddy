@@ -7,6 +7,7 @@ buildscript {
         minSdkVersion = Integer.parseInt(findProperty('android.minSdkVersion') ?: '21')
         compileSdkVersion = Integer.parseInt(findProperty('android.compileSdkVersion') ?: '31')
         targetSdkVersion = Integer.parseInt(findProperty('android.targetSdkVersion') ?: '31')
+        reactNativeVersion = "0.69.9"
         if (findProperty('android.kotlinVersion')) {
             kotlinVersion = findProperty('android.kotlinVersion')
         }
@@ -14,7 +15,7 @@ buildscript {
 
         if (System.properties['os.arch'] == 'aarch64') {
             // For M1 Users we need to use the NDK 24 which added support for aarch64
-            ndkVersion = '24.0.8215888'
+            ndkVersion = '26.1.10909125'
         } else {
             // Otherwise we default to the side-by-side NDK version from AGP.
             ndkVersion = '21.4.7075529'
