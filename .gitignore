@@ -77,3 +77,4 @@ dist/
 build
 .expo-shared
 .vscode
+android/gradlew.bat
