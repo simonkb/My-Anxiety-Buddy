@@ -31,6 +31,7 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { SuccessButton } from "../../buttons.js";
+import { useTranslation } from "react-i18next";
 const JournalChat = () => {
   let defaultBg = useGlobalState("defaultBackgroundImage");
   let currentBg;
@@ -89,6 +90,7 @@ const JournalChat = () => {
         console.log("Error getting documents: ", error);
       });
   }, []);
+  const { t } = useTranslation();
 
   return (
     <View style={styles.container}>
@@ -101,7 +103,7 @@ const JournalChat = () => {
           <View style={styles.journalInputContainer}>
             {journalList.map((question, index) => (
               <View key={index}>
-                <Text style={styles.inputLabel}>{question}</Text>
+                <Text style={styles.inputLabel}>{t(question)}</Text>
                 <TextInput
                   style={styles.textInput}
                   value={
@@ -134,7 +136,7 @@ const JournalChat = () => {
               }}
             >
               <SuccessButton
-                title={"Submit"}
+                title={t("Submit")}
                 onPress={handleResponseSubmit}
               ></SuccessButton>
             </View>
@@ -145,33 +147,33 @@ const JournalChat = () => {
                 marginTop: 15,
               }}
             >
-              All Journals
+              {t("All Journals")}
             </Text>
           </View>
           {journalResponses.map((responseObj, index) => (
             <TouchableOpacity key={index} style={styles.response}>
               <View>
                 <Text style={styles.dateText}>
-                  Your journal on{" "}
+                  {t("Your journal on")}{" "}
                   {new Date(responseObj.date).toString().substring(0, 16)}
                 </Text>
               </View>
               <View style={styles.responses}>
-                <Text>{responseObj.questions[0]}</Text>
+                <Text>{t(responseObj.questions[0])}</Text>
                 <Text style={styles.responseText}>
                   {responseObj.responses[0]}
                 </Text>
-                <Text>{responseObj.questions[1]}</Text>
+                <Text>{t(responseObj.questions[1])}</Text>
 
                 <Text style={styles.responseText}>
                   {responseObj.responses[1]}
                 </Text>
-                <Text>{responseObj.questions[2]}</Text>
+                <Text>{t(responseObj.questions[2])}</Text>
 
                 <Text style={styles.responseText}>
                   {responseObj.responses[2]}
                 </Text>
-                <Text>{responseObj.questions[3]}</Text>
+                <Text>{t(responseObj.questions[3])}</Text>
 
                 <Text style={styles.responseText}>
                   {responseObj.responses[3]}

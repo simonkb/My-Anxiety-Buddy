@@ -4,7 +4,6 @@ import { GlobalStateContext } from "./src/states/GlobalState";
 import Navigation from "./src/routes/routes.js";
 import * as Speech from "expo-speech";
 import { CopilotProvider, CopilotStep } from "react-native-copilot";
-import { Text } from "react-native";
 if (__DEV__) {
   const ignoreWarns = [
     "VirtualizedLists should never be nested inside plain ScrollViews",

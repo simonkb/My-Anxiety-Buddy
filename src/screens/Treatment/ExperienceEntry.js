@@ -17,6 +17,7 @@ import ExperienceSummary from "./ExperienceSummary";
 import { API_URL, API_KEY } from "../../config/firebaseConfig";
 import { auth, db } from "../../config/firebaseConfig.js";
 import { doc, setDoc } from "firebase/firestore";
+import { useTranslation } from "react-i18next";
 
 const ExperienceEntryScreen = () => {
   // Updating background
@@ -30,6 +31,7 @@ const ExperienceEntryScreen = () => {
     currentBg = bg1;
   }
   //
+  const { t } = useTranslation();
 
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState([]);
@@ -78,8 +80,10 @@ const ExperienceEntryScreen = () => {
   const handleAnswerChange = (answer) => {
     if ((questionIndex === 0) & (answer === "No")) {
       Alert.alert(
-        "Message",
-        "Great, you can go through the situation entry whenever you have anxiety or related feeling."
+        t("Message"),
+        t(
+          "Great, you can go through the situation entry whenever you have anxiety or related feeling."
+        )
       );
       navigator.goBack();
       return;
@@ -98,7 +102,10 @@ const ExperienceEntryScreen = () => {
         if (answers[questionIndex]) {
           setQuestionIndex(questionIndex + 1);
         } else {
-          Alert.alert("Error", "Please enter your response to the question.");
+          Alert.alert(
+            t("Error"),
+            t("Please enter your response to the question.")
+          );
         }
       }
     } else {
@@ -177,29 +184,33 @@ Please structure your response accordingly. In your response address the user di
     if (currentQuestion.type === "yesOrNo") {
       return (
         <View style={styles.questionContainer}>
-          <Text style={styles.question}>{currentQuestion.question}</Text>
+          <Text style={styles.question}>{t(currentQuestion.question)}</Text>
           <View style={styles.yesNoButtons}>
             <TouchableOpacity
               style={[styles.button, { backgroundColor: "green" }]}
               onPress={() => handleAnswerChange("Yes")}
             >
-              <Text style={styles.buttonText}>Yes</Text>
+              <Text style={styles.buttonText}>{t("Yes")}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.button, { backgroundColor: "orange" }]}
               onPress={() => handleAnswerChange("No")}
             >
-              <Text style={styles.buttonText}>No</Text>
+              <Text style={styles.buttonText}>{t("No")}</Text>
             </TouchableOpacity>
           </View>
         </View>
       );
     } else if (currentQuestion.type === "selectFromEmojies") {
-      const emojis1 = ["😢 \nSad", "😨 \nNervous", "😞 \nDisappointed"];
-      const emojis2 = ["😕 \nConfused", "😠 \nAngry", "😭 \nCrying"];
+      const emojis1 = [
+        t("😢 \nSad"),
+        t("😨 \nNervous"),
+        t("😞 \nDisappointed"),
+      ];
+      const emojis2 = [t("😕 \nConfused"), t("😠 \nAngry"), t("😭 \nCrying")];
       return (
         <View style={styles.questionContainer}>
-          <Text style={styles.question}>{currentQuestion.question}</Text>
+          <Text style={styles.question}>{t(currentQuestion.question)}</Text>
           <View style={styles.emojiButtons}>
             {emojis1.map((emoji, index) => (
               <TouchableOpacity
@@ -235,12 +246,12 @@ Please structure your response accordingly. In your response address the user di
     } else if (currentQuestion.type === "writing") {
       return (
         <View style={styles.questionContainer}>
-          <Text style={styles.question}>{currentQuestion.question}</Text>
+          <Text style={styles.question}>{t(currentQuestion.question)}</Text>
           <TextInput
             style={styles.input}
             onChangeText={handleAnswerChange}
             value={answers[questionIndex] || ""}
-            placeholder="Enter your response"
+            placeholder={t("Enter your response")}
             multiline
           />
           <TouchableOpacity
@@ -252,7 +263,9 @@ Please structure your response accordingly. In your response address the user di
             onPress={handleContinue}
           >
             <Text style={styles.buttonText}>
-              {questionIndex === questions.length - 1 ? "Done" : "Continue"}
+              {questionIndex === questions.length - 1
+                ? t("Done")
+                : t("Continue")}
             </Text>
           </TouchableOpacity>
         </View>
@@ -275,7 +288,7 @@ Please structure your response accordingly. In your response address the user di
               <View style={styles.card}>
                 {questionIndex === 0 && (
                   <>
-                    <Text style={styles.title}>Situation Entry</Text>
+                    <Text style={styles.title}>{t("Situation Entry")}</Text>
                     <Text
                       style={{
                         fontSize: 16,
@@ -285,9 +298,9 @@ Please structure your response accordingly. In your response address the user di
                       {new Date().toDateString()}
                     </Text>
                     <Text style={styles.message}>
-                      This simple situation entry will help you see how any
-                      situation is connected by your thoughts, mood, and
-                      behavior
+                      {t(
+                        "This simple situation entry will help you see how any situation is connected by your thoughts, mood, and behavior"
+                      )}
                     </Text>
                   </>
                 )}
@@ -312,7 +325,7 @@ Please structure your response accordingly. In your response address the user di
                   margin: 30,
                 }}
               >
-                Summarizing your response and generating suggestions...
+                {t("Summarizing your response and generating suggestions...")}
               </Text>
               <ActivityIndicator
                 size="large"

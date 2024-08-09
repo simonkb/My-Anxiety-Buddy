@@ -9,11 +9,13 @@ import {
 } from "react-native";
 import { auth, db } from "../config/firebaseConfig.js";
 import { doc, setDoc } from "firebase/firestore";
+import { useTranslation } from "react-i18next";
 
 const ReflectionComponent = ({ activity, onClose }) => {
+  const { t } = useTranslation();
   const [questions, setQuestions] = useState([
     {
-      text: "How did you feel before starting the " + activity + "?",
+      text: t("How did you feel before starting the " + activity + "?"),
       response: "",
     },
     {
@@ -37,7 +39,7 @@ const ReflectionComponent = ({ activity, onClose }) => {
     // check if all required fields have a value
     const hasEmptyFields = questions.some((q) => q.response.trim() === "");
     if (hasEmptyFields) {
-      alert("Please reflect on all the questions.");
+      alert(t("Please reflect on all the questions."));
       return;
     }
 
@@ -71,10 +73,10 @@ const ReflectionComponent = ({ activity, onClose }) => {
   return (
     <TouchableOpacity activeOpacity={1} style={styles.overlay}>
       <View style={styles.container}>
-        <Text style={styles.title}>Reflect on your {activity}</Text>
+        <Text style={styles.title}>{t("Reflect on your " + activity)}</Text>
         {questions.map((q, index) => (
           <View key={index} style={styles.questionContainer}>
-            <Text style={styles.questionText}>{q.text}</Text>
+            <Text style={styles.questionText}>{t(q.text)}</Text>
             <TextInput
               style={styles.responseInput}
               value={q.response}
@@ -85,7 +87,7 @@ const ReflectionComponent = ({ activity, onClose }) => {
         ))}
         <View style={styles.buttonContainer}>
           <Button
-            title={submitting ? "Submitting..." : "Submit"}
+            title={submitting ? t("Submitting...") : t("Submit")}
             onPress={handleSubmit}
             disabled={submitting}
           />

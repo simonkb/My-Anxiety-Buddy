@@ -1,0 +1,136 @@
+{
+    "anxietyBuddy": "صديق القلق",
+    "goodAfternoon": "مساء الخير",
+    "dailyCheckIn": "التسجيل\n اليومي",
+    "situationEntry": "إدخال\n الحالة",
+    "selfAssessment": "التقييم\n الذاتي",
+    "breathingGuide": "دليل \nالتنفس",
+    "cognitiveTraining": "التدريب \nالمعرفي",
+    "home": "الصفحة الرئيسية",
+    "readings": "القراءات",
+    "journaling": "التدوين",
+    "profile": "الملف الشخصي",
+    "settings": "الإعدادات",
+    "changeLanguage": "تغيير اللغة",
+    "logout": "تسجيل الخروج",
+    "welcomeToAnxietyBuddy": "مرحبًا بك في صديق القلق",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "forgetPassword": "نسيت كلمة المرور",
+    "login": "تسجيل الدخول",
+    "dontHaveAccount": "ليس لديك حساب",
+    "signUp": "التسجيل",
+    "register": "التسجيل",
+    "emailAddress": "عنوان البريد الإلكتروني",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "phoneNumberOptional": "رقم الهاتف (اختياري)",
+    "username": "اسم المستخدم",
+    "alreadyHaveAccount": "هل لديك حساب؟",
+    "authentication": "المصادقة",
+    "save": "حفظ",
+    "back": "عودة",
+    "cancel": "إلغاء",
+    "changeBackground": "تغيير الخلفية",
+    "privacy": "الخصوصية",
+    "editProfile": "تعديل الملف الشخصي",
+    "goodMorning": "صباح الخير!",
+    "goodEvening": "مساء الخير!",
+    "enterYourEmailToReset": "أدخل بريدك الإلكتروني لإعادة تعيين كلمة المرور.",
+    "send": "إرسال",
+    "checkIn": "تسجيل الدخول",
+    "situationEntryRoute": "إدخال الحالة",
+    "cognitiveTrainingRoute": "مسار التدريب المعرفي",
+    "cognitiveTrainingPhase": "مرحلة التدريب المعرفي",
+    "profileHome": "الصفحة الرئيسية للملف الشخصي",
+    "loading": "جاري التحميل...",
+    "Your Activity Analytics": "تحليلات نشاطك",
+    "Your Self Assessment Analytics": "تحليلات التقييم الذاتي",
+    "Your Reflections": "تأملاتك",
+    "Saved Quotes": "الاقتباسات المحفوظة",
+    "Checkin summaries": "ملخصات تسجيل الدخول",
+    "Number one priority: ": "الأولوية الأولى: ",
+    "Unhelpful thought: ": "فكرة غير مفيدة: ",
+    "To do more of: ": "لعمل المزيد من: ",
+    "To do less of: ": "لعمل أقل من: ",
+    "Mission: ": "مهمة: ",
+    "Normal": "طبيعي",
+    "Mild anxiety": "قلق خفيف",
+    "Moderate anxiety": "قلق متوسط",
+    "Severe anxiety": "قلق شديد",
+    "First Name": "الاسم الأول",
+    "Last Name": "الاسم الأخير",
+    "Verify email": "تحقق من البريد الإلكتروني",
+    "Phone": "الهاتف",
+    "Birth date:": "تاريخ الميلاد:",
+    "Edit Bio": "تعديل السيرة الذاتية",
+    "Location": "الموقع",
+    "Saving...": "جاري الحفظ...",
+    "Bio": "السيرة الذاتية",
+    "What are you grateful for today?": "لما أنت ممتن اليوم؟",
+    "What did you learn today?": "ماذا تعلمت اليوم؟",
+    "What was your biggest challenge today?": "ما هو أكبر تحدٍ واجهته اليوم؟",
+    "Feel free to write about anything else. (optional)": "لا تتردد في الكتابة عن أي شيء آخر. (اختياري)",
+    "Submit": "إرسال",
+    "All Journals": "كل المذكرات",
+    "Your journal on": "مذكرتك في",
+    "What is your number one priority today?": "ما هي أولويتك القصوى اليوم؟",
+    "What unhelpful thoughts have you experienced today?": "ما هي الأفكار غير المفيدة التي واجهتها اليوم؟",
+    "Today I will do more of: ": "اليوم سأقوم بعمل المزيد من: ",
+    "Today I will do less of: ": "اليوم سأقوم بعمل أقل من: ",
+    "How would you make your day amazing?": "كيف ستجعل يومك رائعًا؟",
+    "Start the day by checking in with yourself and connecting your thoughts.": "ابدأ يومك بالتحقق من نفسك وربط أفكارك.",
+    "Done": "تم",
+    "Continue": "متابعة",
+    "Today my number one priority is": "أولوية اليوم القصوى هي",
+  "Enter your priority": "أدخل أولويتك",
+  "An unhelpful thought I have today is": "فكرة غير مفيدة لدي اليوم هي",
+  "Enter your thought": "أدخل فكرتك",
+  "To challenge my thoughts": "لتحدي أفكاري",
+  "I will do more of": "سأقوم بعمل المزيد من",
+  "Enter your plan": "أدخل خطتك",
+  "I will do less of": "سأقوم بعمل أقل من",
+  "My mission today is to": "مهمتي اليوم هي",
+  "Enter your mission": "أدخل مهمتك",
+  "Update": "تحديث",
+  "Are you currently experiencing any anxiety situation?": "هل تواجه حاليًا أي حالة قلق؟",
+  "How are you feeling at the moment?": "كيف تشعر في الوقت الحالي؟",
+  "Yes": "نعم",
+  "No": "لا",
+  "What were your immediate thoughts?": "ما هي أفكارك الفورية؟",
+  "How do you want to challenge your thoughts?": "كيف تريد أن تتحدى أفكارك؟",
+  "Have you tried anything to make the situation better?": "هل جربت أي شيء لتحسين الوضع؟",
+  "Did any of the methods you used work?": "هل نجحت أي من الطرق التي استخدمتها؟",
+  "What events occurred just before the situation?": "ما هي الأحداث التي حدثت قبل الحالة مباشرة؟",
+  "What do you think made the situation worse?": "ما الذي تعتقد أنه جعل الوضع أسوأ؟",
+  "Great, you can go through the situation entry whenever you have anxiety or related feeling.": "رائع، يمكنك استخدام إدخال الحالة في أي وقت تشعر فيه بالقلق أو بأي شعور مرتبط.",
+  "Error": "خطأ",
+  "😢 \nSad": "😢 \nحزين",
+  "😨 \nNervous": "😨 \nمضطرب",
+  "😞 \nDisappointed": "😞 \nمستاء",
+  "😕 \nConfused": "😕 \nمربك",
+  "😠 \nAngry": "😠 \nغاضب",
+  "😭 \nCrying": "😭 \nبكاء",
+  "Enter your response": "أدخل ردك",
+  "Situation Entry": "إدخال الحالة",
+  "This simple situation entry will help you see how any situation is connected by your thoughts, mood, and behavior": "سيساعدك إدخال الحالة البسيط هذا في رؤية كيف ترتبط أي حالة بأفكارك ومزاجك وسلوكك.",
+  "Summarizing your response and generating suggestions...": "جاري تلخيص ردك وتوليد الاقتراحات...",
+  "Journals": "اليوميات",
+  "Easy": "سهل",
+  "Medium": "متوسط",
+  "Hard": "صعب",
+  "Stop": "توقف",
+  "Start": "ابدأ",
+  "Oops! An error occurred while loading the video.": "عذرًا! حدث خطأ أثناء تحميل الفيديو.",
+  "Breath Count:": "عدد الأنفاس:",
+  "How did you feel before starting the breathing exercise?": "كيف كنت تشعر قبل بدء تمرين التنفس؟",
+  "How did you feel before starting the brain exercise?": "كيف كنت تشعر قبل بدء تمرين العقل؟",
+  "What thoughts or feelings came up during the exercise?": "ما هي الأفكار أو المشاعر التي ظهرت أثناء التمرين؟",
+  "How do you feel now that you've completed the exercise?": "كيف تشعر الآن بعد أن أكملت التمرين؟",
+  "Please reflect on all the questions.": "يرجى التفكير في جميع الأسئلة.",
+  "Reflect on your breathing exercise": "فكر في تمرين التنفس الخاص بك",
+  "Reflect on your brain exercise": "فكر في تمرين العقل الخاص بك",
+  "Submitting...": "جاري الإرسال...",
+  "Success": "نجاح",
+  "Good job, you have completed 10 cycles of breathing.": "عمل جيد، لقد أكملت 10 دورات من التنفس."
+  }
+  

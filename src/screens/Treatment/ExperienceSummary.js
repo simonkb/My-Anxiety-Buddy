@@ -26,7 +26,7 @@ const ExperienceSummary = (props) => {
       "An error occured while generating summary please try again."
     );
 
-    navigator.navigate("Home");
+    navigator.navigate(t("home"));
     return;
   }
 
@@ -164,12 +164,12 @@ const ExperienceSummary = (props) => {
         </TouchableOpacity>
         <View
           style={styles.button1}
-          onPress={() => navigator.navigate("Home", { chatType: "breathing" })}
+          onPress={() => navigator.navigate(t("home"), { chatType: "breathing" })}
         >
           <SuccessButton
             title={"Continue to calm breathing section"}
             onPress={() =>
-              navigator.navigate("Home", { chatType: "breathing" })
+              navigator.navigate(t("home"), { chatType: "breathing" })
             }
           ></SuccessButton>
         </View>

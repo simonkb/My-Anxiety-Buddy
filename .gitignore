@@ -78,3 +78,8 @@ build
 .expo-shared
 .vscode
 android/gradlew.bat
+
+*.plist
+*.bat
+*.bat
+*.bat

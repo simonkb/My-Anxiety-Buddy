@@ -30,6 +30,7 @@ import { collection, doc, onSnapshot, updateDoc } from "firebase/firestore";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { sendEmailVerification } from "firebase/auth";
 import { CancelButton, SuccessButton } from "../../buttons.js";
+import { useTranslation } from "react-i18next";
 
 const EditProfile = () => {
   //Updating background
@@ -74,7 +75,7 @@ const EditProfile = () => {
   }, []);
 
   const [isLoading, setIsLoading] = useState(false);
-
+  const { t } = useTranslation();
   const onSavePressed = async () => {
     setIsLoading(true);
 
@@ -88,7 +89,7 @@ const EditProfile = () => {
           .then(() => {
             Alert.alert("Success", "Changes made successfully");
             setIsLoading(false);
-            navigator.navigate("Settings", { username: userData.username });
+            navigator.navigate(t("settings"), { username: userData.username });
           })
           .catch((error) => {
             console.error("Error updating document: ", error);
@@ -104,7 +105,7 @@ const EditProfile = () => {
           .then(() => {
             Alert.alert("Success", "Changes made successfully");
             setIsLoading(false);
-            navigator.navigate("Settings", { username: userData.username });
+            navigator.navigate(t("settings"), { username: userData.username });
           })
           .catch((error) => {
             console.error("Error updating document: ", error);
@@ -114,7 +115,7 @@ const EditProfile = () => {
   };
 
   const onCancelPressed = () => {
-    navigator.navigate("Settings", { username: userData.username });
+    navigator.navigate(t("settings"), { username: userData.username });
   };
 
   const onChange = (key, value) => {
@@ -154,10 +155,10 @@ const EditProfile = () => {
                     name="profileUsername"
                     style={{ color: "black", fontSize: 18, paddinleft: 50 }}
                   >
-                    Username
+                    {t("username")}
                   </Text>
                   <TextInput
-                    placeholder="Old Username is shown here"
+                    placeholder={t("username")}
                     style={{
                       backgroundColor: "white",
 
@@ -179,26 +180,26 @@ const EditProfile = () => {
 
               <TextInput
                 style={styles.textInputStyle}
-                placeholder="First Name"
+                placeholder={t("First Name")}
                 value={userData.firstName}
                 onChangeText={(text) => onChange("firstName", text)}
               />
               <TextInput
                 style={styles.textInputStyle}
-                placeholder="Last Name"
+                placeholder={t("Last Name")}
                 value={userData.lastName}
                 onChangeText={(text) => onChange("lastName", text)}
               />
               <TextInput
                 style={styles.textInputStyle}
-                placeholder="Email"
+                placeholder={t("email")}
                 value={userData.email_address}
                 onChangeText={(text) => onChange("email_address", text)}
                 editable={false}
               />
               {!auth.currentUser.emailVerified && (
                 <Button
-                  title="Verify email"
+                  title={t("Verify email")}
                   onPress={() => {
                     sendEmailVerification(auth.currentUser).then(() => {
                       Alert.alert(
@@ -211,7 +212,7 @@ const EditProfile = () => {
               )}
               <TextInput
                 style={styles.textInputStyle}
-                placeholder="Phone"
+                placeholder={t("Phone")}
                 value={userData.phone_number}
                 onChangeText={(text) => onChange("phone_number", text)}
               />
@@ -231,11 +232,10 @@ const EditProfile = () => {
                     }}
                   >
                     {Platform.OS === "ios" ? (
-                      <Text style={{ fontSize: 18 }}>Birth date:</Text>
+                      <Text style={{ fontSize: 18 }}>{t("Birth date:")}</Text>
                     ) : (
                       <Text style={{ fontSize: 18 }}>
-                        Birth date:
-                        {new Date(userData.birthDate).toLocaleDateString()}
+                          {t("Birth date:")}{new Date(userData.birthDate).toLocaleDateString()}
                       </Text>
                     )}
                   </TouchableOpacity>
@@ -259,14 +259,14 @@ const EditProfile = () => {
               </View>
               <TextInput
                 style={styles.textInputStyle}
-                placeholder="Location"
+                placeholder={t("Location")}
                 value={userData.location}
                 onChangeText={(text) => onChange("location", text)}
               />
-              <Text style={styles.textInputStyle}>Edit Bio</Text>
+              <Text style={styles.textInputStyle}>{t("Edit Bio")}</Text>
               <TextInput
                 style={styles.bioFieldStyle}
-                placeholder="Bio"
+                placeholder={t("Bio")}
                 multiline={true}
                 numberOfLines={10}
                 maxLength={100}
@@ -282,7 +282,7 @@ const EditProfile = () => {
                 <View style={styles.modalBackground}>
                   <View style={styles.activityIndicatorWrapper}>
                     <ActivityIndicator size="large" color="#0000ff" />
-                    <Text style={styles.loadingText}>Saving...</Text>
+                    <Text style={styles.loadingText}>{t("Saving...")}</Text>
                   </View>
                 </View>
               </Modal>
@@ -294,11 +294,11 @@ const EditProfile = () => {
                 }}
               >
                 <SuccessButton
-                  title={"Save"}
+                  title={t("save")}
                   onPress={() => onSavePressed()}
                 ></SuccessButton>
                 <CancelButton
-                  title={"Cancel"}
+                  title={t("cancel")}
                   onPress={() => onCancelPressed()}
                 ></CancelButton>
               </View>

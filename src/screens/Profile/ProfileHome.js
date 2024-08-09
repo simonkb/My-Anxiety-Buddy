@@ -34,6 +34,7 @@ import BarGraph from "./BarGraph";
 import CollapsibleBar from "./CollapsableBar";
 import ReflectionView from "../ReflectionView";
 import QuoteDisplay from "../QuotesDisplay";
+import { useTranslation } from "react-i18next";
 const ProfileHome = ({ route, navigation }) => {
   let defaultBg = useGlobalState("defaultBackgroundImage");
   let currentBg;
@@ -44,12 +45,14 @@ const ProfileHome = ({ route, navigation }) => {
   } else {
     currentBg = bg1;
   }
+  const {t} = useTranslation();
+
   const navigator = useNavigation();
   const onSettingsPressed = () => {
-    navigator.navigate("Settings", { username: currentUser });
+    navigator.navigate(t("settings"), { username: currentUser });
   };
-  const [currentUser, setUser] = useState("Loading...");
-  const [bio, setBio] = useState("Loading...");
+  const [currentUser, setUser] = useState(t("loading"));
+  const [bio, setBio] = useState(t("loading"));
   onAuthStateChanged(auth, (user) => {
     if (user !== null) {
       const uid = user.uid;
@@ -264,30 +267,30 @@ const ProfileHome = ({ route, navigation }) => {
                 onPress={onSettingsPressed}
               >
                 <MaterialCommunityIcons name="tools" color="gray" size={20} />
-                <Text style={styles2.settingsText}>Settings</Text>
+                <Text style={styles2.settingsText}>{t("settings")}</Text>
               </TouchableOpacity>
             </View>
           </View>
 
           <ScrollView>
-            <Text style={styles.title}>Your Activity Analytics</Text>
-            <CollapsibleBar title="Your Self Assessment Analytics">
+            <Text style={styles.title}>{t("Your Activity Analytics")}</Text>
+            <CollapsibleBar title={t("Your Self Assessment Analytics")}>
               <View style={styles.container}>
                 {anxietyData.length > 0 ? (
                   <BarGraph data={anxietyData} />
                 ) : (
-                  <Text>Loading</Text>
+                  <Text>{t("loading")}</Text>
                 )}
               </View>
             </CollapsibleBar>
-            <CollapsibleBar title="Your Reflections">
+            <CollapsibleBar title={t("Your Reflections")}>
               {reflections.length > 0 ? (
                 <ReflectionView reflections={reflections}></ReflectionView>
               ) : (
-                <Text>Loading</Text>
+                <Text>{t("loading")}</Text>
               )}
             </CollapsibleBar>
-            <CollapsibleBar title="Saved Quotes">
+            <CollapsibleBar title={t("Saved Quotes")}>
               {quotes.length > 0 ? (
                 <FlatList
                   data={quotes}
@@ -298,11 +301,11 @@ const ProfileHome = ({ route, navigation }) => {
                   )}
                 />
               ) : (
-                <Text>Loading</Text>
+                <Text>{t("loading")}</Text>
               )}
             </CollapsibleBar>
 
-            <CollapsibleBar title="Checkin summaries">
+            <CollapsibleBar title={t("Checkin summaries")}>
               {checkins.length > 0 ? (
                 <FlatList
                   data={checkins}
@@ -315,7 +318,7 @@ const ProfileHome = ({ route, navigation }) => {
                         {item.response.map((response, index) => (
                           <View key={index} style={styles3.responseItem}>
                             <Text style={styles3.responseText}>
-                              {dailyCheckinList[index]}
+                              {t(dailyCheckinList[index])}
                             </Text>
                             <Text style={styles3.responseText}>{response}</Text>
                           </View>
@@ -325,7 +328,7 @@ const ProfileHome = ({ route, navigation }) => {
                   )}
                 />
               ) : (
-                <Text>Loading</Text>
+                <Text>{t("loading")}</Text>
               )}
             </CollapsibleBar>
           </ScrollView>

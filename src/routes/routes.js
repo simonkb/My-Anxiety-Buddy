@@ -25,6 +25,8 @@ import MorningCheckInScreen from "../screens/Treatment/MorningCheckIn";
 import ExperienceEntryScreen from "../screens/Treatment/ExperienceEntry";
 import CongnitiveTraining from "../screens/Treatment/CognitiveTrainig";
 import CTraining from "../screens/Treatment/CTraining";
+import { useTranslation } from "react-i18next";
+
 // Notifications.setNotificationHandler({
 //   handleNotification: async () => ({
 //     shouldShowAlert: true,
@@ -37,6 +39,7 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const MainStack = () => {
+  const { t } = useTranslation();
   const navigator = useNavigation();
   // Configure the notification handling
   Notifications.setNotificationHandler({
@@ -74,7 +77,7 @@ const MainStack = () => {
       content: {
         title: "Time to reflect!",
         body: "Don't forget to reflect on your day, this will boost your productivity",
-        data: { screen: "Journaling" },
+        data: { screen: t("journaling") },
       },
 
       trigger: { seconds: Math.floor(delay / 1000) },
@@ -115,7 +118,7 @@ const MainStack = () => {
         name="Your Buddy"
         component={HomeStack}
         options={{
-          tabBarLabel: "Home",
+          tabBarLabel: t("home"),
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
@@ -126,7 +129,7 @@ const MainStack = () => {
         name="Treatment"
         component={TreatmentStack}
         options={{
-          tabBarLabel: "Readings",
+          tabBarLabel: t("readings"),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="ios-book" size={size} color={color} />
           ),
@@ -135,10 +138,10 @@ const MainStack = () => {
         }}
       />
       <Tab.Screen
-        name="Journaling"
+        name={t("journaling")}
         component={JournalChat}
         options={{
-          tabBarLabel: "Journaling",
+          tabBarLabel: t("journaling"),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="ios-journal" size={size} color={color} />
           ),
@@ -149,7 +152,7 @@ const MainStack = () => {
         name="Profile"
         component={ProfileStack}
         options={{
-          tabBarLabel: "Profile",
+          tabBarLabel: t("profile"),
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
@@ -161,91 +164,97 @@ const MainStack = () => {
 };
 
 const HomeStack = () => {
+  const { t } = useTranslation();
   return (
     <Stack.Navigator>
       <Stack.Screen
         initialParams={{ chatType: "default", otherParam: "nothing" }}
         options={{ headerShown: false, gestureEnabled: false }}
-        name="Home"
+        name={t("home")}
         component={ChatBot}
       ></Stack.Screen>
       <Stack.Screen
         options={{ headerShown: true, gestureEnabled: false }}
-        name="Check In"
+        name={t("checkIn")}
         component={MorningCheckInScreen}
       />
       <Stack.Screen
         options={{ headerShown: true, gestureEnabled: false }}
-        name="Situation Entry"
+        name={t("situationEntryRoute")}
         component={ExperienceEntryScreen}
       />
       <Stack.Screen
         options={{ headerShown: true, gestureEnabled: false }}
-        name="Cognitive Training"
+        name={t("cognitiveTrainingRoute")}
         component={CongnitiveTraining}
       />
       <Stack.Screen
         options={{ headerShown: true, gestureEnabled: false }}
-        name="Cognitive Training Phase"
+        name={t("cognitiveTrainingPhase")}
         component={CTraining}
       />
     </Stack.Navigator>
   );
 };
 const TreatmentStack = () => {
+  const { t } = useTranslation();
+
   return (
     <Stack.Navigator>
       <Stack.Screen
         options={{ headerShown: true, gestureEnabled: true }}
-        name="Readings"
+        name={t("readings")}
         component={Readings}
       />
       <Stack.Screen
         options={{ headerShown: true, gestureEnabled: true }}
-        name="Journals"
+        name={t("Journals")}
         component={JournalChat}
       />
     </Stack.Navigator>
   );
 };
 const ProfileStack = () => {
+  const { t } = useTranslation();
+
   return (
     <Stack.Navigator>
       <Stack.Screen
         options={{ headerShown: false, gestureEnabled: false }}
-        name="Profile Home"
+        name={t("profileHome")}
         component={ProfileHome}
       />
       <Stack.Screen
         options={{ headerShown: true, gestureEnabled: false }}
         initialParams={{ username: "-" }}
-        name="Settings"
+        name={t("settings")}
         component={Settings}
       />
       <Stack.Screen
         options={{ headerShown: true, gestureEnabled: false }}
-        name="Edit Profile"
+        name={t("editProfile")}
         component={EditProfile}
       />
     </Stack.Navigator>
   );
 };
 const AuthenticationStack = () => {
+  const { t } = useTranslation();
   return (
     <Stack.Navigator>
       <Stack.Screen
         options={{ headerShown: false, gestureEnabled: true }}
-        name="Login"
+        name={t("login")}
         component={Login}
       />
       <Stack.Screen
-        name="Register"
+        name={t("register")}
         component={Register}
         options={{ gestureEnabled: true }}
       />
       <Stack.Screen
         options={{ headerShown: true, gestureEnabled: true }}
-        name="Forget Password"
+        name={t("forgetPassword")}
         component={forgetPassword}
       />
     </Stack.Navigator>

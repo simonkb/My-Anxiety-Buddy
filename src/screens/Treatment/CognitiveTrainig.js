@@ -8,8 +8,10 @@ import {
 } from "react-native";
 import { SuccessButton } from "../../buttons";
 import { useGlobalState, bg1, bg2, bg3 } from "../../states/state";
+import { useTranslation } from "react-i18next";
 
 const CongnitiveTraining = ({ navigation }) => {
+  const { t } = useTranslation();
   let defaultBg = useGlobalState("defaultBackgroundImage");
   let currentBg;
   if (defaultBg[0] === "bgOrange") {
@@ -38,7 +40,7 @@ const CongnitiveTraining = ({ navigation }) => {
             <SuccessButton
               title="Phase 1: Mindful Awareness"
               onPress={() => {
-                navigation.navigate("Cognitive Training Phase", {
+                navigation.navigate(t("cognitiveTrainingPhase"), {
                   phase: "Phase 1: Mindful Awareness",
                 });
               }}
@@ -48,7 +50,7 @@ const CongnitiveTraining = ({ navigation }) => {
             <SuccessButton
               title="Phase 2: Challenging Thought Patterns"
               onPress={() => {
-                navigation.navigate("Cognitive Training Phase", {
+                navigation.navigate(t("cognitiveTrainingPhase"), {
                   phase: "Phase 2: Challenging Thought Patterns",
                 });
               }}
@@ -58,7 +60,7 @@ const CongnitiveTraining = ({ navigation }) => {
             <SuccessButton
               title="Phase 3: Building Resilience"
               onPress={() => {
-                navigation.navigate("Cognitive Training Phase", {
+                navigation.navigate(t("cognitiveTrainingPhase"), {
                   phase: "Phase 3: Building Resilience",
                 });
               }}
@@ -68,7 +70,7 @@ const CongnitiveTraining = ({ navigation }) => {
             <SuccessButton
               title="Phase 4: Stress Management Strategies"
               onPress={() => {
-                navigation.navigate("Cognitive Training Phase", {
+                navigation.navigate(t("cognitiveTrainingPhase"), {
                   phase: "Phase 4: Stress Management Strategies",
                 });
               }}
@@ -78,7 +80,7 @@ const CongnitiveTraining = ({ navigation }) => {
             <SuccessButton
               title="Phase 5: Maintaining Balance"
               onPress={() => {
-                navigation.navigate("Cognitive Training Phase", {
+                navigation.navigate(t("cognitiveTrainingPhase"), {
                   phase: "Phase 5: Maintaining Balance",
                 });
               }}

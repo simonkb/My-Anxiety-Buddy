@@ -22,6 +22,7 @@ import {
 } from "firebase/auth";
 import { collection, doc, setDoc } from "firebase/firestore";
 import { SuccessButton } from "../../buttons";
+import { useTranslation } from "react-i18next";
 
 const Register = () => {
   //Updating background
@@ -44,7 +45,7 @@ const Register = () => {
   const navigator = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const onLoginPressed = () => {
-    navigator.navigate("Login");
+    navigator.navigate(t("login"));
   };
 
   var tester =
@@ -159,6 +160,7 @@ const Register = () => {
         });
     }
   };
+  const {t} = useTranslation();
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -183,13 +185,13 @@ const Register = () => {
               alignItems: "center",
             }}
           >
-            <Text style={styles.title}>AnxietyBuddy</Text>
+            <Text style={styles.title}>{t('anxietyBuddy')}</Text>
             <View style={styles.signUpRectangle}>
               <TextInput
                 style={styles.input}
                 onChangeText={onChangeEmail}
                 value={email}
-                placeholder="Email address"
+                placeholder={t("emailAddress")}
                 keyboardType="email-address"
                 autoCorrect={false}
                 autoCapitalize={false}
@@ -199,7 +201,7 @@ const Register = () => {
                 style={styles.input}
                 onChangeText={onChangePassword}
                 value={password}
-                placeholder="Password"
+                placeholder={t("password")}
                 secureTextEntry={true}
                 autoCorrect={false}
               />
@@ -207,7 +209,7 @@ const Register = () => {
                 style={styles.input}
                 onChangeText={onChangePasswordConfirm}
                 value={passwordConfirm}
-                placeholder="Confirm password"
+                placeholder={t("confirmPassword")}
                 secureTextEntry={true}
                 autoCorrect={false}
               />
@@ -216,7 +218,7 @@ const Register = () => {
                 style={styles.input}
                 onChangeText={onChangeNumber}
                 value={phoneNumber}
-                placeholder="Phone number (optional)"
+                placeholder={t("phoneNumberOptional")}
                 keyboardType="phone-pad"
                 autoCorrect={false}
               ></TextInput>
@@ -224,19 +226,19 @@ const Register = () => {
                 style={styles.input}
                 onChangeText={onChangeText}
                 value={username}
-                placeholder="Username"
+                placeholder={t("username")}
                 autoCorrect={false}
               />
             </View>
 
             <SuccessButton
               onPress={onSignUpPressed}
-              title={"Sign up"}
+              title={t("signUp")}
             ></SuccessButton>
-            <Text style={styles.signUpText}>Already have an account?</Text>
+            <Text style={styles.signUpText}>{t("alreadyHaveAccount")}</Text>
             <SuccessButton
               onPress={onLoginPressed}
-              title={"Login"}
+              title={t("login")}
             ></SuccessButton>
           </ScrollView>
         </KeyboardAvoidingView>
