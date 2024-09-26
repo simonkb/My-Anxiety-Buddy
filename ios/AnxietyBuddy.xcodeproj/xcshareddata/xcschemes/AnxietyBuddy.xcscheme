@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1520"
+   LastUpgradeVersion = "1130"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -33,8 +33,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "AntiAnxietyTests.xctest"
-               BlueprintName = "AntiAnxietyTests"
+               BuildableName = "AnxietyBuddyTests.xctest"
+               BlueprintName = "AnxietyBuddyTests"
                ReferencedContainer = "container:AnxietyBuddy.xcodeproj">
             </BuildableReference>
          </TestableReference>
