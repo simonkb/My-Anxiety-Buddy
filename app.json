@@ -19,7 +19,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.simonkd.My",
+      "bundleIdentifier": "com.simonkd.anxietyBuddy",
       "bitcode": false
     },
     "android": {
