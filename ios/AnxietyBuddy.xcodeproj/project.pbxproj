@@ -175,7 +175,7 @@
 				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 33PS9LG89P;
+						DevelopmentTeam = F9QZRJ45XY;
 						LastSwiftMigration = 1250;
 					};
 				};
@@ -319,7 +319,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = AntiAnxiety/AntiAnxietyDebug.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 33PS9LG89P;
+				DEVELOPMENT_TEAM = F9QZRJ45XY;
 				ENABLE_BITCODE = NO;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -339,7 +339,7 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.simonkd.My;
+				PRODUCT_BUNDLE_IDENTIFIER = com.simonkd.anxietyBuddy;
 				PRODUCT_NAME = AnxietyBuddy;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -357,7 +357,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = AntiAnxiety/AntiAnxiety.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 33PS9LG89P;
+				DEVELOPMENT_TEAM = F9QZRJ45XY;
 				ENABLE_TESTABILITY = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = AntiAnxiety/Info.plist;
@@ -372,7 +372,7 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = com.simonkd.My;
+				PRODUCT_BUNDLE_IDENTIFIER = com.simonkd.anxietyBuddy;
 				PRODUCT_NAME = AnxietyBuddy;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
