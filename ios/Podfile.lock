@@ -443,7 +443,7 @@ PODS:
     - ReactCommon/turbomodule/core (= 0.69.9)
   - RNAppleHealthKit (1.7.0):
     - React
-  - RNCAsyncStorage (1.17.11):
+  - RNCAsyncStorage (2.0.0):
     - React-Core
   - RNDateTimePicker (6.2.0):
     - React-Core
@@ -746,7 +746,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: df1518d092e8c74cafddc56690d1ac386ec24d7a
   ReactCommon: fac40473e2c4117522384027ab33ad0cb6717dc5
   RNAppleHealthKit: 60a6beefdd89a75811e9a8873a5e24f351dee681
-  RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
+  RNCAsyncStorage: d35c79ffba52c1013013e16b1fc295aec2feabb6
   RNDateTimePicker: 30e6733efc179d1e49d6008ea5fce42cdc9aeeca
   RNGestureHandler: bad495418bcbd3ab47017a38d93d290ebd406f50
   RNReanimated: 2cf7451318bb9cc430abeec8d67693f9cf4e039c
