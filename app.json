@@ -6,6 +6,10 @@
     "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "permissions": [
+      "CAMERA", 
+      "AUDIO_RECORDING"
+    ],
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",

@@ -26,6 +26,7 @@ import ExperienceEntryScreen from "../screens/Treatment/ExperienceEntry";
 import CongnitiveTraining from "../screens/Treatment/CognitiveTrainig";
 import CTraining from "../screens/Treatment/CTraining";
 import { useTranslation } from "react-i18next";
+import VoiceRecord from "../screens/VoiceRecord";
 
 // Notifications.setNotificationHandler({
 //   handleNotification: async () => ({
@@ -148,6 +149,19 @@ const MainStack = () => {
           headerShown: true,
         }}
       />
+
+<Tab.Screen
+    name="Mood Check"
+    component={MoodCheckStack} // Add this for the Mood Check tab
+    options={{
+      tabBarLabel: "Mood Check",
+      tabBarIcon: ({ color, size }) => (
+        <MaterialCommunityIcons name="emoticon-happy" color={color} size={size} />
+      ),
+      headerShown: false,
+    }}
+  />
+
       <Tab.Screen
         name="Profile"
         component={ProfileStack}
@@ -211,6 +225,7 @@ const TreatmentStack = () => {
         name={t("Journals")}
         component={JournalChat}
       />
+      
     </Stack.Navigator>
   );
 };
@@ -256,6 +271,18 @@ const AuthenticationStack = () => {
         options={{ headerShown: true, gestureEnabled: true }}
         name={t("forgetPassword")}
         component={forgetPassword}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const MoodCheckStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Mood Check"
+        component={VoiceRecord}
+        options={{ headerShown: true, gestureEnabled: true }}
       />
     </Stack.Navigator>
   );
