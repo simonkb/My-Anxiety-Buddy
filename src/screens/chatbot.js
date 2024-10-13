@@ -343,7 +343,22 @@ const Chatbot = ({ route, navigation }) => {
               />
               <Text style={stylesNew.buttonText}>{t("situationEntry")}</Text>
             </TouchableOpacity>
+            <TouchableOpacity
+              style={stylesNew.iconContainer}
+              onPress={() => {
+                navigation.navigate("Mood Check");
+              }}
+            >
+              <Ionicons
+                name="happy-outline"
+                size={40}
+                color="#28a745"
+              />                 
+              <Text style={stylesNew.buttonText}>{"Mood \nCheck"}</Text>
+            </TouchableOpacity>
+
           </View>
+
           <View style={stylesNew.iconsContainer}>
             <TouchableOpacity
               onPress={() => {

@@ -26,6 +26,7 @@ import ExperienceEntryScreen from "../screens/Treatment/ExperienceEntry";
 import CongnitiveTraining from "../screens/Treatment/CognitiveTrainig";
 import CTraining from "../screens/Treatment/CTraining";
 import { useTranslation } from "react-i18next";
+import VoiceRecord from "../screens/VoiceRecord";
 
 // Notifications.setNotificationHandler({
 //   handleNotification: async () => ({
@@ -193,6 +194,11 @@ const HomeStack = () => {
         name={t("cognitiveTrainingPhase")}
         component={CTraining}
       />
+     <Stack.Screen
+        name="Mood Check"
+        component={VoiceRecord}
+        options={{ headerShown: true, gestureEnabled: true }}
+      />   
     </Stack.Navigator>
   );
 };
@@ -211,6 +217,7 @@ const TreatmentStack = () => {
         name={t("Journals")}
         component={JournalChat}
       />
+      
     </Stack.Navigator>
   );
 };
