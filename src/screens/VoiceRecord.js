@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { Audio } from 'expo-av';
-import { MaterialIcons } from '@expo/vector-icons'; // Import Material Icons
+import React, { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import { Audio } from "expo-av";
+import { MaterialIcons } from "@expo/vector-icons"; // Import Material Icons
 
 const VoiceRecord = () => {
   const [recording, setRecording] = useState(null);
@@ -10,7 +10,7 @@ const VoiceRecord = () => {
   const [sound, setSound] = useState(null); // State for sound playback
   const [isPlaying, setIsPlaying] = useState(false); // State for playing status
   const [notificationVisible, setNotificationVisible] = useState(false); // State for notification visibility
-  const [textMessage, setTextMessage] = useState(''); // State for the text message
+  const [textMessage, setTextMessage] = useState(""); // State for the text message
 
   // Array of random messages
   const messages = [
@@ -33,21 +33,21 @@ const VoiceRecord = () => {
 
   const startRecording = async () => {
     try {
-      console.log('Requesting permissions..');
+      console.log("Requesting permissions..");
       const { status } = await Audio.requestPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('Permission to access microphone is denied');
+      if (status !== "granted") {
+        Alert.alert("Permission to access microphone is denied");
         return;
       }
 
-      console.log('Starting recording..');
+      console.log("Starting recording..");
       const { recording: newRecording } = await Audio.Recording.createAsync(
         Audio.RecordingOptionsPresets.HIGH_QUALITY
       );
       setRecording(newRecording);
       setIsRecording(true);
     } catch (err) {
-      console.error('Failed to start recording', err);
+      console.error("Failed to start recording", err);
     }
   };
 
@@ -57,15 +57,15 @@ const VoiceRecord = () => {
   };
 
   const stopRecording = async () => {
-    console.log('Stopping recording..');
+    console.log("Stopping recording..");
     if (recording) {
       await recording.stopAndUnloadAsync();
       const uri = recording.getURI(); // Get the URI of the recorded audio
       setRecordedUri(uri); // Store the recorded URI
       setRecording(null);
       setIsRecording(false);
-      console.log('Recording stopped and stored at', uri);
-      
+      console.log("Recording stopped and stored at", uri);
+
       // Change the message to a new random message after stopping
       setRandomMessage();
       showNotification(uri); // Show notification with the recorded URI
@@ -80,7 +80,7 @@ const VoiceRecord = () => {
   };
 
   const discardRecording = () => {
-    console.log('Discarding recording..');
+    console.log("Discarding recording..");
     setRecordedUri(null); // Clear the recorded URI
     setSound(null); // Clear the sound instance
     setIsPlaying(false); // Reset playing status
@@ -107,7 +107,8 @@ const VoiceRecord = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.instruction}>
-        Please read the following text while recording. When you are done, click Stop.
+        Please read the following text while recording. When you are done, click
+        Stop.
       </Text>
       <View style={styles.textContainer}>
         <Text style={styles.paragraph}>
@@ -144,7 +145,9 @@ const VoiceRecord = () => {
       )}
       {notificationVisible && (
         <View style={styles.notification}>
-          <Text style={styles.notificationText}>Recording saved: {recordedUri}</Text>
+          <Text style={styles.notificationText}>
+            Recording saved: {recordedUri}
+          </Text>
         </View>
       )}
     </View>
@@ -154,22 +157,22 @@ const VoiceRecord = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 16,
-    backgroundColor: '#f0f4f8', // Light background color
+    backgroundColor: "#f0f4f8", // Light background color
   },
   instruction: {
     marginBottom: 20,
     fontSize: 16,
-    textAlign: 'center',
-    color: '#333', // Dark text color
+    textAlign: "center",
+    color: "#333", // Dark text color
   },
   textContainer: {
-    backgroundColor: '#fff', // White background for the text container
+    backgroundColor: "#fff", // White background for the text container
     padding: 20,
     borderRadius: 10,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOpacity: 0.2,
     shadowOffset: {
       width: 0,
@@ -178,29 +181,29 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     marginBottom: 20,
     elevation: 5, // Elevation for Android
-    alignItems: 'center', // Center the text
-    width: '90%', // Width of the container
+    alignItems: "center", // Center the text
+    width: "90%", // Width of the container
   },
   paragraph: {
     fontSize: 16,
-    textAlign: 'center',
-    color: '#333', // Dark text color
+    textAlign: "center",
+    color: "#333", // Dark text color
   },
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
     marginBottom: 20,
   },
   button: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#007bff', // Bootstrap primary color
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#007bff", // Bootstrap primary color
     padding: 10,
     borderRadius: 5,
     marginHorizontal: 10,
     elevation: 2,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowOffset: {
       width: 0,
@@ -210,26 +213,26 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     marginLeft: 10,
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
   },
   notification: {
-    position: 'absolute',
+    position: "absolute",
     top: 50,
-    backgroundColor: '#28a745', // Green background for notification
+    backgroundColor: "#28a745", // Green background for notification
     padding: 15,
     borderRadius: 5,
     elevation: 3,
     zIndex: 1,
   },
   notificationText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 14,
   },
   recordingStatus: {
     marginTop: 10,
     fontSize: 14,
-    color: 'green',
+    color: "green",
   },
 });
 
