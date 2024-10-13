@@ -39,6 +39,11 @@ const VoiceRecord = () => {
         Alert.alert("Permission to access microphone is denied");
         return;
       }
+      await Audio.setAudioModeAsync({
+        //This is needed for iOS
+        allowsRecordingIOS: true,
+        playsInSilentModeIOS: true,
+      });
 
       console.log("Starting recording..");
       const { recording: newRecording } = await Audio.Recording.createAsync(
@@ -88,7 +93,16 @@ const VoiceRecord = () => {
 
   const playSound = async () => {
     if (recordedUri) {
-      console.log('Playing sound..');
+      console.log("Playing sound..");
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: false,
+        playsInSilentModeIOS: true,
+        staysActiveInBackground: true,
+        interruptionModeIOS: 1,
+        interruptionModeAndroid: 1,
+        shouldDuckAndroid: true,
+        playThroughEarpieceAndroid: false, // This ensures it plays through loudspeaker on Android
+      });
       const { sound: playbackSound } = await Audio.Sound.createAsync(
         { uri: recordedUri },
         { shouldPlay: true }
