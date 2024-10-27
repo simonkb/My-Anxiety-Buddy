@@ -6,19 +6,27 @@ import {
   StyleSheet,
   Alert,
   ImageBackground,
+  Animated,
+  ActivityIndicator,
 } from "react-native";
 import { Audio } from "expo-av";
-import { MaterialIcons } from "@expo/vector-icons"; // Import Material Icons
+import { MaterialIcons } from "@expo/vector-icons";
 import { useGlobalState, bg1, bg2, bg3 } from "../states/state";
+import { useTranslation } from "react-i18next";
+import {
+  AndroidAudioEncoder,
+  AndroidOutputFormat,
+  IOSOutputFormat,
+} from "expo-av/build/Audio";
 
 const VoiceRecord = () => {
   const [recording, setRecording] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
-  const [recordedUri, setRecordedUri] = useState(null);
-  const [sound, setSound] = useState(null); // State for sound playback
-  const [isPlaying, setIsPlaying] = useState(false); // State for playing status
-  const [notificationVisible, setNotificationVisible] = useState(false); // State for notification visibility
-  const [textMessage, setTextMessage] = useState(""); // State for the text message
+  const [notificationVisible, setNotificationVisible] = useState(false);
+  const [textMessage, setTextMessage] = useState("");
+  const [mood, setMood] = useState(null);
+  const [scaleAnim] = useState(new Animated.Value(0));
+  const [isLoading, setIsLoading] = useState(false);
 
   let defaultBg = useGlobalState("defaultBackgroundImage");
   let currentBg;
@@ -30,7 +38,6 @@ const VoiceRecord = () => {
     currentBg = bg1;
   }
 
-  // Array of random messages
   const messages = [
     "It's a calm day, and everything feels just right. Embrace the tranquility around you. Let your voice reflect this peaceful moment.",
     "Take a moment to breathe deeply and relax. Allow your thoughts to flow freely. Your voice can express a range of feelings today.",
@@ -45,13 +52,11 @@ const VoiceRecord = () => {
   ];
 
   useEffect(() => {
-    // Set the initial message when the component mounts
     setRandomMessage();
   }, []);
 
   const startRecording = async () => {
     try {
-      console.log("Requesting permissions..");
       const { status } = await Audio.requestPermissionsAsync();
       if (status !== "granted") {
         Alert.alert("Permission to access microphone is denied");
@@ -63,10 +68,20 @@ const VoiceRecord = () => {
         playsInSilentModeIOS: true,
       });
 
-      console.log("Starting recording..");
-      const { recording: newRecording } = await Audio.Recording.createAsync(
-        Audio.RecordingOptionsPresets.HIGH_QUALITY
-      );
+      const { recording: newRecording } = await Audio.Recording.createAsync({
+        isMeteringEnabled: true,
+        android: {
+          ...Audio.RecordingOptionsPresets.HIGH_QUALITY.android,
+          extension: ".wav",
+          outputFormat: AndroidOutputFormat.DEFAULT,
+          audioEncoder: AndroidAudioEncoder.DEFAULT,
+        },
+        ios: {
+          ...Audio.RecordingOptionsPresets.HIGH_QUALITY.ios,
+          extension: ".wav",
+          outputFormat: IOSOutputFormat.LINEARPCM,
+        },
+      });
       setRecording(newRecording);
       setIsRecording(true);
     } catch (err) {
@@ -76,65 +91,81 @@ const VoiceRecord = () => {
 
   const setRandomMessage = () => {
     const randomIndex = Math.floor(Math.random() * messages.length);
-    setTextMessage(messages[randomIndex]); // Set a random message
+    setTextMessage(messages[randomIndex]);
   };
 
   const stopRecording = async () => {
-    console.log("Stopping recording..");
     if (recording) {
       await recording.stopAndUnloadAsync();
-      const uri = recording.getURI(); // Get the URI of the recorded audio
-      setRecordedUri(uri); // Store the recorded URI
+      const uri = recording.getURI();
       setRecording(null);
       setIsRecording(false);
-      console.log("Recording stopped and stored at", uri);
-
-      // Change the message to a new random message after stopping
+      getEmotion(uri);
       setRandomMessage();
-      showNotification(uri); // Show notification with the recorded URI
+      showNotification(uri);
     }
   };
 
   const showNotification = (uri) => {
     setNotificationVisible(true);
     setTimeout(() => {
-      setNotificationVisible(false); // Hide notification after 3 seconds
+      setNotificationVisible(false);
     }, 3000);
   };
 
   const discardRecording = () => {
-    console.log("Discarding recording..");
-    setRecordedUri(null); // Clear the recorded URI
-    setSound(null); // Clear the sound instance
-    setIsPlaying(false); // Reset playing status
+    setRecordedUri(null);
+    setSound(null);
+  };
+  const emotions = {
+    1: { emotion: "Neutral", emoji: "😐", color: "#708090" },
+    2: { emotion: "Calm", emoji: "😌", color: "#98FB98" },
+    3: { emotion: "Happy", emoji: "😊", color: "#FFD700" },
+    4: { emotion: "Sad", emoji: "😢", color: "#87CEEB" },
+    5: { emotion: "Angry", emoji: "😠", color: "#FF4500" },
+    6: { emotion: "Fear", emoji: "😱", color: "#FFB6C1" },
+    7: { emotion: "Disgust", emoji: "🙄", color: "#FFDAB9" },
+    8: { emotion: "Surprise", emoji: "😲", color: "#FF69B4" },
   };
 
-  const playSound = async () => {
-    if (recordedUri) {
-      console.log("Playing sound..");
-      await Audio.setAudioModeAsync({
-        allowsRecordingIOS: false,
-        playsInSilentModeIOS: true,
-        staysActiveInBackground: true,
-        interruptionModeIOS: 1,
-        interruptionModeAndroid: 1,
-        shouldDuckAndroid: true,
-        playThroughEarpieceAndroid: false, // This ensures it plays through loudspeaker on Android
+  const getEmotion = async (_recordingUri) => {
+    try {
+      setIsLoading(true);
+      
+      const formData = new FormData();
+      formData.append("file", {
+        uri: _recordingUri,
+        type: 'audio/wav',
+        name: 'recording.wav'
       });
-      const { sound: playbackSound } = await Audio.Sound.createAsync(
-        { uri: recordedUri },
-        { shouldPlay: true }
-      );
-      setSound(playbackSound);
-      setIsPlaying(true);
-      playbackSound.setOnPlaybackStatusUpdate((status) => {
-        if (status.didJustFinish) {
-          setIsPlaying(false);
-          playbackSound.unloadAsync(); // Unload the sound after playback
+  
+      const response = await fetch(
+        "https://seremotionpredictor-294911660009.asia-south1.run.app/predict",
+        {
+          method: "POST",
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          body: formData,
         }
-      });
+      );
+  
+      if (!response.ok) throw new Error("Failed to fetch emotion data");
+      const result = await response.json();
+  
+      const emotionData = emotions[result.prediction];
+      setMood(emotionData);
+      scaleAnim.setValue(0);
+      Animated.spring(scaleAnim, { toValue: 1, useNativeDriver: true }).start();
+    } catch (error) {
+      console.error("API call failed:", error);
+      Alert.alert("Error", "Failed to analyze the emotion. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
+  
+  const { t } = useTranslation();
 
   return (
     <ImageBackground
@@ -145,51 +176,61 @@ const VoiceRecord = () => {
       <View style={styles.container}>
         <View style={styles.textContainer}>
           <Text style={styles.instruction}>
-            Please read the following text while recording. When you are done,
-            click Stop.
+            {t(
+              "Please read the following text while recording. When you are done, click Stop."
+            )}
           </Text>
         </View>
         <View style={styles.textContainer}>
-          <Text style={styles.paragraph}>
-            {textMessage} {/* Display the random message */}
-          </Text>
+          <Text style={styles.paragraph}>{textMessage}</Text>
         </View>
         <View style={styles.buttonContainer}>
           {isRecording ? (
             <>
               <TouchableOpacity style={styles.button} onPress={stopRecording}>
                 <MaterialIcons name="stop" size={30} color="#fff" />
-                <Text style={styles.buttonText}>Stop Recording</Text>
+                <Text style={styles.buttonText}>{t("Stop Recording")}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.button}
                 onPress={discardRecording}
               >
                 <MaterialIcons name="delete" size={30} color="#fff" />
-                <Text style={styles.buttonText}>Discard Recording</Text>
+                <Text style={styles.buttonText}>{t("Discard Recording")}</Text>
               </TouchableOpacity>
             </>
           ) : (
             <TouchableOpacity style={styles.button} onPress={startRecording}>
               <MaterialIcons name="mic" size={30} color="#fff" />
-              <Text style={styles.buttonText}>Start Recording</Text>
+              <Text style={styles.buttonText}>{t("Start Recording")}</Text>
             </TouchableOpacity>
           )}
         </View>
-        {recordedUri && !isPlaying && (
-          <TouchableOpacity style={styles.button} onPress={playSound}>
-            <MaterialIcons name="play-arrow" size={30} color="#fff" />
-            <Text style={styles.buttonText}>Play Recording</Text>
-          </TouchableOpacity>
+        {mood && !isLoading && !recording && (
+          <Animated.View
+            style={[
+              styles.moodDisplay,
+              {
+                backgroundColor: mood.color,
+                transform: [{ scale: scaleAnim }],
+              },
+            ]}
+          >
+            <Text style={styles.moodText}>{mood.emotion}</Text>
+            <Text style={styles.moodEmoji}>{mood.emoji}</Text>
+          </Animated.View>
         )}
-        {recordedUri && isPlaying && (
-          <Text style={styles.recordingStatus}>Playing...</Text>
+        {isLoading && (
+          <ActivityIndicator
+            size="large"
+            color="#007bff"
+            style={styles.loadingIndicator}
+          />
         )}
+
         {notificationVisible && (
           <View style={styles.notification}>
-            <Text style={styles.notificationText}>
-              Recording saved: {recordedUri}
-            </Text>
+            <Text style={styles.notificationText}>Voice recording saved</Text>
           </View>
         )}
       </View>
@@ -208,11 +249,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     fontSize: 16,
     textAlign: "center",
-    color: "#333", // Dark text color
+    color: "#333",
     fontWeight: "bold",
   },
   textContainer: {
-    backgroundColor: "#fff", // White background for the text container
+    backgroundColor: "#fff",
     padding: 20,
     borderRadius: 10,
     shadowColor: "#000",
@@ -223,14 +264,14 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 5,
     marginBottom: 20,
-    elevation: 5, // Elevation for Android
-    alignItems: "center", // Center the text
-    width: "90%", // Width of the container
+    elevation: 5,
+    alignItems: "center",
+    width: "90%",
   },
   paragraph: {
     fontSize: 16,
     textAlign: "center",
-    color: "#333", // Dark text color
+    color: "#333",
   },
   buttonContainer: {
     flexDirection: "row",
@@ -241,7 +282,7 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#007bff", // Bootstrap primary color
+    backgroundColor: "#007bff",
     padding: 10,
     borderRadius: 5,
     marginHorizontal: 10,
@@ -262,8 +303,8 @@ const styles = StyleSheet.create({
   notification: {
     position: "absolute",
     top: 50,
-    backgroundColor: "#28a745", // Green background for notification
     padding: 15,
+    backgroundColor: "#28a745",
     borderRadius: 5,
     elevation: 3,
     zIndex: 1,
@@ -280,6 +321,20 @@ const styles = StyleSheet.create({
   bgImage: {
     flex: 1,
   },
+  moodDisplay: {
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 15,
+    padding: 40,
+    shadowColor: "#000",
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 8,
+    marginVertical: 20,
+    transform: [{ scale: 1 }],
+  },
+  moodText: { fontSize: 24, fontWeight: "bold", color: "#fff" },
+  moodEmoji: { fontSize: 50, marginVertical: 10 },
 });
 
 export default VoiceRecord;
