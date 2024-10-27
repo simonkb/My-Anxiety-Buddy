@@ -302,8 +302,6 @@ const Chatbot = ({ route, navigation }) => {
             setIndex(Math.floor(Math.random() * quotes.length));
           }}
         ></QuoteDisplay>
-
-        {/* Core Sections Icons */}
         <View
           style={{
             backgroundColor: "gray",
@@ -324,7 +322,6 @@ const Chatbot = ({ route, navigation }) => {
                 name="sunny-outline"
                 size={40}
                 color="#28a745"
-                //style={stylesNew.icon}
               />
               <Text style={stylesNew.buttonText}>{t("dailyCheckIn")}</Text>
             </TouchableOpacity>
@@ -339,14 +336,13 @@ const Chatbot = ({ route, navigation }) => {
                 name="sad-outline"
                 size={40}
                 color="#28a745"
-                //style={stylesNew.icon}
               />
               <Text style={stylesNew.buttonText}>{t("situationEntry")}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={stylesNew.iconContainer}
               onPress={() => {
-                navigation.navigate("Mood Check");
+                navigation.navigate(t("Mood Check"));
               }}
             >
               <Ionicons
@@ -354,7 +350,7 @@ const Chatbot = ({ route, navigation }) => {
                 size={40}
                 color="#28a745"
               />                 
-              <Text style={stylesNew.buttonText}>{"Mood \nCheck"}</Text>
+              <Text style={stylesNew.buttonText}>{t("Mood \nCheck")}</Text>
             </TouchableOpacity>
 
           </View>

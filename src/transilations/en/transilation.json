@@ -131,9 +131,18 @@
  "Please reflect on all the questions.":"Please reflect on all the questions.",
  "Reflect on your breathing exercise":"Reflect on your breathing exercise",
  "Reflect on your brain exercise":"Reflect on your brain exercise",
-"Submitting...":"Submitting...",
-"Success":"Success",
-"Good job, you have completed 10 cycles of breathing.": "Good job, you have completed 10 cycles of breathing."
-
+"Submitting...": "Submitting...",
+"Success": "Success",
+"Good job, you have completed 10 cycles of breathing.": "Good job, you have completed 10 cycles of breathing.",
+"Mood Check": "Mood Check",
+"Please read the following text while recording. When you are done, click Stop.":"Please read the following text while recording. When you are done, click Stop.",
+"Stop Recording": "Stop Recording",
+"Discard Recording": "Discard Recording",
+"Start Recording": "Start Recording",
+"Voice recording saved": "Voice recording saved",
+"Mood \nCheck" : "Mood \nCheck",
+"Readings": "Readings",
+"Positive Qoutes": "Positive Qoutes",
+"Links": "Links"
  }
   

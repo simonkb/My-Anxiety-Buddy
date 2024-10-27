@@ -28,6 +28,7 @@ import { db } from "../../config/firebaseConfig";
 import * as Speech from "expo-speech";
 import ReadingContent from "./ReadingContent";
 import QuoteDisplay from "../QuotesDisplay";
+import { useTranslation } from "react-i18next";
 const Readings = () => {
   //Updating background
   let defaultBg = useGlobalState("defaultBackgroundImage");
@@ -424,6 +425,7 @@ const Readings = () => {
       );
     }
   };
+  const {t} = useTranslation();
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -453,7 +455,7 @@ const Readings = () => {
                 padding: 10,
               }}
             >
-              Readings
+              {t("Readings")}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setValue("quotes")}>
@@ -465,7 +467,7 @@ const Readings = () => {
                 padding: 10,
               }}
             >
-              Positive Qoutes
+              {t("Positive Qoutes")}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setValue("links")}>
@@ -477,7 +479,7 @@ const Readings = () => {
                 padding: 10,
               }}
             >
-              Links
+              {t("Links")}
             </Text>
           </TouchableOpacity>
         </View>

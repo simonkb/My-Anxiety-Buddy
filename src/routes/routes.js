@@ -195,7 +195,7 @@ const HomeStack = () => {
         component={CTraining}
       />
      <Stack.Screen
-        name="Mood Check"
+        name={t("Mood Check")}
         component={VoiceRecord}
         options={{ headerShown: true, gestureEnabled: true }}
       />   
