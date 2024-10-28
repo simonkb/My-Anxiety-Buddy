@@ -8,6 +8,7 @@ import {
   ImageBackground,
   Animated,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import { Audio } from "expo-av";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -18,6 +19,8 @@ import {
   AndroidOutputFormat,
   IOSOutputFormat,
 } from "expo-av/build/Audio";
+import { SuccessButton } from "../buttons";
+import { useNavigation } from "@react-navigation/native";
 
 const VoiceRecord = () => {
   const [recording, setRecording] = useState(null);
@@ -27,6 +30,7 @@ const VoiceRecord = () => {
   const [mood, setMood] = useState(null);
   const [scaleAnim] = useState(new Animated.Value(0));
   const [isLoading, setIsLoading] = useState(false);
+  const navigator = useNavigation();
 
   let defaultBg = useGlobalState("defaultBackgroundImage");
   let currentBg;
@@ -37,6 +41,7 @@ const VoiceRecord = () => {
   } else {
     currentBg = bg1;
   }
+  const { t } = useTranslation();
 
   const messages = [
     "It's a calm day, and everything feels just right. Embrace the tranquility around you. Let your voice reflect this peaceful moment.",
@@ -110,7 +115,7 @@ const VoiceRecord = () => {
     setNotificationVisible(true);
     setTimeout(() => {
       setNotificationVisible(false);
-    }, 3000);
+    }, 5000);
   };
 
   const discardRecording = () => {
@@ -118,41 +123,121 @@ const VoiceRecord = () => {
     setSound(null);
   };
   const emotions = {
-    1: { emotion: "Neutral", emoji: "😐", color: "#708090" },
-    2: { emotion: "Calm", emoji: "😌", color: "#98FB98" },
-    3: { emotion: "Happy", emoji: "😊", color: "#FFD700" },
-    4: { emotion: "Sad", emoji: "😢", color: "#87CEEB" },
-    5: { emotion: "Angry", emoji: "😠", color: "#FF4500" },
-    6: { emotion: "Fear", emoji: "😱", color: "#FFB6C1" },
-    7: { emotion: "Disgust", emoji: "🙄", color: "#FFDAB9" },
-    8: { emotion: "Surprise", emoji: "😲", color: "#FF69B4" },
+    1: {
+      emotion: "Neutral",
+      emoji: "😐",
+      color: "#a4c3e2",
+      message:
+        "It seems you're feeling neutral. This could be a great time to explore new ideas! Head over to the reading section for some inspiration.",
+      title: "Go to Readings",
+      onPress: () => {
+        navigator.navigate("Treatment");
+      },
+    },
+    2: {
+      emotion: "Calm",
+      emoji: "😌",
+      color: "#98FB98",
+      message:
+        "You're feeling calm. Moments like these are perfect to reflect on your day! Go to the journal and capture this peaceful moment.",
+      title: "Go to Journaling",
+      onPress: () => {
+        navigator.navigate(t("journaling"));
+      },
+    },
+    3: {
+      emotion: "Happy",
+      emoji: "😊",
+      color: "#FFD700",
+      message:
+        "You're feeling happy! Let's keep that positivity going. Why not head to the journal and record this joyful moment?",
+      title: "Go to Journaling",
+      onPress: () => {
+        navigator.navigate(t("journaling"));
+      },
+    },
+    4: {
+      emotion: "Sad",
+      emoji: "😢",
+      color: "#87CEEB",
+      message:
+        "It looks like you're feeling sad. Take a moment to calm down and try a breathing exercise. Remember, it's okay to feel this way.",
+      title: "Go to Breathing Guide",
+      onPress: () => {
+        navigator.navigate(t("home"), { chatType: "breathing" });
+      },
+    },
+    5: {
+      emotion: "Angry",
+      emoji: "😠",
+      color: "#f28055",
+      message:
+        "You're feeling angry. Take a deep breath and let's go through some calming exercises together to help manage those feelings.",
+      title: "Go to Breathing Guide",
+      onPress: () => {
+        navigator.navigate(t("home"), { chatType: "breathing" });
+      },
+    },
+    6: {
+      emotion: "Fear",
+      emoji: "😱",
+      color: "#FFB6C1",
+      message:
+        "You're feeling fearful. Reflecting on the situation may help. Let's go to the situation entry and work through it together.",
+      title: "Situation Entry",
+      onPress: () => {
+        navigator.navigate(t("situationEntryRoute"));
+      },
+    },
+    7: {
+      emotion: "Disgust",
+      emoji: "🙄",
+      color: "#FFDAB9",
+      message:
+        "You're feeling disgusted. Processing these emotions can help. Head to the situation entry to sort through these feelings.",
+      title: "Situation Entry",
+      onPress: () => {
+        navigator.navigate(t("situationEntryRoute"));
+      },
+    },
+    8: {
+      emotion: "Surprise",
+      emoji: "😲",
+      color: "#FF69B4",
+      message:
+        "You're feeling surprised! This is a moment to remember. Visit the journal and capture this unexpected feeling.",
+      title: "Go to Journaling",
+      onPress: () => {
+        navigator.navigate(t("journaling"));
+      },
+    },
   };
 
   const getEmotion = async (_recordingUri) => {
     try {
       setIsLoading(true);
-      
+
       const formData = new FormData();
       formData.append("file", {
         uri: _recordingUri,
-        type: 'audio/wav',
-        name: 'recording.wav'
+        type: "audio/wav",
+        name: "recording.wav",
       });
-  
+
       const response = await fetch(
         "https://seremotionpredictor-294911660009.asia-south1.run.app/predict",
         {
           method: "POST",
           headers: {
-            'Content-Type': 'multipart/form-data',
+            "Content-Type": "multipart/form-data",
           },
           body: formData,
         }
       );
-  
+
       if (!response.ok) throw new Error("Failed to fetch emotion data");
       const result = await response.json();
-  
+
       const emotionData = emotions[result.prediction];
       setMood(emotionData);
       scaleAnim.setValue(0);
@@ -164,8 +249,6 @@ const VoiceRecord = () => {
       setIsLoading(false);
     }
   };
-  
-  const { t } = useTranslation();
 
   return (
     <ImageBackground
@@ -173,7 +256,7 @@ const VoiceRecord = () => {
       resizeMode="cover"
       style={styles.bgImage}
     >
-      <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.textContainer}>
           <Text style={styles.instruction}>
             {t(
@@ -182,7 +265,7 @@ const VoiceRecord = () => {
           </Text>
         </View>
         <View style={styles.textContainer}>
-          <Text style={styles.paragraph}>{textMessage}</Text>
+          <Text style={styles.paragraph}>{t(textMessage)}</Text>
         </View>
         <View style={styles.buttonContainer}>
           {isRecording ? (
@@ -207,18 +290,21 @@ const VoiceRecord = () => {
           )}
         </View>
         {mood && !isLoading && !recording && (
-          <Animated.View
-            style={[
-              styles.moodDisplay,
-              {
+          <>
+            <Animated.View
+              style={{
+                ...styles.textContainer,
                 backgroundColor: mood.color,
                 transform: [{ scale: scaleAnim }],
-              },
-            ]}
-          >
-            <Text style={styles.moodText}>{mood.emotion}</Text>
-            <Text style={styles.moodEmoji}>{mood.emoji}</Text>
-          </Animated.View>
+              }}
+            >
+              <Text style={styles.instruction}>{t(mood.message)}</Text>
+            </Animated.View>
+            <SuccessButton
+              title={t(mood.title)}
+              onPress={mood.onPress}
+            ></SuccessButton>
+          </>
         )}
         {isLoading && (
           <ActivityIndicator
@@ -230,10 +316,12 @@ const VoiceRecord = () => {
 
         {notificationVisible && (
           <View style={styles.notification}>
-            <Text style={styles.notificationText}>Voice recording saved</Text>
+            <Text style={styles.notificationText}>
+              {t("The voice recording will be discarded after analyzing")}
+            </Text>
           </View>
         )}
-      </View>
+      </ScrollView>
     </ImageBackground>
   );
 };
