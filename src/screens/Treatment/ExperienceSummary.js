@@ -14,8 +14,10 @@ import img from "../../../assets/experiencySummaryBg.png";
 import { useNavigation } from "@react-navigation/native";
 import { SuccessButton } from "../../buttons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 const ExperienceSummary = (props) => {
+  const { t } = useTranslation();
   const navigator = useNavigation();
   var summary = [];
   try {
@@ -164,10 +166,12 @@ const ExperienceSummary = (props) => {
         </TouchableOpacity>
         <View
           style={styles.button1}
-          onPress={() => navigator.navigate(t("home"), { chatType: "breathing" })}
+          onPress={() =>
+            navigator.navigate(t("home"), { chatType: "breathing" })
+          }
         >
           <SuccessButton
-            title={"Continue to calm breathing section"}
+            title={t("Go to Breathing Guide")}
             onPress={() =>
               navigator.navigate(t("home"), { chatType: "breathing" })
             }

@@ -52,3 +52,4 @@ build
 .expo-shared
 .vscode
 ios/AnxietyBuddy.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+src/config/firebaseConfig.js
