@@ -143,6 +143,48 @@
 "Mood \nCheck" : "Mood \nCheck",
 "Readings": "Readings",
 "Positive Qoutes": "Positive Qoutes",
-"Links": "Links"
+"Links": "Links",
+
+"Neutral": "Neutral", 
+"It seems you're feeling neutral. This could be a great time to explore new ideas! Head over to the reading section for some inspiration.":         "It seems you're feeling neutral. This could be a great time to explore new ideas! Head over to the reading section for some inspiration.",
+"Go to Readings": "Go to Readings", 
+"Calm": "Calm", 
+"You're feeling calm. Moments like these are perfect to reflect on your day! Go to the journal and capture this peaceful moment.":         "You're feeling calm. Moments like these are perfect to reflect on your day! Go to the journal and capture this peaceful moment.",
+"Go to Journaling": "Go to Journaling",
+"Happy" : "Happy", 
+"You're feeling happy! Let's keep that positivity going. Why not head to the journal and record this joyful moment?":         "You're feeling happy! Let's keep that positivity going. Why not head to the journal and record this joyful moment?",
+"Sad" : "Sad", 
+"It looks like you're feeling sad. Take a moment to calm down and try a breathing exercise. Remember, it's okay to feel this way.":         "It looks like you're feeling sad. Take a moment to calm down and try a breathing exercise. Remember, it's okay to feel this way.",
+"Go to Breathing Guide": "Go to Breathing Guide",
+"Angry": "Angry",
+"You're feeling angry. Take a deep breath and let's go through some calming exercises together to help manage those feelings.":         "You're feeling angry. Take a deep breath and let's go through some calming exercises together to help manage those feelings.",
+"Fear": "Fear",
+"You're feeling fearful. Reflecting on the situation may help. Let's go to the situation entry and work through it together.":         "You're feeling fearful. Reflecting on the situation may help. Let's go to the situation entry and work through it together.",
+"Disgust": "Disgust", 
+"You're feeling disgusted. Processing these emotions can help. Head to the situation entry to sort through these feelings.":         "You're feeling disgusted. Processing these emotions can help. Head to the situation entry to sort through these feelings.",
+"Surprise" : "Surprise", 
+"You're feeling surprised! This is a moment to remember. Visit the journal and capture this unexpected feeling.":         "You're feeling surprised! This is a moment to remember. Visit the journal and capture this unexpected feeling.",
+"It's a calm day, and everything feels just right. Embrace the tranquility around you. Let your voice reflect this peaceful moment.": "It's a calm day, and everything feels just right. Embrace the tranquility around you. Let your voice reflect this peaceful moment.",
+  
+  "Take a moment to breathe deeply and relax. Allow your thoughts to flow freely. Your voice can express a range of feelings today.": "Take a moment to breathe deeply and relax. Allow your thoughts to flow freely. Your voice can express a range of feelings today.",
+  
+  "Imagine a beautiful sunset as you speak. Think of the colors blending in the sky. Let your emotions guide your voice in this moment.": "Imagine a beautiful sunset as you speak. Think of the colors blending in the sky. Let your emotions guide your voice in this moment.",
+  
+  "Your words can carry joy, sadness, or calmness. Reflect on the good moments as you share your voice. Feel the warmth of the sun as you talk.": "Your words can carry joy, sadness, or calmness. Reflect on the good moments as you share your voice. Feel the warmth of the sun as you talk.",
+  
+  "Think of a happy memory while you speak. Let that happiness shine through your voice. Embrace the joy of sharing your thoughts.": "Think of a happy memory while you speak. Let that happiness shine through your voice. Embrace the joy of sharing your thoughts.",
+  
+  "Picture a serene landscape while you talk. Imagine the gentle breeze and soft sounds around you. Allow your voice to convey a sense of peace and clarity.": "Picture a serene landscape while you talk. Imagine the gentle breeze and soft sounds around you. Allow your voice to convey a sense of peace and clarity.",
+  
+  "As you speak, think of the different shades of emotion. Your voice can tell a story filled with different feelings. Let your thoughts resonate with the beauty around you.": "As you speak, think of the different shades of emotion. Your voice can tell a story filled with different feelings. Let your thoughts resonate with the beauty around you.",
+  
+  "Imagine a peaceful scene and let your voice reflect that. Breathe deeply and express what you feel. Each word can paint a picture of your emotions.": "Imagine a peaceful scene and let your voice reflect that. Breathe deeply and express what you feel. Each word can paint a picture of your emotions.",
+  
+  "Feel free to express any thoughts or feelings that come to mind. Your voice can be a powerful tool for sharing your inner world. Let it flow naturally, without pressure.": "Feel free to express any thoughts or feelings that come to mind. Your voice can be a powerful tool for sharing your inner world. Let it flow naturally, without pressure.",
+  
+  "Allow your voice to resonate with a mixture of feelings. Embrace the complexity of your emotions. Your words can create a rich tapestry of sound and sentiment.": "Allow your voice to resonate with a mixture of feelings. Embrace the complexity of your emotions. Your words can create a rich tapestry of sound and sentiment.", 
+  "The voice recording will be discarded after analyzing": "The voice recording will be discarded after analyzing"
+
+
  }
   

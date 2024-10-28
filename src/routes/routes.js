@@ -150,7 +150,7 @@ const MainStack = () => {
         }}
       />
       <Tab.Screen
-        name="Profile"
+        name={t("profile")}
         component={ProfileStack}
         options={{
           tabBarLabel: t("profile"),

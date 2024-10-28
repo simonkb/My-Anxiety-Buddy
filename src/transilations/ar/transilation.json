@@ -141,6 +141,57 @@
   "Mood \nCheck": "فحص \nالمزاج",
   "Readings": "قراءات",
   "Positive Qoutes": "اقتباسات إيجابية",
-  "Links": "روابط"
+  "Links": "روابط",
+  "Neutral": "محايد",
+
+  "It seems you're feeling neutral. This could be a great time to explore new ideas! Head over to the reading section for some inspiration.": "يبدو أنك تشعر بشعور محايد. قد يكون هذا وقتًا رائعًا لاستكشاف أفكار جديدة! انتقل إلى قسم القراءة للحصول على الإلهام.",
+  "Go to Readings": "اذهب إلى قسم القراءة",
+
+  "Calm": "هادئ",
+  "You're feeling calm. Moments like these are perfect to reflect on your day! Go to the journal and capture this peaceful moment.": "تشعر بالهدوء. لحظات كهذه مثالية للتأمل في يومك! انتقل إلى دفتر اليوميات لتوثيق هذه اللحظة الهادئة.",
+  "Go to Journaling": "اذهب إلى دفتر اليوميات",
+
+  "Happy": "سعيد",
+  "You're feeling happy! Let's keep that positivity going. Why not head to the journal and record this joyful moment?": "أنت تشعر بالسعادة! لنحافظ على هذه الإيجابية. لماذا لا تتجه إلى دفتر اليوميات وتوثق هذه اللحظة السعيدة؟",
+
+  "Sad": "حزين",
+  "It looks like you're feeling sad. Take a moment to calm down and try a breathing exercise. Remember, it's okay to feel this way.": "يبدو أنك تشعر بالحزن. خذ لحظة للهدوء وجرب تمارين التنفس. تذكر، من الطبيعي أن تشعر بهذه الطريقة.",
+  "Go to Breathing Guide": "اذهب إلى دليل التنفس",
+
+  "Angry": "غاضب",
+  "You're feeling angry. Take a deep breath and let's go through some calming exercises together to help manage those feelings.": "أنت تشعر بالغضب. خذ نفسًا عميقًا ودعنا نقوم ببعض التمارين المهدئة معًا لمساعدتك على التحكم في هذه المشاعر.",
+
+  "Fear": "خوف",
+  "You're feeling fearful. Reflecting on the situation may help. Let's go to the situation entry and work through it together.": "أنت تشعر بالخوف. التفكير في الموقف قد يساعد. لنذهب إلى إدخال الموقف ونعمل على تجاوزه معًا.",
+
+
+  "Disgust": "اشمئزاز",
+  "You're feeling disgusted. Processing these emotions can help. Head to the situation entry to sort through these feelings.": "أنت تشعر بالاشمئزاز. قد يساعدك معالجة هذه المشاعر. انتقل إلى إدخال الحالة للتعامل مع هذه الأحاسيس.",
+
+  "Surprise": "مفاجأة",
+  "You're feeling surprised! This is a moment to remember. Visit the journal and capture this unexpected feeling.": "أنت تشعر بالمفاجأة! هذه لحظة تستحق التوثيق. قم بزيارة دفتر اليوميات وسجل هذا الشعور المفاجئ.",
+  "It's a calm day, and everything feels just right. Embrace the tranquility around you. Let your voice reflect this peaceful moment.": "إنه يوم هادئ وكل شيء يبدو في مكانه الصحيح. احتضن الهدوء من حولك. دع صوتك يعكس هذه اللحظة السلمية.",
+  
+  "Take a moment to breathe deeply and relax. Allow your thoughts to flow freely. Your voice can express a range of feelings today.": "خذ لحظة لتنفس بعمق واسترخي. دع أفكارك تتدفق بحرية. يمكن لصوتك أن يعبر عن مجموعة من المشاعر اليوم.",
+  
+  "Imagine a beautiful sunset as you speak. Think of the colors blending in the sky. Let your emotions guide your voice in this moment.": "تخيل غروبًا جميلًا وأنت تتحدث. فكر في الألوان التي تمتزج في السماء. دع مشاعرك توجه صوتك في هذه اللحظة.",
+  
+  "Your words can carry joy, sadness, or calmness. Reflect on the good moments as you share your voice. Feel the warmth of the sun as you talk.": "كلماتك يمكن أن تحمل الفرح أو الحزن أو الهدوء. تذكر اللحظات الجميلة وأنت تشارك بصوتك. اشعر بدفء الشمس وأنت تتحدث.",
+  
+  "Think of a happy memory while you speak. Let that happiness shine through your voice. Embrace the joy of sharing your thoughts.": "فكر في ذكرى سعيدة أثناء حديثك. دع تلك السعادة تضيء في صوتك. احتضن فرحة مشاركة أفكارك.",
+  
+  "Picture a serene landscape while you talk. Imagine the gentle breeze and soft sounds around you. Allow your voice to convey a sense of peace and clarity.": "تخيل منظرًا طبيعيًا هادئًا أثناء حديثك. تخيل النسيم اللطيف والأصوات الهادئة من حولك. دع صوتك ينقل شعورًا بالسلام والوضوح.",
+  
+  "As you speak, think of the different shades of emotion. Your voice can tell a story filled with different feelings. Let your thoughts resonate with the beauty around you.": "بينما تتحدث، فكر في درجات المشاعر المختلفة. يمكن لصوتك أن يروي قصة مليئة بمشاعر متنوعة. دع أفكارك تتناغم مع الجمال من حولك.",
+  
+  "Imagine a peaceful scene and let your voice reflect that. Breathe deeply and express what you feel. Each word can paint a picture of your emotions.": "تخيل مشهدًا هادئًا ودع صوتك يعكس ذلك. تنفس بعمق وعبّر عما تشعر به. كل كلمة يمكن أن ترسم صورة لمشاعرك.",
+  
+  "Feel free to express any thoughts or feelings that come to mind. Your voice can be a powerful tool for sharing your inner world. Let it flow naturally, without pressure.": "لا تتردد في التعبير عن أي أفكار أو مشاعر تخطر على بالك. يمكن أن يكون صوتك أداة قوية لمشاركة عالمك الداخلي. دعه يتدفق بشكل طبيعي، بدون ضغط.",
+  
+  "Allow your voice to resonate with a mixture of feelings. Embrace the complexity of your emotions. Your words can create a rich tapestry of sound and sentiment.": "دع صوتك يتناغم مع مزيج من المشاعر. احتضن تعقيد مشاعرك. كلماتك يمكن أن تخلق لوحة غنية من الصوت والعواطف.",
+
+  "The voice recording will be discarded after analyzing": "سيتم حذف تسجيل الصوت بعد التحليل"
+
+
   }
   
